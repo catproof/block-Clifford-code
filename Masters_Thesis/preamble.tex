@@ -1,0 +1,35 @@
+\documentclass[rgb,listoffigures,listoftables,final]{cam-thesis}
+
+% Packages go here
+
+% Document Details
+\title{An Efficient Quantum Message Authentication Scheme}
+\author{Nicolas Perez}
+\date{August 2022}
+\thesistype{thesis proposal}
+\submittedto{the thesis proposal committee}
+\degree{Master}
+\program{Computer Science}
+\college{Carleton University}
+\location{Ottawa, Ontario}
+\submissiondate{2022}
+
+% PDF meta-info:
+\subjectline{\@title}
+\keywords{keyword 1, keyword 2, etc.}
+
+\abstract{%
+Quantum networking is the study of transmitting data that uses quantum mechanics principles (quantum messages). Quantum networking aims to connect two or more quantum computers over a network to cooperatively increase their capabilities, much like how the internet connects computers today. This thesis describes a new quantum message authentication (QMA) scheme, allowing to detect when an adversary maliciously modifies a quantum message (an integrity attack). The new scheme is analyzed in terms of its ability to detect an integrity attack and its efficiency in terms of classical computational complexity and the number of quantum gates used. It is rigorously compared to the Clifford code QMA scheme, as it is the most similar. It offers a trade-off compared to the Clifford code QMA scheme in terms of integrity detection versus efficiency: reduced detection rates and improved efficiency. The reduced detection rates may make the new scheme more appealing in communication applications with a small amount of passive noise, as the detection rate is positively correlated with the number of noisy qubits in the packet. The increased efficiency may benefit constrained devices or communications with very large data packets or data throughput. As a consequence of developing this new QMA scheme, a novel method for unranking permutations of multisets is also presented.
+}
+
+\acknowledgements{
+ I am grateful for the support from my supervisors Evangelos Kranakis and Michel Barbeau, and the additional support from Joaquin Garcia-Alfaro. Their inquiry and feedback on my research throughout my degree have been very helpful. My supervisors were also eager to teach me quantum computing at the start of my degree, and ensured that I had a good foundation of knowledge for starting my research.
+
+My girlfriend provided me with an immense amount of support in more ways than I can say. She, along with my cats Steve and Bucky, were an appreciated source of comfort and humour and kept me good company during the isolating times of the COVID pandemic.
+
+I used to ask my dad repeatedly while I was a small child: "What doing dad, what doing?", whilst he was tinkering around. He would let me watch and explain to me what he was doing. I used to ask my mom repeatedly: "Why? Why? Why?", when asking her about how the world worked. She would try her best to answer my questions! Both of them helped me become curious and want to know more about the world.
+
+I am also grateful for the support of all my other family and friends.
+}
+
+%\setcounter{tocdepth}{1}
