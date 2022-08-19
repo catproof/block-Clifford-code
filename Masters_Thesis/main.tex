@@ -88,17 +88,16 @@ The main goal of this thesis is to further advance the security capabilities of 
  \hline 
 \endhead
 
-$w$ & The number of non-identity single-qubit Pauli unitaries an adversarial attack is composed of. 
+$C$ & An arbitrary Clifford matrix.
 \\ \hline
 
-$n$ & The total number of qubits a quantum message is composed of. The message is often referred to as a 'data packet'.
+$C(n)$ & The Clifford group acting on $n$ qubits.
 \\ \hline
 
 $d$ & The number of signature qubits within a quantum message.
 \\ \hline
 
-$m$ & The number of data qubits within a quantum message.
-$$m = n - d$$
+$\mathit{divmod}(a,b)$ & A pseudocode method for Euclidean division,~\cite{EuclideanDivisionWiki}, where $a$ is divided by $b$. The method returns a tuple, $q,r$, where $q$ is the quotient and $r$ is the remainder.
 \\ \hline
 
 $i$ & Usually used to denote the qubit position of a data qubit within a quantum message. Otherwise, it typically denotes a position of an arbitrary qubit.
@@ -122,6 +121,22 @@ $k_a$ & The subkey $k_a$ such that $k = k_a,k_b$
 $k_b$ & The subkey $k_b$ such that $k = k_a,k_b$
 \\ \hline
 
+$m$ & The number of data qubits within a quantum message.
+\\ \hline
+
+$n$ & The total number of qubits a quantum message is composed of. The message is often referred to as a 'packet'.
+$$n = m + d$$
+\\ \hline
+
+$O\left(f(n_1,n_2, \cdots ,n_k)\right)$ & Reads as 'big $O$ of $f(n_1,n_2, \cdots ,n_k)$' or 'order $f(n_1,n_2, \cdots ,n_k)$'. The big $O$ notation indicates an asymptotic limit of a given function $f(n_1,n_2, \cdots ,n_k)$. See Subsection 1.3.3 of (the open access) reference~\cite{morin2013open} for more info.
+\\ \hline
+
+$P(n)$ & The set of matrices given by all possible $n$-qubit tensor products of Pauli matrices (including the identity matrix).
+\\ \hline
+
+$w$ & The number of non-identity single-qubit Pauli unitaries an adversarial attack is composed of. 
+\\ \hline
+
 $\left\{\begin{smallmatrix}w\\x\end{smallmatrix}\right\}$ & The Stirling number of the second kind. It counts the number of ways to partition a set of $w$ distinct elements into $x$ non-empty sets.
 
 \begin{equation}
@@ -141,15 +156,6 @@ $\rho$ & A quantum state in density matrix form. Usually used to denote a quantu
 $\sigma$ & A quantum state in density matrix form. Usually used to denote the message portion (the data qubits) of a quantum data packet. Also referred to as the 'quantum message'.
 \\ \hline
 
-$P(n)$ & The set of matrices given by all possible $n$-qubit tensor products of Pauli matrices (including the identity matrix).
-\\ \hline
-
-$C(n)$ & The Clifford group acting on $n$ qubits.
-\\ \hline
-
-$C$ & An arbitrary Clifford matrix.
-\\ \hline
-
 $()$ & Parentheses may be used to denote lists, whilst making use of set-builder notation~\cite{setBuilderNotationWikipedia}. The parentheses are used to indicate an order of elements. This is particularly useful for expressing for-loops in pseudocode. For example:
 $$x \in (0,1,2,3... n-1)$$
 denotes $x$ taking on the values of $0$ through to $n-1$ in order.
@@ -162,12 +168,6 @@ $\Rightarrow$ & Indicates an equation is being modified. See Section~\ref{sec:wh
 \\ \hline
 
 $\cdot$ & May be used to indicate multiplication instead of relying on brackets. For example: $$3 \cdot 5 = (3)(5) = 15$$
-\\ \hline
-
-$O\left(f(n_1,n_2, \cdots ,n_k)\right)$ & Reads as 'big $O$ of $f(n_1,n_2, \cdots ,n_k)$' or 'order $f(n_1,n_2, \cdots ,n_k)$'. The big $O$ notation indicates an asymptotic limit of a given function $f(n_1,n_2, \cdots ,n_k)$. See Subsection 1.3.3 of (the open access) reference~\cite{morin2013open} for more info.
-\\ \hline
-
-$\mathit{divmod}(a,b)$ & A pseudocode method for Euclidean division,~\cite{EuclideanDivisionWiki}, where $a$ is divided by $b$. The method returns a tuple, $q,r$, where $q$ is the quotient and $r$ is the remainder.
 \\ \hline
 
 \end{xltabular}
@@ -200,13 +200,12 @@ Block Clifford Code & $\min \left(O\left(nd\right),O\left(\frac{n^2}{\log_2 n}\r
 %\end{changemargin}
 See Table~\ref{table:summaryOfResults} for a comparison between the block Clifford code and the Clifford code. Note that the 'Integrity Detection Probability' column is only concerned with Pauli attacks (see the attack model described in Section~\ref{section:attackModel}). The probability of detection for the block Clifford code approaches the probability of detection for the Clifford code as $w$ increases. Remark Table~\ref{table:symboldescription} for a description of symbols.
 
-
-
+The novel multiset permutation unranking method is described in Algorithm~\ref{alg:KeyMappingB} in Subsection~\ref{subsubsection:keyMappings}. It runs in $O\left (n^2 \log_2 ^2 n \right)$ time.
 
 \chapter{Required Background Knowledge}
 \label{sec:RequiredBackgroundKnowledge}
 \section{Introduction and External Resources}
-Quantum information science relies heavily on linear algebra and complex numbers. This thesis will not explain those concepts. The required linear algebra and complex number concepts for understanding this thesis can be found on Khan Academy, YouTube, in textbooks on the subject(s), etc. The textbook \emph{Quantum Computing for Computer Scientists} also provides a great explanation of the linear algebra and complex numbers required for quantum information science~\cite{yanofsky2008quantum}. This thesis also makes use of concepts from probability, combinatorics, set theory and proof techniques which are all explained in one of Michiel Smid's free textbooks~\cite{michielSmidTextbook}. Understating time complexity analysis and basic data structures will also be required, and are outlined in Pat Morin's free \emph{Open Data Structures} textbook~\cite{morin2013open}. Finally, a basic understanding of pseudocode is also required.
+Quantum information science relies heavily on linear algebra and complex numbers. This thesis will not explain those concepts. The required linear algebra and complex number concepts for understanding this thesis can be found on Khan Academy, YouTube, in textbooks on the subject(s), etc. The textbook \emph{Quantum Computing for Computer Scientists} also provides a great explanation of complex numbers and many of the the linear algebra concepts required for understanding quantum information science~\cite{yanofsky2008quantum}. This thesis also makes use of concepts from probability, combinatorics and set theory as well as various proof techniques which are all explained in one of Michiel Smid's free textbooks~\cite{michielSmidTextbook}. Understating time complexity analysis and basic data structures will also be required, and are outlined in Pat Morin's free \emph{Open Data Structures} textbook~\cite{morin2013open}. Finally, a basic understanding of pseudocode is also required.
 
 There are many excellent resources on quantum information science. \emph{Learn Quantum Computation Using Qiskit} is an excellent open source free textbook managed by IBM, which provides coding examples in its quantum computing language 'Qiskit'~\cite{Qiskit-Textbook}. \emph{Quantiki} is also another free online source of quantum information science, which explains information in an open source manner similar to IBM's textbook, but without the coding examples~\cite{QuantikiRef}. The \emph{Quantum Computing Stack Exchange} forum has many specific answered questions one may have about quantum computing and quantum networking~\cite{QuantumComputingStackExchange}. \emph{Wikipedia} also has some articles on quantum computing, but many of them are densely written and do not explain concepts from first principles. John Watrous also has a free textbook, \emph{The Theory of Quantum Information} which is a good reference for the more advanced reader, although the notation used in that textbook is not always consistent with the notation used in this thesis~\cite{watrous2018theory}. \emph{Quantum Computation and Quantum Information Theory} is generally regarded as a standard textbook on quantum computing~\cite{nielsen2002quantum}. \emph{Quantum Computing for Computer Scientists} explains concepts in a similar way to \emph{Quantum Computation and Quantum Information Theory}, but slightly more towards the language computer scientists are familiar with~\cite{yanofsky2008quantum}. Finally, \emph{Quantum Networking} is a helpful textbook specifically on quantum communications~\cite{van2014quantum}.
 
@@ -225,11 +224,12 @@ Here is an example further clarifying. See the equations:
 &= 20(2x + 7)\\
 &=40x + 140
 \end{align}
-In Equation~\eqref{eq:rightArrowExample} the right arrow is used, instead of the equals sign because the equation is being modified (in this case, being multiplied by $10$). It may be any other sort of modification, like addition, adding an exponent, etc. Using an equals sign would have been incorrect, as $10(2(2x + 7)) \neq 2(2x + 7)$.
 \end{example}
+In Equation~\eqref{eq:rightArrowExample} the right arrow is used, instead of the equals sign because the equation is being modified (in this case, being multiplied by $10$). It may be any other sort of modification, like addition, adding an exponent, etc. Using an equals sign would have been incorrect, as $10(2(2x + 7)) \neq 2(2x + 7)$.
 \section{Quantum States}
 \subsection{Definition}
-A quantum state is said to be in a 'superposition' of different states, meaning it has some probability of being in one of those states once observed. If it is not observed, it behaves as if it is in all of those states \emph{simultaneously}. Quantum states can be described using state vectors, or in bra-ket notation.
+A quantum state is said to be in a 'superposition' of different states, meaning it has probabilities corresponding to each of the different states it can 'collapse' to. Once observed, the superposition collapses to a particular state with its associated probability. If it is not observed, it behaves as if it is in all of those states \emph{simultaneously}. Quantum states can be described using state vectors or bra-ket notation.
+
 Denote an arbitrary quantum state $\ket{\psi}$. Denote $n$ as the number of qubits (also known as quantum bits) in the quantum state. A qubit is the quantum version of a bit (also known as a classical bit). A state vector of $n$ qubits is represented as:
 \begin{align}
 |\psi\rangle=\left[\begin{array}{c}
@@ -248,7 +248,7 @@ where each $c_i$ corresponds to the complex amplitude for the state $\ket{x_i}$.
 The material in this thesis is concerned only with the quantum states of qubits (and not the more generalizable 'qudits', see Section~\ref{section:signedPolynomialCode}). In the standard computational basis (see Subsection~\ref{subsection:basisStates}), each state $\ket{x_i}$ corresponds to the binary string whose decimal representation is equal to $i$. The notation for representing a state in bra-ket notation is:
 \begin{align}
 \label{eq:braketArbitraryStandardBasisState}
-|\psi\rangle=c_{0}\left|x_{0}\right\rangle+c_{1}\left|x_{1}\right\rangle+\cdots+c_{2^n}\left|x_{2^n}\right\rangle
+|\psi\rangle=c_{0}\left|x_{0}\right\rangle+c_{1}\left|x_{1}\right\rangle+\cdots+c_{2^{n-1}}\left|x_{2^{n-1}}\right\rangle
 \end{align}
 \begin{example}
 If $n=3$, then $\ket{x_2} = \ket{010}$.
@@ -260,7 +260,7 @@ If $n=4$, then $\ket{x_5} = \ket{0101}$.
 The number of qubits $n$ is equal to the number of bits in each state $\ket{x_i}$. Each bit in $\ket{x_i}$ thus indicates a qubit in the state $1$ or $0$. The relative phases of each $c_i$ represent the 'phase' of qubits, an additional property that quantum computers make use of.
 
 \subsection{Conventions}
-Some of the conventions used in this thesis when denoting quantum states are not widely used and may be unfamiliar to the reader. The conventions were adopted to make the analysis more concise. The conventions are the following: This thesis
+Some of the conventions used in this thesis when denoting quantum states are not widely used and may be unfamiliar to the reader. The conventions were adopted to make certain analyses more concise. The conventions are the following: This thesis
 \begin{enumerate}
     \item indexes qubits from right to left starting at 0 when representing states in bra-ket notation,
     \item may sometimes omit normalizing factors from quantum states for convenience (i.e. Equation~\eqref{eq:quantumStateConstraint} will not always be satisfied),
@@ -280,15 +280,15 @@ $$\ket{0} = \left[\begin{array}{c}
 which may also be referred to as the '$z$-basis'.
 
 The $x$-basis is:
-$$|+\rangle=\frac{0\rangle+1\rangle}{\sqrt{2}},|-\rangle=\frac{0\rangle-|1\rangle}{\sqrt{2}}$$
+$$|+\rangle=\frac{|0\rangle+1\rangle}{\sqrt{2}},|-\rangle=\frac{|0\rangle-|1\rangle}{\sqrt{2}}$$
 and the $y$-basis is:
-$$|i\rangle=\frac{|0\rangle+i\ket{1}}{\sqrt{2}},|-i\rangle=\frac{0\rangle-i\ket{1}}{\sqrt{2}}$$
+$$|i\rangle=\frac{|0\rangle+i\ket{1}}{\sqrt{2}},|-i\rangle=\frac{|0\rangle-i\ket{1}}{\sqrt{2}}$$
 Some sources denote the $y$-basis differently, but I prefer the one listed above~\cite{basisStates}.
 
 Section~\ref{sec:tensorProducts} explains tensor products and how they are used to represent multi-qubit states. To generate the basis states for an $n$-qubit system of a given basis: Take the two corresponding single-qubit basis states and generate all possible $2^n$ number of $n$-tensor products with $n$ of the single-qubit basis states. For the standard computational basis, this gives each of the $\ket{x_i}$ listed in Equation~\eqref{eq:braketArbitraryStandardBasisState}.
 \section{Tensor Products}
 \label{sec:tensorProducts}
-The tensor product sign is denoted using the symbol: $\otimes$. It is also sometimes referred to as the Kronecker product. Oddly enough, despite tensor products being used extensively in quantum information science, a rigorous definition of tensor products of matrices is omitted from some textbooks on the subject. A tensor product of two matrices, denoted $A \ \epsilon \ \mathbb{C}^{m \times n}$ and $B \ \epsilon \ \mathbb{C}^{m' \times n'}$, is precisely defined as: $$(A \otimes B)[i,j] = A[\floor{i/m'},\floor{j/n'}] \cdot B[i \bmod m', j \bmod n']$$
+The tensor product sign is denoted using the symbol: $\otimes$. It is also sometimes referred to as the Kronecker product. Oddly enough, despite tensor products being used extensively in quantum information science, a rigorous definition of tensor products of matrices is omitted from some textbooks on the subject. A tensor product of two matrices, denoted $A \in \mathbb{C}^{m \times n}$ and $B \in \mathbb{C}^{m' \times n'}$, is precisely defined as: $$(A \otimes B)[i,j] = A[\floor{i/m'},\floor{j/n'}] \cdot B[i \bmod m', j \bmod n']$$
 The indices $i$ and $j$ indicate the value of the element at row $i$ and column $j$ in the corresponding matrices. Tensor products are also associative.
 
 An example of a tensor product will help further explain how they are computed. Essentially, a tensor product $A \otimes B$ creates a new matrix where each element of $A$ is multiplied by the entirety of $B$.
@@ -339,7 +339,7 @@ $$A^{\otimes n} = \underbrace{A \otimes A \otimes \cdots \otimes A}_{n \text{ ti
 Most textbooks go about simply stating the properties of tensor products of matrices, keeping the concept of tensor products very abstract. I derived a proof for a property of tensor products used throughout quantum information science and provide it here, to provide further clarification.
 \begin{theorem}
 \label{theorem:tensorProducts1}
-$(A \otimes B) \cdot (A' \otimes B') = (A \cdot A')\otimes(B \cdot B')$ where $A \ \epsilon \ \mathbb{C}^{m \times n}$, $A' \ \epsilon \ \mathbb{C}^{n \times p}$, $B \ \epsilon \ \mathbb{C}^{m' \times n'}$ and $B' \ \epsilon \ \mathbb{C}^{n' \times p'}$
+$(A \otimes B) \cdot (A' \otimes B') = (A \cdot A')\otimes(B \cdot B')$ where $A \in \mathbb{C}^{m \times n}$, $A' \in \mathbb{C}^{n \times p}$, $B \in \mathbb{C}^{m' \times n'}$ and $B' \in \mathbb{C}^{n' \times p'}$
 \end{theorem}
 \begin{proof}
 To prove this claim, look at an arbitrary pair of elements indexed at the same position of the resulting matrices on the left and right side of the equality, indexed at row $j$, column $k$. If the elements are equal for all values of $j$ and $k$, then the matrices are also equal. First, simplify the left side.
@@ -347,21 +347,21 @@ To prove this claim, look at an arbitrary pair of elements indexed at the same p
 & ((A \otimes B)\cdot(A' \otimes B'))[j,k] \\
 &= \sum_{i=0}^{nn'-1} (A \otimes B)[j,i]\cdot(A' \otimes B')[i,k] \\
 \begin{split}
-&= \sum_{i=0}^{nn'-1} A[\floor{j/m'},\floor{i/n'}] \times B[j \bmod m', i \bmod n'] \\ 
-&\times A'[\floor{i/n'},\floor{k/p'}] \times B'[i \bmod n', k \bmod p'] \\
+&= \sum_{i=0}^{nn'-1} A[\floor{j/m'},\floor{i/n'}] \cdot B[j \bmod m', i \bmod n'] \\ 
+&\cdot A'[\floor{i/n'},\floor{k/p'}] \cdot B'[i \bmod n', k \bmod p'] \\
 \end{split}\\
 \begin{split}
-&= \sum_{i=0}^{nn'-1} A[\floor{j/m'},\floor{i/n'}] \times A'[\floor{i/n'},\floor{k/p'}] \\ 
-&\times B[j \bmod m', i \bmod n'] \times B'[i \bmod n', k \bmod p'] \\
+&= \sum_{i=0}^{nn'-1} A[\floor{j/m'},\floor{i/n'}] \cdot A'[\floor{i/n'},\floor{k/p'}] \\ 
+&\cdot B[j \bmod m', i \bmod n'] \cdot B'[i \bmod n', k \bmod p'] \\
 \end{split} \label{equation:tp1LeftSide}
 \end{align}
 Then, simplify the right side.
 \begin{align}
 & ((A \cdot A')\otimes(B \cdot B'))[j,k] \\
-&= (A \cdot A')[\floor{j / m'},\floor{k / p'}] \times(B \cdot B')[j \bmod m',k \bmod p'] \\
+&= (A \cdot A')[\floor{j / m'},\floor{k / p'}] \cdot (B \cdot B')[j \bmod m',k \bmod p'] \\
 \begin{split}
 &=\sum_{w=0}^{n-1} A[\floor{j/m'},\floor{w}] \cdot A'[\floor{w},\floor{k / p'}]\\
-&\times \sum_{u=0}^{n'-1}  B[j \bmod m',u] \cdot B'[u,k \bmod p'] \\ \label{equation:tp1RightSide}
+&\cdot \sum_{u=0}^{n'-1}  B[j \bmod m',u] \cdot B'[u,k \bmod p'] \\ \label{equation:tp1RightSide}
 \end{split}
 \end{align}
 Equations~\eqref{equation:tp1LeftSide} and~\eqref{equation:tp1RightSide} are equal for any $i = wn'+u$, and enumerating all possible values of $w$ and $u$ in Equation~\eqref{equation:tp1RightSide} gives the corresponding equivalence for each of the possible values of $i$ for Equation~\eqref{equation:tp1LeftSide}. Thus, both summations are equal, proving the initial claim.
@@ -376,17 +376,17 @@ $$\Ket{01} = \Ket{0} \otimes \Ket{1}$$
 The tensor product symbol may also be omitted like this:
 $$\Ket{0}\Ket{1} = \Ket{0} \otimes \Ket{1}$$
 \end{example}
-The tensor product is also used to combine qubit operations to form multi-qubit operations. That is, an operation that acts on more than one qubit at the same time. Given two operations $A$ and $B$, they can operate on qubits at positions $1$ and $0$ respectively by taking their tensor products together.
+The tensor product is also used to combine qubit operations. This allows one to take the tensor product of single-qubit operations to construct multi-qubit operations. A multi-qubit operation is an operation that acts on more than one qubit at the same time.
 \begin{example}
-The tensor product of qubit operations $A$ and $B$ gives the multi-qubit operation:
+The tensor product of qubit operations $A \in \mathbb{C}^{2 \times 2}$ and $B \in \mathbb{C}^{2 \times 2}$ gives the multi-qubit operation:
 $$A \otimes B$$
-which can act on a multi-qubit state, $\Ket{01}$, like so:
+which can act on an arbitrary two-qubit state, such as $\Ket{01}$, like so:
 $$(A \otimes B)\Ket{01} = A\Ket{0} \otimes B\Ket{1}$$
 \end{example}
 Another useful property is the distributive nature of the trace operation with respect to tensor products. 
 \begin{theorem}
 \label{theorem:traceTensorDistribute}
-$\Tr(A \otimes B) = \Tr(A)\Tr(B)$, where $A \ \epsilon \ \mathbb{C}^{n \times n}$ and $B \ \epsilon \ \mathbb{C}^{n' \times n'}$.
+$\Tr(A \otimes B) = \Tr(A)\Tr(B)$, where $A \in \mathbb{C}^{n \times n}$ and $B \in \mathbb{C}^{n' \times n'}$.
 \end{theorem}
 \begin{proof}
 Let the entries of $A$ be denoted as $a_{i,j}$ and the entries of $B$ be denoted as $b_{i,j}$. First, the left side will be simplified.
@@ -426,22 +426,23 @@ A density matrix may additionally be used to represent a quantum state. A densit
 \begin{align}
 \rho = \ket{\psi} \bra{\psi}
 \end{align}
-where $\bra{\psi} = \ket{\psi}^{\dagger}$ and the 'dagger' symbol, $\dagger$, denotes the conjugate transpose of a matrix. Density matrices are useful for representing mixed states, which are defined as probabilistic mixtures of different quantum states. State vectors and bra-ket notation can only represent pure states, i.e. as a single quantum state vector or as listing out the terms in bra-ket notation.
+where $\bra{\psi} = \ket{\psi}^{\dagger}$ and the 'dagger' symbol, $\dagger$, denotes the conjugate transpose of a matrix. Density matrices are useful for representing mixed states, which are defined as probabilistic mixtures of different quantum states. State vectors and bra-ket notation can only represent pure states, i.e. as a single quantum state vector or as listing out the terms in bra-ket notation. For simplicity, this thesis is only concerned with pure states. The theorems and concepts herein can all be extended to consider mixed-states.
 
 \section{Quantum Gates}
+\subsection{Definition}
 A quantum gate (in its physical form) allows one to manipulate and change the state of a quantum state deliberately and predictably. This section will describe the gates used in this thesis and the notational conventions for gates that it uses. Quantum gates are mathematically represented via unitary matrices.
 \subsection{Unitary Transformations}
 Quantum computing in its standard form involves performing operations on qubits within closed systems via quantum gates. Unitary transformations are transformations that do not violate the closed system requirement. Unitary matrices are used to represent these transformations. A matrix $U$ is unitary if and only if it satisfies the following:
 \begin{align}
 UU^{\dagger} = I = U^{\dagger}U
 \end{align}
-when operating on $n$ qubits, the unitary $U \in \mathbb{C}^{2^n \times 2^n}$
+When operating on $n$ qubits, the unitary $U \in \mathbb{C}^{2^n \times 2^n}$.
 \subsection{Local Gates}
 \label{sec:localGate}
 A 'local gate' is a gate that acts only on a single qubit. As a result, a local gate always corresponds to a $2$ by $2$ unitary matrix, $U \in \mathbb{C}^{2 \times 2}$.
 
 \subsection{Subscripts on Quantum Gates}
-For a quantum gate, $U$, which acts on a single qubit, the subscript $U_i$ may be used to indicate which qubit position that gate is applied to. 
+For a quantum gate, $U$, which acts on a single qubit, the subscript $i$ in $U_i$ may be used to indicate which qubit position that gate is applied to. 
 \begin{example}
 \label{ex:gateNotation1}
 For example, $Z_2$ acting on a system of four qubits would be explicitly represented as $I \otimes Z \otimes I \otimes I$.
@@ -450,7 +451,7 @@ For example, $Z_2$ acting on a system of four qubits would be explicitly represe
 \label{ex:gateNotation2}
 For example, $Y_4$ acting on a system of five qubits would be explicitly represented as $Y \otimes I \otimes I \otimes I \otimes I$.
 \end{example}
-Theorems~\ref{theoremPauli},~\ref{theorem:innerProductPaulis},~\ref{theorem:cliffordTimesClifford},~\ref{theorem:cliffTensorProduct} and~\ref{theorem:proofForProvingGateIsClifford} in Subsections~\ref{subsubsection:paulis} and~\ref{subsubsection:Clifford} use subscripts on gates in a different way. This is because, in those theorems, $C_i$ and $P_j$ are denoted as arbitrary Clifford gates and Pauli gates respectively. All other instances of subscripts being used on gates follow the convention as shown in Examples~\ref{ex:gateNotation1} and~\ref{ex:gateNotation2}. Theorem~\ref{theorem:pauliGenerators} is the first theorem in this thesis that uses the previously mentioned convention.
+Theorems~\ref{theoremPauli},~\ref{theorem:innerProductPaulis},~\ref{theorem:cliffordTimesClifford},~\ref{theorem:cliffTensorProduct} and~\ref{theorem:proofForProvingGateIsClifford} in Subsections~\ref{subsubsection:paulis} and~\ref{subsubsection:Clifford} use subscripts on gates in a different way. This is because, in those theorems, $C_i$ and $P_j$ are denoted as arbitrary Clifford gates and Pauli gates respectively. All other instances of subscripts being used on gates follow the convention as shown in Examples~\ref{ex:gateNotation1} and~\ref{ex:gateNotation2}. Theorem~\ref{theorem:pauliGenerators} is the first theorem in this thesis that uses that convention.
 
 \subsection{Pauli Matrices}
 \label{subsubsection:paulis}
@@ -466,26 +467,27 @@ Let $P(n)$ be the set of all n-qubit tensor products of Pauli matrices, includin
 \label{eq:pauliDefinition}
 P(n)=\left\{ e^{i\theta\pi/2} P_0 \otimes \cdots \otimes P_{n-1} \mid \theta = 0,1,2,3, P_i = X,Y,Z,I\right\}
 \end{align}
+Additionally, let $P(n) / U(1)$ be $P(n)$ but without the multiplicative constants $-1$, $i$ or $-i$.
 
 \begin{theorem}
 \label{theoremPauli}
-A matrix $A \in P(n + m)$ where $n + m \geq 2$ if and only if it can be represented as a tensor product of an element $B \in P(n)$ and an element from $C \in P(m)$.
+A matrix $A \in P(n + m)$ where $n + m \geq 2$ if and only if it can be represented as a tensor product of an element $B \in P(n)$ and an element $C \in P(m)$.
 \end{theorem}
 \begin{proof}
-This is possible due to tensor products being associative. Let $B = P_0 \otimes P_1 \cdots P_{n-1}$ and let $C =  P_0 \otimes P_1 \cdots P_{m-1}$.
+This is possible due to tensor products being associative. Let $B = P_0 \otimes P_1 \otimes \cdots \otimes P_{n-1}$ and let $C =  P_0 \otimes P_1 \otimes \cdots \otimes P_{m-1}$.
 \begin{align}
 A &=B \otimes C \\
 &= (P_0 \otimes P_1 \cdots P_{n-1}) \otimes (P_{n} \cdots P_{n+m-2} \otimes P_{n+m-1}) \\
-&= P_0 \otimes P_1 \cdots P_{n-1} \otimes P_n \cdots P_{n+m-2} \otimes P_{n+m-1}
+&= P_0 \otimes P_1 \otimes \cdots \otimes P_{n-1} \otimes P_n \otimes \cdots \otimes P_{n+m-2} \otimes P_{n+m-1}
 \end{align}
 Both directions of the 'if and only if' are proven by following the above equations in forward, and then in reverse.
 \end{proof}
 
-The inner product of two Pauli matrices $A$ and $B$ is defined as $\Tr (A^{\dagger} B)$.
+The inner product of two matrices, denoted by $A \in \mathbb{C}^{m \times n}$ and $B \in \mathbb{C}^{m \times n}$, is defined as $\Tr (A^{\dagger} B)$.
 
 \begin{theorem}
 \label{theorem:innerProductPaulis}
-The inner product of two Pauli matrices $P_k$ and $P_l$, $\Tr (P_k^{\dagger} P_l) = \Tr (P_k P_l)$, is equal to $2^n$, if $k=l$, and equal to $0$, if $k\neq l$.
+The inner product of two Pauli matrices $P \in P(n) / U(1)$ and $P' \in P(n) / U(1)$, $\Tr (P^{\dagger} P') = \Tr (P P')$, is equal to $2^n$ if $P = P'$, and equal to $0$ if $P\neq P'$.
 \end{theorem}
 \begin{proof}
 Note that this is first shown for the $2\times 2$ Pauli matrices.
@@ -512,10 +514,10 @@ If $P \neq P'$, then there exists at least one index $i$ such that $P_i \neq P'_
 
 \begin{corollary}
 \label{corollary:paulisFormBasis}
-$P(n)$ forms an orthogonal basis for $\mathbb{C}^{2^n \times 2^n}$.
+$P(n) / U(1)$ forms an orthogonal basis for $\mathbb{C}^{2^n \times 2^n}$.
 \end{corollary}
 \begin{proof}
-The inner product of any pair of Pauli matrices is $0$ if the Pauli matrices are different, and $2^n$ if they are the same. This means they are all linearly independent. Any basis for $\mathbb{C}^{2^n \times 2^n}$ must contain $4^{n+1}$ elements. The previous statement is because each of the $4^n$ entries in a given matrix in $\mathbb{C}^{2^n \times 2^n}$ are a linear combination of $1, -1, i$ and $-i$.  Any subset of a vector space $V$ with dimension $N$ that consists of $N$ linearly independent elements is a basis for $V$. As a result, all of the $4^{n+1}$ linearly independent Pauli matrices in $P(n)$ are a basis for $\mathbb{C}^{2^n \times 2^n}$ 
+The inner product of any pair of Pauli matrices is $0$ if the Pauli matrices are different, and $2^n$ if they are the same. This means they are all linearly independent. Any basis for $\mathbb{C}^{2^n \times 2^n}$ must contain $4^{n}$ elements, because each matrix has $4^n$ entries. Any subset of a vector space $V$ with dimension $N$ that consists of $N$ linearly independent elements is a basis for $V$. As a result, all of the $4^{n}$ linearly independent Pauli matrices in $P(n) / U(1)$ are a basis for $\mathbb{C}^{2^n \times 2^n}$ 
 \end{proof}
 
 \begin{theorem}
@@ -527,7 +529,7 @@ $Y_i$ can be generated from $X_i$ and $Z_i$, along with the coefficient $-i$:
 $$-iZ_iX_i = Y_i$$
 $I_i$ can be generated via:
 $$X_iX_i = I_i$$
-It then follows that any element from the formal definition of $P(n)$, in Equation~\eqref{eq:pauliDefinition}, can be generated.
+It then follows that any element from the formal definition of $P(n)$, in Equation~\eqref{eq:pauliDefinition}, can be generated via multiplication (remark Theorem~\ref{theoremPauli}).
 \end{proof}
 
 \begin{theorem}
@@ -564,9 +566,9 @@ is called the conjugation of $P$ by $C$. Equation~\eqref{eq:clifford} states tha
 =
 \displaystyle\prod_{j=1}^n 2(4^j - 1) 4^j 
 =
-2^{n^{2}+2n} \cdot \displaystyle\prod_{j=1}^n \left(4^{j} -1 \right).
+2^{n^{2}+2n} \cdot \displaystyle\prod_{j=1}^n \left(4^{j} -1 \right)
 \end{equation}
-The generators of the Clifford group are the $S$, $H$, and $\mathit{CNOT}$ gates~\cite{ozols2008clifford}. In this thesis, I will use the Clifford generators as a way to get a good estimate of how many basis gates are needed to implement a given unitary operation on a quantum computer. Different quantum computing hardware architectures will use different sets of basis gates for expressing arbitrary unitary operations.
+The generators of the Clifford group are the $S$, $H$, and $\mathit{CNOT}$ gates via multiplication~\cite{ozols2008clifford}. In this thesis, I will use the Clifford generators as a way to get a good estimate of how many basis gates are needed to implement a given unitary operation on a quantum computer. Different quantum computing hardware architectures will use different sets of basis gates for expressing arbitrary unitary operations.
 \begin{theorem}
 \label{theorem:cliffordTimesClifford}
 An arbitrary Clifford $C_0$ times another arbitrary Clifford $C_1$ equals an arbitrary Clifford.
@@ -622,15 +624,14 @@ Assume $C \in C(n)$. Let $P''$ be an arbitrary element generated by the generato
 \label{eq:conjugationOfPauliConstructionEnhanced}
 &C \ P_0 \ C^{\dagger}C \ P_1 \ C^{\dagger}\cdots C \ P_{w-1} \ C^{\dagger} = C \ P_0 \ P_1 \cdots \ P_{w-1} \ C^{\dagger} = C \ P'' \ C^{\dagger}
 \end{align}
-Since $C \in C(n)$ it follows that $C \ P'' \ C^{\dagger} \in C(n)$. This is because any two elements of $P(n)$ when multiplied together give another element of $P(n)$. It then follows that when any two elements $C \ P_i \ C^{\dagger}$ and $C \ P_j \ C^{\dagger}$ that also exist in $P(n)$ are multiplied together, where $P_i$ and $P_j$ are generators of $P(n)$, give an element in $P(n)$. Equation~\eqref{eq:conjugationOfPauliConstructionEnhanced} also enables any arbitrary $P'$ such that $C \ P' \ C^{\dagger} \in P(n)$:
+Since $C \in C(n)$, it follows that $C \ P'' \ C^{\dagger} \in C(n)$. This is because any two elements of $P(n)$ when multiplied together give another element of $P(n)$. It then follows that when any two elements $C \ P_i \ C^{\dagger}$ and $C \ P_j \ C^{\dagger}$ that also exist in $P(n)$ are multiplied together, where $P_i$ and $P_j$ are generators of $P(n)$, give an element in $P(n)$. Multiplying Equation~\eqref{eq:conjugationOfPauliConstructionEnhanced} by $\alpha$ also allows for an arbitrary $P'$ such that $C \ P' \ C^{\dagger} \in P(n)$:
 \begin{align}
 \label{eq:conjugationOfPauliConstructionEnhanced2}
 &\alpha C \ P_0 \ C^{\dagger}C \ P_1 \ C^{\dagger}\cdots C \ P_{w-1} \ C^{\dagger} = \alpha C \ P'' \ C^{\dagger} = C \ \alpha P'' \ C^{\dagger} = C \ P' \ C^{\dagger}
 \end{align}
 because any element from $P(n)$ multiplied by $\alpha$ is also in $P(n)$. Thus, checking the equality in Equation~\eqref{eq:conjugationOfPauliConstructionEnhanced} automatically satisfies the equality in Equation~\eqref{eq:conjugationOfPauliConstructionEnhanced2} for any arbitrary $P' \in P(n)$ and ensures $C \ P' \ C^{\dagger} \in P(n)$. Therefore, if $C$ can not satisfy these equations, then it must not be a part of the Clifford group.
-
-Additionally, it can be shown that a given mapping from the $2n$ generators determines a unique Clifford operator~\cite{ozols2008clifford}.
 \end{proof}
+Additionally, it can be shown that a given mapping from the $2n$ generators determines a unique Clifford operator~\cite{ozols2008clifford}.
 
 \subsection{Hadamard Gate}\
 The Hadamard gate is simply just:
