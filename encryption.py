@@ -94,22 +94,17 @@ def quick_n_choose_k(new_n, new_k, prev_n, prev_k, prev_n_choose_k):
         else:
             return 0, new_n, new_k
     elif new_n - prev_n == 1 and prev_k == new_k:
-        #print('made it in here!')
         new_n_choose_k = prev_n_choose_k / (prev_n - (prev_k-1))
         new_n_choose_k = new_n_choose_k * new_n
     elif prev_n - new_n == 1 and prev_k == new_k:
-        #print('made it in here!')
         new_n_choose_k = prev_n_choose_k / prev_n
         new_n_choose_k = new_n_choose_k * (prev_n - prev_k)
     elif prev_n - new_n == 1 and prev_k - new_k == 1:
-        #print('made it in here!')
         new_n_choose_k = prev_n_choose_k / (prev_n)
         new_n_choose_k = new_n_choose_k * prev_k
     return new_n_choose_k, new_n, new_k
 
 
-#might not need the speed up: https://www.sciencedirect.com/science/article/abs/pii/0196677485900069
-#https://cs.stackexchange.com/questions/14456/factorial-algorithm-more-efficient-than-naive-multiplication#:~:text=The%20best%20algorithm%20that%20is,the%20factors%20are%20multiplied%20together.
 def combinatorial_number_system(n,k,N):
     elements_to_pick = []
 
@@ -125,8 +120,7 @@ def combinatorial_number_system(n,k,N):
         if c_i_choose_i == N:
             c_i = c_i + 1
             break
-        c_i = c_i + 1 #O(log(n))
-        #c_i_choose_i = math.comb(c_i,i)
+        c_i = c_i + 1
         c_i_choose_i, _, _ = quick_n_choose_k(c_i, i, c_i - 1, i, c_i_choose_i)
     c_i_choose_i = prev_c_i_choose_i
     N = N - c_i_choose_i
@@ -137,11 +131,9 @@ def combinatorial_number_system(n,k,N):
             elements_to_pick.append(i-1)
         else:
             c_i = c_i - 1
-            #c_i_choose_i = math.comb(c_i,i)
             c_i_choose_i, _, _ = quick_n_choose_k(c_i, i, c_i + 1, i + 1, c_i_choose_i)
             while c_i_choose_i > N:
                 c_i = c_i - 1
-                #c_i_choose_i = math.comb(c_i,i)
                 c_i_choose_i, _, _ = quick_n_choose_k(c_i, i, c_i + 1, i, c_i_choose_i)
             N = N - c_i_choose_i
             elements_to_pick.append(c_i)
@@ -324,8 +316,6 @@ def block_clifford_encryption(num_total_qubits, num_signature_qubits,subkey_a=No
     
     #move the signature qubits to new positions in the packet based off of
     #subkey_b
-    #can optimize this slightly (in terms of quantum gates) by making signature
-    #qubits first move to the furthest positions
     current_j = num_signature_qubits - 1
     for i in range(num_total_qubits-1,-1,-1):
         if subkey_b_permutation[i] == num_signature_qubits:
@@ -376,8 +366,6 @@ def block_clifford_decryption(num_total_qubits, num_signature_qubits,subkey_a=No
             
     #move the signature qubits to new positions in the packet based off of
     #subkey_b
-    #can optimize this slightly (in terms of quantum gates) by making signature
-    #qubits first move to the furthest positions
     current_j = 0
     for i in range(num_total_qubits):
         if subkey_b_permutation[i] == num_signature_qubits:

@@ -159,6 +159,7 @@ $\sigma$ & A quantum state in density matrix form. Usually used to denote the me
 $()$ & Parentheses may be used to denote lists, whilst making use of set-builder notation~\cite{setBuilderNotationWikipedia}. The parentheses are used to indicate an order of elements. This is particularly useful for expressing for-loops in pseudocode. For example:
 $$x \in (0,1,2,3... n-1)$$
 denotes $x$ taking on the values of $0$ through to $n-1$ in order.
+Parantheses may also be used to denote accessing elements in a particular list. For example, denote the list $B$ such that $B = (3,8,10)$. It then follows that $B(0) = 3, B(1) = 8$ and $B(2) = 10$.
 \\ \hline
 
 $\Longleftarrow$ & Assigns the value right of the arrow to the value left of the arrow. For example: $$x \Longleftarrow x + 1$$ denotes increasing the value of $x$ by one.
@@ -736,7 +737,7 @@ The following example shows how the $\mathit{SWAP}$ operation affects an arbitra
 \mathit{SWAP}\ket{\psi} &= \mathit{SWAP}(c_0\ket{00} + c_1\ket{01} + c_2\ket{10} + c_3\ket{11})\\
 &= c_0\mathit{SWAP}\ket{00} + c_1\mathit{SWAP}\ket{01} + c_2\mathit{SWAP}\ket{10} + c_3\mathit{SWAP}\ket{11}\\
 &= c_0\ket{00} + c_1\ket{10} + c_2\ket{01} + c_3\ket{11}\\
-&= c_0\ket{00} + c_1\ket{01} + c_2\ket{10} + c_3\ket{11}
+&= c_0\ket{00} + c_2\ket{01} + c_1\ket{10} + c_3\ket{11}
 \end{align}
 \end{example}
 
@@ -771,7 +772,7 @@ Another way to prove the $\mathit{SWAP}$ gate is a Clifford gate is by making us
 
 \subsection{\texorpdfstring{$\mathit{CIRC}_{i,j}$}{\mathit{CIRC} i j} Gate}
 \label{subsubsec:CircGate}
-As far as I am aware, there is no name given to the gate I am about to describe. I have decided to call it a $\mathit{CIRC}$ gate, which stands for circular shift~\cite{CircularShiftWiki}. A circular shift involves 'rotating' elements in an array such that the first element becomes the last element, and all the other elements are shifted over once. That is, given an array with $n$ elements, the element at position $0$ is moved to position $n-1$, and all elements originally at positions $i$ where $1 \leq i \leq n - 1$ move to position $i'$ where $i' = i - 1$. 
+As far as I am aware, no one else has given a name to the gate I am about to describe. I have decided to call it a $\mathit{CIRC}$ gate, which stands for circular shift~\cite{CircularShiftWiki}. A circular shift involves 'rotating' elements in an array such that the first element becomes the last element, and all the other elements are shifted over once. That is, given an array with $n$ elements, the element at position $0$ is moved to position $n-1$, and all elements originally at positions $i$ where $1 \leq i \leq n - 1$ move to position $i'$ where $i' = i - 1$. 
 
 The quantum equivalent of a circular shift operation requires applying multiple $\mathit{SWAP}$ gates. To make the gate more useful, the subscripts $i$ and $j$ will denote performing a circular shift on qubits $i, i+1, \cdots ,j-1, j$. The $\mathit{CIRC}_{i,j}$ moves a qubit at position $i$ to position $j$, and all qubits originally at positions $k$ where $i < k \leq j$ move to position $k'$ where $k' = k - 1$. The qubit at position $i$ may be referred to as the source qubit and the qubit at position $j$ may be referred to as the destination qubit. Denote $\mathit{SWAP}_{k+1,k}$ as a $\mathit{SWAP}$ gate swapping qubits at position $k+1$ and $k$. The $\mathit{CIRC}_{i,j}$ gate can be implemented using Algorithm~\ref{alg:circGate}.
 \begin{algorithm}[H]
@@ -840,14 +841,15 @@ Another way to prove the $\mathit{CIRC}_{i,j}$ gate is a Clifford gate is by mak
 
 \begin{corollary}
 \label{corollary:circGateCount}
-The $\mathit{CIRC}_{i,j}$ can be implemented using $O\left(\lvert i - j \rvert \right)$ gates from the Clifford generators.
+$\mathit{CIRC}_{i,j}$ can be implemented using $O\left(\lvert i - j \rvert \right)$ gates from the Clifford generators.
 \end{corollary}
 \begin{proof}
 As seen in Theorem~\ref{theorem:SWAPgateIsClifford}, the $\mathit{SWAP}$ gate can be implemented using five of the Clifford generators. By the construction in Algorithm~\ref{alg:circGate}, the $\mathit{CIRC}_{i,j}$ gate can be implemented using $\lvert i - j \rvert$ number of $\mathit{SWAP}$ gates. That means the $\mathit{CIRC}_{i,j}$ gate can be implemented using $5(\lvert i - j \rvert) = O\left(\lvert i - j \rvert \right)$ gates from the Clifford generators.
 \end{proof}
 
 \subsection{\texorpdfstring{$\mathit{CNOT}_{i,j}$}{\mathit{CNOT} i,j} Gate}
-The $\mathit{CNOT}_{i,j}$ gate (also known as the $\mathit{CX}_{i,j}$ gate) is an extension of the normal $\mathit{CNOT}$ gate, by being able to choose what is the control qubit, and what is the target qubit. The control qubit is the qubit at position $i$ and the target qubit is the qubit at position $j$.
+\label{subsec:CNOTij}
+The $\mathit{CNOT}_{i,j}$ gate (also known as the $\mathit{CX}_{i,j}$ gate) is an extension of the normal $\mathit{CNOT}$ gate, by being able to choose what is the control qubit, and what is the target qubit. The control qubit is the qubit at position $i$ and the target qubit is the qubit at position $j$. When $i = j + 1$ it is equivalent to the $\mathit{CNOT}$ gate.
 \begin{example}
 The following example shows a $\mathit{CNOT}_{i,j}$ gate, where $i = 1$ and $j = 3$ being applied to the state $\ket{0001} - \ket{0110} + \ket{1001} + \ket{1110}$.
 \begin{align}
@@ -857,13 +859,13 @@ The following example shows a $\mathit{CNOT}_{i,j}$ gate, where $i = 1$ and $j =
     =&\ket{0001} + \ket{1110} - \ket{1001} + \ket{0110}
 \end{align}
 \end{example}
-Just like the $\mathit{CNOT}$ gate, the $\mathit{CNOT}_{i,j}$ gate also has the nice property $\mathit{CNOT}_{i,j} = \mathit{CNOT}_{i,j}^{\dagger}$.
+Just like the $\mathit{CNOT}$ gate, the $\mathit{CNOT}_{i,j}$ gate also has the nice property $\mathit{CNOT}_{i,j} = \mathit{CNOT}_{i,j}^{\dagger}$. Note that $i \neq j$.
 \begin{theorem}
 \label{theorem:CNOTij}
 The $\mathit{CNOT}_{i,j}$ gate is a Clifford gate.
 \end{theorem}
 \begin{proof}
-Without loss of generality, assume $i > j$. Making use of Theorem~\ref{theorem:proofForProvingGateIsClifford}, the proof can be done by showing each $\mathit{CNOT}_{i,j} \ P \ \mathit{CNOT}_{i,j}$ is an element of $P(n)$, where $P$ takes on the value of $2n$ generators of $P(n)$. First, it will be shown for only four of the generators:
+Making use of Theorem~\ref{theorem:proofForProvingGateIsClifford}, the proof can be done by showing each $\mathit{CNOT}_{i,j} \ P \ \mathit{CNOT}_{i,j}$ is an element of $P(n)$, where $P$ takes on the value of $2n$ generators of $P(n)$. First, it will be shown for only four of the generators:
 \begin{table}[H]
 \caption{A table showing $\mathit{CNOT}_{i,j}$ is a Clifford gate. \label{table:CnotIsAcliffordGate}}
 \begin{center}
@@ -889,14 +891,14 @@ H_{i}H_{i+1}\mathit{CNOT}_{i+1,i}H_{i}H_{i+1}
 
 \subsection{\texorpdfstring{$\mathit{CY}_{i,j}$}{\mathit{CY} i,j} Gate}
 \label{subsubsec:CY}
-The $\mathit{CY}_{i,j}$ gate is like the $\mathit{CNOT}_{i,j}$ gate, except a $Y$ gate acts on the target qubit when the control qubit is set to $1$, instead of an $X$ gate. If $i = j + 1$, then it can just be called a $\mathit{CY}$ gate.
-The $\mathit{CY}_{i,j}$ gate also has the nice property $\mathit{CY}_{i,j} = \mathit{CY}_{i,j}^{\dagger}$.
+The $\mathit{CY}_{i,j}$ gate is like the $\mathit{CNOT}_{i,j}$ gate, except a $Y$ gate acts on the target qubit when the control qubit is set to $1$, instead of an $X$ gate. If $i = j + 1$ then it can just be called a $\mathit{CY}$ gate.
+The $\mathit{CY}_{i,j}$ gate also has the nice property $\mathit{CY}_{i,j} = \mathit{CY}_{i,j}^{\dagger}$. Note that $i \neq j$.
 \begin{theorem}
 \label{theorem:CYij}
 The $\mathit{CY}_{i,j}$ gate is a Clifford gate.
 \end{theorem}
 \begin{proof}
-Without loss of generality, assume $i > j$. Making use of Theorem~\ref{theorem:proofForProvingGateIsClifford}, the proof can be done by showing each $\mathit{CY}_{i,j} \ P \ \mathit{CY}_{i,j}$ is an element of $P(n)$, where $P$ takes on the value of $2n$ generators of $P(n)$. First, it will be shown for only four of the generators:
+Making use of Theorem~\ref{theorem:proofForProvingGateIsClifford}, the proof can be done by showing each $\mathit{CY}_{i,j} \ P \ \mathit{CY}_{i,j}$ is an element of $P(n)$, where $P$ takes on the value of $2n$ generators of $P(n)$. First, it will be shown for only four of the generators:
 \begin{table}[H]
 \caption{A table showing $\mathit{CY}_{i,j}$ is a Clifford gate. \label{table:CyIsAcliffordGate}}
 \begin{center}
@@ -927,14 +929,14 @@ S_{i+1}H_{i}H_{i+1}\mathit{CNOT}_{i+1,i}H_{i}H_{i+1}S_{i+1}S_{i+1}S_{i+1}
 
 \subsection{\texorpdfstring{$\mathit{CZ}_{i,j}$}{\mathit{CZ} i,j} Gate}
 \label{subsubsec:CZ}
-The $\mathit{CZ}_{i,j}$ gate is like the $\mathit{CNOT}_{i,j}$ gate, except a $Z$ gate acts on the target qubit when the control qubit is set to $1$, instead of an $X$ gate. If $i = j + 1$, then it can just be called a $\mathit{CZ}$ gate.
-The $\mathit{CZ}_{i,j}$ gate also has the nice property $\mathit{CZ}_{i,j} = \mathit{CZ}_{i,j}^{\dagger}$.
+The $\mathit{CZ}_{i,j}$ gate is like the $\mathit{CNOT}_{i,j}$ gate, except a $Z$ gate acts on the target qubit when the control qubit is set to $1$, instead of an $X$ gate. If $i = j + 1$ then it can just be called a $\mathit{CZ}$ gate.
+The $\mathit{CZ}_{i,j}$ gate also has the nice property $\mathit{CZ}_{i,j} = \mathit{CZ}_{i,j}^{\dagger}$. Note that $i \neq j$.
 \begin{theorem}
 \label{theorem:CZij}
 The $\mathit{CZ}_{i,j}$ gate is a Clifford gate.
 \end{theorem}
 \begin{proof}
-Without loss of generality, assume $i > j$. Making use of Theorem~\ref{theorem:proofForProvingGateIsClifford}, the proof can be done by showing each $\mathit{CZ}_{i,j} \ P \ \mathit{CZ}_{i,j}$ is an element of $P(n)$, where $P$ takes on the value of $2n$ generators of $P(n)$. First, it will be shown for only four of the generators:
+Making use of Theorem~\ref{theorem:proofForProvingGateIsClifford}, the proof can be done by showing each $\mathit{CZ}_{i,j} \ P \ \mathit{CZ}_{i,j}$ is an element of $P(n)$, where $P$ takes on the value of $2n$ generators of $P(n)$. First, it will be shown for only four of the generators:
 \begin{table}[H]
 \caption{A table showing $\mathit{CZ}_{i,j}$ is a Clifford gate. \label{table:CzIsAcliffordGate}}
 \begin{center}
@@ -964,7 +966,7 @@ H_{i}\mathit{CNOT}_{i+1,i}H_{i}
 
 \subsection{\texorpdfstring{$\mathit{CU}_{i,j}$}{\mathit{CU} i,j} Gate}
 \label{subsubsec:CU}
-The $\mathit{CX}_{i,j}$, $\mathit{CY}_{i,j}$ and $\mathit{CZ}_{i,j}$ gates are all considered $\mathit{CU}_{i,j}$ gates (see Subsections \ref{subsubsec:CX}, \ref{subsubsec:CY} and \ref{subsubsec:CZ}). A $\mathit{CU}_{i,j}$ gate is a controlled-unitary gate that applies a single-qubit unitary to the target qubit $j$ if the control qubit $i$ is set to $1$. If $i = j + 1$, then it can just be called a $\mathit{CU}$ gate.
+The $\mathit{CX}_{i,j}$, $\mathit{CY}_{i,j}$ and $\mathit{CZ}_{i,j}$ gates are all considered $\mathit{CU}_{i,j}$ gates (see Subsections \ref{subsubsec:CX}, \ref{subsubsec:CY} and \ref{subsubsec:CZ}). A $\mathit{CU}_{i,j}$ gate is a controlled-unitary gate that applies a single-qubit unitary to the target qubit $j$ if the control qubit $i$ is set to $1$. If $i = j + 1$ then it can just be called a $\mathit{CU}$ gate.
 
 \begin{theorem}
 \label{theorem:CUsCommute}
@@ -985,7 +987,7 @@ where the left side of each equation is the transformation done by $$\mathit{CU}
 Each of the $\mathit{CY}_{i,j}$, $\mathit{CY}_{i,j}$ and $\mathit{CZ}_{i,j}$ gates can be constructed using $O\left(\lvert i - j \rvert \right)$ number of gates from the Clifford generators. Making use of Theorems~\ref{theorem:cliffordTimesClifford} and~\ref{theorem:cliffTensorProduct}, this also proves that they are all Clifford gates.
 \end{theorem}
 \begin{proof}
-Using the results from Theorem~\ref{theorem:CircGateIsClifford} showing that the $\mathit{CIRC}_{i,j}$ gate can be constructed by the generators of the Clifford group allows the proof to be done by showing that $\mathit{CY}_{i,j}$, $\mathit{CY}_{i,j}$ and $\mathit{CZ}_{i,j}$ can be constructed from $\mathit{CNOT}$ gates, $H$ gates, $S$ gates and $\mathit{CIRC}_{i,j}$ gates. First for $\mathit{CX}_{i,j}$ gates when $i > j$:
+Using the results from Theorem~\ref{theorem:CircGateIsClifford} showing that the $\mathit{CIRC}_{i,j}$ gate can be constructed by the generators of the Clifford group allows the proof to be done by showing that $\mathit{CX}_{i,j}$, $\mathit{CY}_{i,j}$ and $\mathit{CZ}_{i,j}$ can be constructed from $\mathit{CNOT}$ gates, $H$ gates, $S$ gates and $\mathit{CIRC}_{i,j}$ gates. First for $\mathit{CX}_{i,j}$ gates when $i > j$:
 \begin{align}
 \mathit{CX}_{i,j} = \mathit{CIRC}_{i-1,j}\mathit{CNOT}_{i,i-1}\mathit{CIRC}_{j,i-1}
 \end{align}
@@ -1014,9 +1016,9 @@ and in the other case where $i < j$,
 \mathit{CZ}_{i,j} &= \mathit{CIRC}_{i+1,j}\mathit{CZ}_{i,i+1}\mathit{CIRC}_{j,i+1}\\
 &= \mathit{CIRC}_{i+1,j}H_{i}\mathit{CNOT}_{i+1,i}H_{i}\mathit{CIRC}_{j,i+1}
 \end{align}
-The constructions make use of the constructions for $\mathit{CU}_{i,i-1}$ and $\mathit{CU}_{i,i+1}$ in Subsections~\ref{subsubsec:CX},~\ref{subsubsec:CY} and~\ref{subsubsec:CZ}. A given $\mathit{CU}_{i,j}$ is constructed by moving the target qubit next to the control qubit, applying a $\mathit{CU}_{i,i-1}$ or $\mathit{CU}_{i,i+1}$, followed by moving the (now modified) target qubit back to its original position. To additionally verify the correctness, combining the results from the tables in Subsections~\ref{subsubsec:CX},~\ref{subsubsec:CY},~\ref{subsubsec:CZ} and~\ref{subsubsec:CU} shows that the $2n$ Pauli generators are each mapped onto the correct Pauli (as per Theorem~\ref{theorem:proofForProvingGateIsClifford}). Each mapping of the $2n$ Pauli generators determines a unique Clifford~\cite{ozols2008clifford}.
+The constructions make use of the constructions for $\mathit{CU}_{i,i-1}$ and $\mathit{CU}_{i,i+1}$ in Subsections~\ref{subsec:CNOTij},~\ref{subsubsec:CY} and~\ref{subsubsec:CZ}. A given $\mathit{CU}_{i,j}$ is constructed by moving the target qubit next to the control qubit, applying a $\mathit{CU}_{i,i-1}$ or $\mathit{CU}_{i,i+1}$, followed by moving the (now modified) target qubit back to its original position. To additionally verify the correctness, combining the results from the tables in Subsections~\ref{subsubsec:CircGate},~\ref{subsec:CNOTij},~\ref{subsubsec:CY} and~\ref{subsubsec:CZ} shows that the $2n$ Pauli generators are each mapped onto the correct Pauli (as per Theorem~\ref{theorem:proofForProvingGateIsClifford}). Each mapping of the $2n$ Pauli generators determines a unique Clifford~\cite{ozols2008clifford}.
 
-Corollary~\ref{corollary:circGateCount} showed that a $\mathit{CIRC}_{i,j}$ gate can be implemented using $O \left(\lvert i - j \rvert \right)$ number of gates from the Clifford generators. The constructions shown for each of $\mathit{CX}_{i,j}$, $\mathit{CY}_{i,j}$, and $\mathit{CZ}_{i,j}$ use two $\mathit{CIRC}$ gates where the source and destination qubits take on values of $i+1$, $i-1$ or $j$. That means at most $2(\lvert i - j \rvert + 1)$ $\mathit{SWAP}$ gates would be used in the construction, which equals $5(2(\lvert i - j \rvert + 1) = O \left(\lvert i - j \rvert) \right)$ gates from the Clifford generators (see Theorem~\ref{theorem:SWAPgateIsClifford}). The remaining gates used in each of the constructions use at most nine gates from the Clifford generators. Thus, $5(2(\lvert i - j \rvert)) + 9 = O\left(\lvert i - j \rvert \right)$.
+Corollary~\ref{corollary:circGateCount} showed that a $\mathit{CIRC}_{i,j}$ gate can be implemented using $O \left(\lvert i - j \rvert \right)$ number of gates from the Clifford generators. The constructions shown for each of $\mathit{CX}_{i,j}$, $\mathit{CY}_{i,j}$, and $\mathit{CZ}_{i,j}$ use two $\mathit{CIRC}$ gates where the source and destination qubits take on values of $i+1$, $i-1$ or $j$. That means at most $2(\lvert i - j \rvert + 1)$ $\mathit{SWAP}$ gates would be used in the construction, which equals $5(2(\lvert i - j \rvert + 1) = O \left(\lvert i - j \rvert) \right)$ gates from the Clifford generators (see Corollary~\ref{corollary:circGateCount}). The remaining gates used in each of the constructions use at most nine gates from the Clifford generators. Thus, $5(2(\lvert i - j \rvert)) + 9 = O\left(\lvert i - j \rvert \right)$.
 \end{proof}
 
 \begin{theorem}
@@ -1025,7 +1027,7 @@ For control qubits $\{i \mid 0 \leq i < n, i \neq j\}$ and a fixed target qubit 
 \end{theorem}
 \begin{proof}
 %\NP{double check the correctness of the algorithm via implementation?}
-This theorem makes use of the constructions provided in Theorem~\ref{theorem:CUconstructionAndNumberOfGates} and Algorithm~\ref{alg:circGate}. Each index $i$ of a control qubit can be denoted as a part of a list $B(j)$, where each element in the list is accessible via $B(j,k)$ where $1 \leq k < n$. Additionally, assume the list is sorted in ascending order, such that $B(j,k) < B(j,k+1)$ for all $k$. By Theorem~\ref{theorem:CUsCommute}, the order that the $\mathit{CU}_{i,j}$ gates are applied does not matter. For the proof, the $\mathit{CU}_{i,j}$ will be applied in ascending order of the control qubits' indices (the same order in $B(j)$). The following construction shows the number of gates required:
+This theorem makes use of the constructions provided in Theorem~\ref{theorem:CUconstructionAndNumberOfGates} and Algorithm~\ref{alg:circGate}. Each index $i$ of a control qubit can be denoted as a part of a list $B(j)$, where each element in the list is accessible via $B(j,k)$ where $1 \leq k < n$. Additionally, assume the list is sorted in ascending order, such that $B(j,k) < B(j,k+1)$ for all $k$. By Theorem~\ref{theorem:CUsCommute}, the order that the $\mathit{CU}_{i,j}$ gates are applied does not matter. For the proof, the $\mathit{CU}_{i,j}$ gates will be applied in ascending order of the control qubits' indices (the same order in $B(j)$). The following construction shows the number of gates required:
 \begin{algorithm}[H]
 \setstretch{1.07}
   \caption{$\mathit{CU}_{i,j}$ Gates($\mathit{CU}$,$B(j)$,$j$)}  \label{alg:multipleCUgates}
@@ -1059,24 +1061,22 @@ In cryptography, authenticity, integrity and replay detection are all distinct b
 \subsection{Keys and Key Mappings}
 The operations performed on the quantum message by a given sender and receiver are determined by some key $k$ along with a function that maps the key to its corresponding operations. The receiver applies the inverse of the operations the sender applies. The key is assumed to be classical, and is stored as a bit string.
 \subsection{Data Qubits and Signature Qubits}
-Data qubits are considered the desired message the sender wants to send to the receiver. There are $m$ number data qubits in the quantum message $\rho$. Signature qubits are additional qubits added to the message for facilitating authentication. There are $d$ number data qubits in the quantum message $\rho$. The quantum message $\rho$ has $n = m + d$ qubits.
+Data qubits are the qubits that make up the desired message the sender wants to send to the receiver. There are $m$ number data qubits in the quantum message $\rho$. Signature qubits are additional qubits added to the message for facilitating authentication. There are $d$ number data qubits in the quantum message $\rho$. The quantum message $\rho$ has $n = m + d$ qubits.
 \section{Measurement}
 \label{subsec:Measurements}
 The measurement result of a quantum state is a probabilistic outcome dependent on the complex amplitudes of the state. Measurement can be interpreted via any of one of the three quantum state representations discussed in this thesis: bra-ket notation, state vector and density matrix.
 
-In the state vector form, a measurement outcome $m$ along with measurement operator $M_m$ occurs with probability $p(m)$:
+Remark that $\ket{\psi}^{\dagger} = \bra{\psi}$. In the state vector form, a measurement outcome $m$ along with measurement operator $M_m$ occurs with probability $p(m)$ such that
 
 \begin{align}
 p(m)=\left\langle\psi\left|M_{m}^{\dagger} M_{m}\right| \psi\right\rangle
 \end{align}
-
-and the resulting state after being measured is:
+and the resulting state after being measured is
 
 \begin{align}
-\frac{M_{m}|\psi\rangle}{\sqrt{\left\langle\psi\left|M_{m}^{\dagger} M_{m}\right| \psi\right\rangle}}
+\frac{M_{m}|\psi\rangle}{\sqrt{\left\langle\psi\left|M_{m}^{\dagger} M_{m}\right| \psi\right\rangle}} \label{eq:disturbedState}
 \end{align}
-
-This precisely characterizes how a quantum state is disturbed when measured. For this thesis, measurements will always be in the standard computational basis. One way to denote these operators is as:
+Equation~\eqref{eq:disturbedState} precisely characterizes how a quantum state is disturbed when measured. For this thesis, measurements will always be in the standard computational basis. One way to denote the measurement operators in the standard computational basis is as:
 
 \begin{align}
 Z_+ = \left[\begin{array}{ll}
@@ -1149,7 +1149,7 @@ In quantum computing, there is always a chance that some of the qubits will be a
 \begin{align}
 \mathcal{E}(\rho)=(1-p) \rho+\frac{p}{3}(X \rho X+Y \rho Y+Z \rho Z)
 \end{align}
-This can be interpreted as applying a random non-identity Pauli with probability $p$ and otherwise leaving the state undisturbed with probability $1-p$. Conveniently, extending this channel to the multi-qubit case yields a representation where a non-identity Pauli is randomly applied to the data with probability $p$~\cite{qiskitDepolarizingChannel}. Later, the block Clifford code and Clifford code's probability of detecting a given Pauli modifying the data packet will be described.
+This can be interpreted as applying a random non-identity Pauli (see Subsection~\ref{subsubsection:paulis}) with probability $p$ to the state $\rho$ and otherwise leaving the state undisturbed with probability $1-p$. Conveniently, extending this channel to the multi-qubit case yields a representation where a non-identity Pauli is randomly applied to the data with probability $p$~\cite{qiskitDepolarizingChannel}. Later, the block Clifford code and Clifford code's probability of detecting a given Pauli modifying the data packet will be described.
 
 \section{Attack Model}
 \label{section:attackModel}
@@ -1167,7 +1167,7 @@ where $A' \in P(n)$ by definition of the Clifford group (see Equation~\eqref{eq:
 \label{subsec:IntegrityDetectionUsingQuantumTomography}
 A technique for detecting integrity attacks using quantum tomography is clearly outlined in~\cite{satoh2018network}. The specific protocol for the tomography method is explained in more detail in~\cite{oka2016classical}. Quantum tomography is the process of repeatedly measuring copies of the same quantum state to determine what the state is.
 
-The core idea of this method of integrity detection is to dedicate transmitted qubits, denoted as 'indicator qubits', which solely serve the purpose of monitoring the health of the channel the quantum message travels along. The health of the channel is monitored using quantum tomography. The indicator qubits are inserted at random positions within the entire transmitted message (one might also call the indicator qubits signature qubits). Both the sender and receiver must agree on which qubit positions in the message are for holding the data to transmit (the data qubits), and which ones are used for indicator qubits. The sender and receiver must keep the positions of the indicator qubits secret, to ensure the protocol works properly. If an adversary tampers with the message, it may tamper with some of the indicator qubits. If enough of the indicator qubits are modified then an attack is indicated. This method is particularly interesting because it can detect at exactly which node within a network the attack is happening, by making use of the 'entanglement swapping' process.
+The core idea of this method of integrity detection is to use (what one may call) 'indicator qubits' which solely serve the purpose of monitoring the health of the channel the quantum message travels along. The health of the channel is monitored using quantum tomography. The indicator qubits are inserted at random positions within the entire transmitted message (one might also call the indicator qubits signature qubits). Both the sender and receiver must agree on which qubit positions in the message are for holding the data to transmit (the data qubits), and which ones are used for indicator qubits. The sender and receiver must keep the positions of the indicator qubits secret, to ensure the protocol works properly. If an adversary tampers with the message, it may tamper with some of the indicator qubits. If enough of the indicator qubits are modified then an attack is indicated. This method is particularly interesting because it can detect at exactly which node within a network the attack is happening, by making use of the 'entanglement swapping' process.
 \section{The Signed Polynomial Code}
 \label{section:signedPolynomialCode}
 The signed polynomial code,~\cite{ben2006secure,aharonov2017interactive}, was designed with qudits in mind and offers a level of integrity detection similar to the Clifford code. Qudits are the higher-dimension equivalent of qubits. A qubit is considered a two-state system, while a qudit is a $d$-state system where $d > 2$. The integrity detection of the method is affected by the dimension of the qudits.
@@ -1185,7 +1185,7 @@ In reference~\cite{barbeau2022authenticity}, the Clifford code was described in 
 \subsection{Algorithm}
 Given some encryption key $k$, a corresponding Clifford operation, $C$, for encrypting the data is determined via a mapping. The mapping runs in $O \left(n^3 \right)$ time and makes use of the symplectic group~\cite{Koenig2014}. The mapping of $k$ to its corresponding $C$ will be denoted as $k \rightarrow C$. The decryption operator corresponding to $k$ is determined via $C^{\dagger}$. $C$ acts on a quantum state $\rho$ such that $\rho = \sigma \otimes (|0\rangle \langle0|)^{\otimes d}$ where $\sigma$ is the desired quantum state to encrypt and $(|0\rangle \langle0|)^{\otimes d}$ is the signature portion of the message. When an adversary tampers with the encrypted data, the decryption operator may propagate some of the modifications made by the adversary onto the signature portion of the message, much like how checksums in classical data integrity detection work~\cite{checksumWikipedia}. If the signature portion of the message is modified from its original value after the decryption process due to an integrity attack, some (or all) of the measurement results on the signature qubits may be $-1$ instead of all $+1$. Measuring a $-1$ on one of the signature qubits after decrypting the message indicates an integrity attack.
 
-The asymptotically optimal number of gates from the Clifford generators to construct a given Clifford operation requires $O\left(\frac{n^2}{\log_2(n)} \right)$ gates~\cite{bravyi2021hadamard,patel2008optimal}. Thus, the Clifford code uses $O \left(\frac{n^2}{\log_2(n)} \right)$ gates from the Clifford generators. The largest part of the construction comes from applying $\mathit{CNOT}$ gates.
+The asymptotically optimal number of gates from the Clifford generators to construct a given Clifford operation requires $O\left(\frac{n^2}{\log_2 n} \right)$ gates~\cite{bravyi2021hadamard,patel2008optimal}. Thus, the Clifford code uses $O \left(\frac{n^2}{\log_2 n} \right)$ gates from the Clifford generators. The largest part of the construction comes from applying $\mathit{CNOT}$ gates.
 
 The Clifford code detects an adversary which applies attacks from $P(n)$ with a probability of:
 \begin{align}
@@ -1198,7 +1198,7 @@ Example~\ref{ex:noIntegrityAttackClifford} shows a simple example of encryption 
 \label{ex:noIntegrityAttackClifford}
 	The following details an example of encrypting and decrypting a message with no adversary present. Let the encryption operator $C = \mathit{CNOT}(X \otimes X)$, and the data to encrypt $\sigma = |1\rangle\langle1|$ and the length of the signature $d = 1$. This means that $C$ will be acting on the state $\rho = |1\rangle\langle1| \otimes |0\rangle\langle0| = |10\rangle\langle10|$. First, the data is encrypted:
 	\begin{align}
-	\rho' &= C\rho = \mathit{CNOT}(X \otimes X)|10\rangle = |01\rangle
+	\rho' &= C\rho C^{\dagger} = \mathit{CNOT}(X \otimes X)|10\rangle = |01\rangle
 	\end{align}
 	Then the data is decrypted back to its original contents:
 	\begin{align}
@@ -1211,34 +1211,34 @@ Example~\ref{ex:noIntegrityAttackClifford} shows a simple example of encryption 
 \label{ex:noticedIntegrityAttackClifford}
 	The following details an example of an adversary's integrity attack being detected with probability 1. The same as in Example~\ref{ex:noIntegrityAttackClifford}, let $C = \mathit{CNOT}(X \otimes X)$, $\sigma = |1\rangle\langle1|$ and $d = 1$. This means that $C$ will be acting on the state $\rho = |1\rangle\langle1| \otimes |0\rangle\langle0| = |10\rangle\langle10|$. First, the data is encrypted:
 	\begin{align}
-	\rho' &= C\rho = \mathit{CNOT}(X \otimes X)|10\rangle = |01\rangle
+	\rho' &= C\rho C^{\dagger} = \mathit{CNOT}(X \otimes X)|10\rangle = |01\rangle
 	\end{align}
     Then the adversary modifies the encrypted data by applying an $X$ gate to it:
 	\begin{align}
-	& \Rightarrow (X \otimes I) \rho' = (X \otimes I) |01\rangle = |11\rangle \label{eq:adversaryNotAttack}
+	& \Rightarrow (X \otimes I) \rho' (X \otimes I) = (X \otimes I) |01\rangle = |11\rangle \label{eq:adversaryNotAttack}
 	\end{align}
 	Decrypting the modified message results in:
     \begin{align}
 	& \Rightarrow C^{\dagger}|11\rangle = (X \otimes X)\mathit{CNOT}|11\rangle = (X \otimes X)|10\rangle = |01\rangle
 	\end{align}
-	The decrypter of the data then measures $1$ on the signature qubit, indicating an integrity attack. 
+	The decrypter of the data then measures $-1$ on the signature qubit, indicating an integrity attack. 
 \end{example}
 
 \begin{example}
 \label{ex:unnoticedIntegrityAttackClifford}
 		The following details an example of an adversary's integrity attack not being detected. Let $C = X \otimes X$, $\sigma = |1\rangle\langle1|$ and $d = 1$. As a result, $\rho = |1\rangle\langle1| \otimes |0\rangle\langle0| = |10\rangle\langle10|$, just like in Example~\ref{ex:noticedIntegrityAttackClifford}. If an adversary modifies the encrypted data by applying an $X$ gate to it, then the integrity attack will be not detected when measuring the signature qubit. First, the data is encrypted:
 	\begin{align}
-	\rho' &= C\rho = (X \otimes X)|10\rangle = |01\rangle
+	\rho' &= C\rho C^{\dagger} = (X \otimes X)|10\rangle = |01\rangle
 	\end{align}
     Then the adversary modifies the encrypted data by applying an $X$ gate to it:
 	\begin{align}
-	& \Rightarrow (X \otimes I) \rho' = (X \otimes I) |01\rangle = |11\rangle
+	& \Rightarrow (X \otimes I) \rho' (X \otimes I) = (X \otimes I) |01\rangle = |11\rangle
 	\end{align}
 	Decrypting the modified message results in:
 	\begin{align}
-	& \Rightarrow C^{\dagger}|11\rangle = (X \otimes X)|11\rangle = |00\rangle\\
+	& \Rightarrow C^{\dagger}|11\rangle = (X \otimes X)|11\rangle = |00\rangle
 	\end{align}
-	The decrypter of the data then measures $0$ on the signature qubit, meaning the integrity attack is not detected, despite the adversary successfully tampering with the data. 
+	The decrypter of the data then measures $+1$ on the signature qubit, meaning the integrity attack is not detected, despite the adversary successfully tampering with the data. 
 \end{example}
 
 \pagebreak
@@ -1247,14 +1247,14 @@ Example~\ref{ex:noIntegrityAttackClifford} shows a simple example of encryption 
 \section{Introduction}
 Chapter~\ref{sec:IntegrityDetectionUsingCliffordOperationEncryption} showed how to use Clifford operations to detect integrity attacks. This chapter describes a new type of code, the block Clifford code, which uses a subset of the Clifford operations. The block Clifford code uses asymptotically fewer gates (under reasonable assumptions) and has an asymptotically faster key mapping compared to the Clifford code. The one downside of this new method is that the probability of detecting integrity attacks is dependent on the number of qubits that are modified by the adversary. As a result of this, it gives lower levels of detection than the Clifford code when the adversary attacks a small number of qubits (this will be precisely quantified in the analysis). Under certain assumptions, this can be advantageous. Particularly, in situations where the receiver still wants to accept data packets that have a very small number of noisy qubits. Qubits may acquire noise when using an imperfect channel to travel from the sender to the receiver.
 
-The method described in this chapter works by first appending signature qubits to the message, just like how the Clifford code does. The block Clifford code assigns a $\mathit{CX}_{i,j}$, $\mathit{CY}_{i,j}$ or $\mathit{CZ}_{i,j}$ gate (see Subsection~\ref{subsubsec:CU}) to each data qubit at position $i$ so that the operations the adversary makes on a given data qubit of the packet subsequently affect a corresponding signature qubit at position $j$. Additionally, single-qubit operations are performed on each data qubit to ensure that the data is encrypted and that the adversary can not modify the packet with a certain operation that the code can never detect. The previously described operations are applied during the 'encryption step'. To decrypt the data, the inverse of the encryption step is applied. Just like with the Clifford code, if the signature qubits are measured to all be $+1$ (which is guaranteed to happen if they are all in the state $\Ket{0}$ upon measurement) then the code does not indicate an adversarial attack. Otherwise, an attack is indicated.
+The method described in this chapter works by first appending signature qubits to the message, just like how the Clifford code does. The block Clifford code assigns a $\mathit{CX}_{i,j}$, $\mathit{CY}_{i,j}$ or $\mathit{CZ}_{i,j}$ gate (see Subsection~\ref{subsubsec:CU}) to each data qubit at position $i$ so that operations the adversary may perform on a given data qubit of the packet can subsequently affect a corresponding signature qubit at position $j$. Additionally, single-qubit operations are performed on each data qubit to ensure that the data is encrypted and that the adversary can not modify the packet with a certain operation that the code can never detect. The previously described operations are applied during the 'encryption step'. To decrypt the data, the inverse of the encryption step is applied. Just like with the Clifford code, if the signature qubits are measured to all be $+1$ (which is guaranteed to happen if they are all in the state $\Ket{0}$ upon measurement) then the code does not indicate an adversarial attack. Otherwise, an attack is indicated.
 
 Example~\ref{ex:noticedIntegrityAttackClifford} showed how a $\mathit{CX}_{i,j}$ gate which spans the data portion and signature portions of the packet enables integrity attack detection. Example~\ref{ex:unnoticedIntegrityAttackClifford} showed that without a $\mathit{CX}_{i,j}$, $\mathit{CY}_{i,j}$ or $\mathit{CZ}_{i,j}$ gate affecting the data and signature portion of the message, integrity attacks are harder to detect. The strength of the Clifford code arises when it performs many operations that span both the data qubits and signature qubits (via the $\mathit{CNOT}$ gates). The block Clifford code aims to preserve this property as much as possible.
 \section{Algorithm}
 \subsection{Quantum Operations}
 Just like with the Clifford Code, the block Clifford code first appends $d$ signature qubits to the message $\sigma$ so that $\rho = \sigma \otimes (\ket{0}\bra{0})^{\otimes d}$. Let $m$ be the number of data qubits the message $\sigma$ is made up of and let $n = m + d$. For simplicity, assume $m$ is evenly divisible by $d$ (the reason for this will be evident soon). Next, each signature qubit has either an $I$, $H$, or $S^{\dagger}H$ applied to it based on the key (the key mapping is described in Subsection~\ref{subsubsection:keyMappings}). The previously described transformations result in a signature consisting of $\ket{0}$, $\ket{+}$ and $\ket{-i}$ qubits respectively. Next, $m$ number of $\mathit{CU}_{i,j}$ gates, where $\mathit{CU}_{i,j} \in \{\mathit{CX}_{i,j}, \mathit{CY}_{i,j}, \mathit{CZ}_{i,j}\}$, are applied to $\rho$, where $d \leq i < n$ and $0 \leq j < d$. Each data qubit is acted on by exactly one $\mathit{CU}_{i,j}$. Each signature qubit is acted on by exactly $\frac{m}{d}$ number of $\mathit{CU}_{i,j}$'s, where each value of $i$ is determined by the key. For each $\mathit{CU}_{i,j}$, $\mathit{CX}_{i,j}$ is used if $j$ is the position of a $\ket{0}$ signature qubit, $\mathit{CY}_{i,j}$ is used if $j$ is the position of a $\ket{+}$ signature qubit and $\mathit{CZ}_{i,j}$ is used $j$ is the position of a $\ket{-i}$ signature qubit. After that, each data qubit at position $i$ is acted on by a $U_i \in \{I_i,H_i,S_i^{\dagger}H_i\}$, determined by the key. Finally, a permutation of the signature qubits is performed. That is, each signature qubit is moved to a new position $j'$ within the packet (again, determined by the key), where $0 \leq j \leq j' < n$,  by applying a $\mathit{CIRC}_{j,j'}$ gate (see Subsection~\ref{subsubsec:CircGate}). As a result, each data qubit at position $i$ is moved to a new position $i'$ where $0 \leq i' \leq i < n$ to make room for the shifting signature qubits.
  
-To decrypt, the previously described operations are performed in reverse order, and with their conjugate transpose taken. Finally, the signature qubits are measured. All the signature qubits are measured along the $Z$ basis (see Section~\ref{subsec:Measurements}) and if they all have a measurement result of $+1$ then no attack is indicated, otherwise an attack is indicated.
+To decrypt, the previously described operations are performed in reverse order, and with their conjugate transpose taken. Finally, the signature qubits are measured. All the signature qubits are measured along the $z$ basis (see Section~\ref{subsec:Measurements}) and if they all have a measurement result of $+1$ then no attack is indicated, otherwise an attack is indicated.
 
 To further illustrate how this algorithm works, examples are provided next. The examples showcased are simplified by always setting $\mathit{CU}_{i,j}$ to $\mathit{CX}_{i,j}$ and omitting the permutation of signature qubits step (i.e. always using the identity permutation). Afterward, the pseudocode for the algorithm will be presented followed by a mathematical analysis of its effectiveness and efficiency and then documented simulation results.
 
@@ -1302,7 +1302,7 @@ The receiver of the message measures the signature bit, resulting in no integrit
 	\end{align}
 The receiver of the message measures the rightmost qubit, and detects an integrity attack with probability $\frac{1}{2}$
 \end{example}
-Example~\ref{ex:IntegrityAttackEnhancedClifford1} shows the probability of integrity attack detection given the adversary applies a $H$ gate to the rightmost data qubit. Regardless of which qubit the adversary applies the $H$ gate to, the proposed method gives the same probability of integrity attack detection. Examples~\ref{ex:IntegrityAttackEnhancedClifford2} and~\ref{ex:IntegrityAttackEnhancedClifford3} demonstrate this.
+Example~\ref{ex:IntegrityAttackEnhancedClifford1} shows the probability of integrity attack detection given the adversary applies an $H$ gate to the rightmost data qubit. Regardless of which qubit the adversary applies the $H$ gate to, the proposed method gives the same probability of integrity attack detection. Examples~\ref{ex:IntegrityAttackEnhancedClifford2} and~\ref{ex:IntegrityAttackEnhancedClifford3} demonstrate this.
 \begin{example}
 \label{ex:IntegrityAttackEnhancedClifford2}
 	Let $U$ and $\rho$ have the same values as in Example~\ref{ex:EnhancedClifford1}. This time, however, an adversary will perform an integrity attack by applying a Hadamard gate to the leftmost data qubit of the encrypted quantum state. This example illustrates the integrity attack detection capabilities of the proposed method, by detecting the attack with $\frac{1}{2}$ probability. The data is encrypted the same way as before:
@@ -1355,7 +1355,7 @@ The receiver of the message measures the rightmost qubit, and detects an integri
 	\end{align}
 The decrypter of the message measures the rightmost qubit, and detects an integrity attack with probability $\frac{1}{2}$
 \end{example}
-A formal algorithm describing the encryption and decryption processes is presented using pseudocode in Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} respectively. The long left arrow, $\Longleftarrow$, indicates the variable to the left of the arrow being assigned the value to the right of the arrow. Unless otherwise specified, $U_i$ refers to the single-qubit unitaries applied at lines~\ref{alg:PerezCodeEncryption:dataQubitUnitary1},~\ref{alg:PerezCodeEncryption:dataQubitUnitary2} and~\ref{alg:PerezCodeEncryption:dataQubitUnitary3} of Algorithm~\ref{alg:PerezCodeEncryption} and $\mathit{CU}_{i,j}$ refers to the gates applied at lines~\ref{alg:PerezCodeEncryption:CuUnitary1},~\ref{alg:PerezCodeEncryption:CuUnitary2} and~\ref{alg:PerezCodeEncryption:CuUnitary3} of Algorithm~\ref{alg:PerezCodeEncryption}. The corresponding inverse operations via conjugate transpose are labelled in Algorithm~\ref{alg:PerezCodeDecryption} (remark that $\mathit{CU}_{i,j}^{\dagger} = \mathit{CU}_{i,j}$). Additionally, denote $i'$ and $j'$ as the positions the qubits at the original positions $i$ and $j$ respectively are moved to due to the $\mathit{CIRC}$ operations performed by the permutation of signature qubits. Also, denote the parenthesis $()$ in Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} as a list of ordered elements. The standard set-builder notation,~\cite{setBuilderNotationWikipedia}, is used to build these lists. As in, they are equivalent to sets in set-builder notation, but they additionally have an order.
+A formal algorithm describing the encryption and decryption processes is presented using pseudocode in Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} respectively. The long left arrow, $\Longleftarrow$, indicates the variable to the left of the arrow being assigned the value to the right of the arrow. Unless otherwise specified, $U_i$ refers to the single-qubit unitaries applied at lines~\ref{alg:PerezCodeEncryption:dataQubitUnitary1},~\ref{alg:PerezCodeEncryption:dataQubitUnitary2} and~\ref{alg:PerezCodeEncryption:dataQubitUnitary3} of Algorithm~\ref{alg:PerezCodeEncryption} and $\mathit{CU}_{i,j}$ refers to the gates applied at lines~\ref{alg:PerezCodeEncryption:CuUnitary1},~\ref{alg:PerezCodeEncryption:CuUnitary2} and~\ref{alg:PerezCodeEncryption:CuUnitary3} of Algorithm~\ref{alg:PerezCodeEncryption}. The corresponding inverse operations via conjugate transpose are labelled in Algorithm~\ref{alg:PerezCodeDecryption} (remark that $\mathit{CU}_{i,j}^{\dagger} = \mathit{CU}_{i,j}$). Additionally, denote $i'$ and $j'$ as the positions the qubits at the original positions $i$ and $j$ respectively are moved to due to the $\mathit{CIRC}$ operations performed by the permutation of signature qubits. Also, denote the parenthesis $()$ in Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} as a list of ordered elements. The standard set-builder notation,~\cite{setBuilderNotationWikipedia}, is used to build these lists. As in, they are equivalent to sets in set-builder notation, but they additionally have an ordering of elements.
 
 The key $k$ is made up of two subkeys such that $k = k_a, k_b$. Algorithms~\ref{alg:KeyMappingA} and~\ref{alg:KeyMappingB} (see Subsection~\ref{subsubsection:keyMappings}) transform each of the subkeys $k_a$ and $k_b$ into $k_a'$ and $k_b'$ respectively. Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} expect the processed subkeys $k_a'$ and $k_b'$ as input parameters, which determines which gates a part of the block Clifford code to use. Subkey $k_a$ specifies the single-qubit unitary operations applied to each data qubit and signature qubit. Algorithm~\ref{alg:KeyMappingA} takes as input a subkey $k_a$ and maps that subkey to a ternary string, $k_a'$, of length $n$. Each value stored in $k_a'$ at a given index $i$ corresponds to one of the three single-qubit unitaries to apply to the qubit at position $i$ (here, $i$ denotes the position of either a data qubit or signature qubit). The other subkey, $k_b$, specifies the permutation of signature qubits and which signature qubit $j$ is the target for each data qubit at position $i$ for each $\mathit{CU}_{i,j}$. Algorithm~\ref{alg:KeyMappingB} takes as input a subkey $k_b$ and maps that subkey to a permutation, $k_b'$, of the multiset:
 \begin{equation}
@@ -1388,11 +1388,11 @@ Algorithm~\ref{alg:PerezCodeEncryption} returns the encrypted quantum data packe
         \ForEach{$i \ \in \ (d + 1, d + 2 \cdots n - 1$)} \label{alg:PerezCodeEncryption:CULoop}
             \If {$k_b''(i - d) = j$} \label{alg:PerezCodeEncryption:BlockDataQubitIf}
                 \If {$k_a'(j) = 0$}
-                    \State $\rho \Longleftarrow \mathit{CX}_{i,j} \rho \mathit{CX}_{i,j}$
+                    \State $\rho \Longleftarrow \mathit{CX}_{i,j} \rho \mathit{CX}_{i,j}$ \label{alg:PerezCodeEncryption:CuUnitary1}
                 \ElsIf {$k_a'(j) = 1$}
-                    \State $\rho \Longleftarrow \mathit{CZ}_{i,j} \rho \mathit{CZ}_{i,j}$
+                    \State $\rho \Longleftarrow \mathit{CZ}_{i,j} \rho \mathit{CZ}_{i,j}$ \label{alg:PerezCodeEncryption:CuUnitary2}
                 \ElsIf {$k_a'(j) = 2$}
-                    \State $\rho \Longleftarrow \mathit{CY}_{i,j} \rho \mathit{CY}_{i,j}$
+                    \State $\rho \Longleftarrow \mathit{CY}_{i,j} \rho \mathit{CY}_{i,j}$ \label{alg:PerezCodeEncryption:CuUnitary3}
                 \EndIf
             \EndIf
         \EndFor
@@ -1442,11 +1442,11 @@ Algorithm~\ref{alg:PerezCodeEncryption} returns the encrypted quantum data packe
         \ForEach{$i \ \in \ (d + 1, d + 2 \cdots n - 1$)} \label{alg:PerezCodeDecryption:CULoop}
             \If {$k_b''(i - d) = j$}\label{alg:PerezCodeDecryption:BlockDataQubitIf}
                 \If {$k_a'(j) = 0$}
-                    \State $\rho \Longleftarrow \mathit{CX}_{i,j} \rho \mathit{CX}_{i,j}$ \label{alg:PerezCodeEncryption:CuUnitary1}
+                    \State $\rho \Longleftarrow \mathit{CX}_{i,j} \rho \mathit{CX}_{i,j}$
                 \ElsIf {$k_a'(j) = 1$}
-                    \State $\rho \Longleftarrow \mathit{CZ}_{i,j} \rho \mathit{CZ}_{i,j}$ \label{alg:PerezCodeEncryption:CuUnitary2}
+                    \State $\rho \Longleftarrow \mathit{CZ}_{i,j} \rho \mathit{CZ}_{i,j}$
                 \ElsIf {$k_a'(j) = 2$}
-                    \State $\rho \Longleftarrow \mathit{CY}_{i,j} \rho \mathit{CY}_{i,j}$ \label{alg:PerezCodeEncryption:CuUnitary3}
+                    \State $\rho \Longleftarrow \mathit{CY}_{i,j} \rho \mathit{CY}_{i,j}$
                 \EndIf
             \EndIf
         \EndFor
