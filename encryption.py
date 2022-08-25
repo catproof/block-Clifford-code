@@ -305,7 +305,7 @@ def block_clifford_encryption(num_total_qubits, num_signature_qubits,subkey_a=No
     #apply the unitaries to encrypt the data qubits, determined by some classical encryption key
     #for the purpose of this simulation, the classical encryption key is abstracted away via random unitary generation
     for i in range(num_signature_qubits,num_total_qubits):
-        gate_to_use = subkey_a_gates[i]#random int, inclusive for both numbers
+        gate_to_use = subkey_a_gates[i]
         if gate_to_use == 0:
             qc.i(i)
         elif gate_to_use == 1:
@@ -375,7 +375,7 @@ def block_clifford_decryption(num_total_qubits, num_signature_qubits,subkey_a=No
     #apply the unitaries to encrypt the data qubits, determined by some classical encryption key
     #for the purpose of this simulation, the classical encryption key is abstracted away via random unitary generation
     for i in range(num_signature_qubits,num_total_qubits):
-        gate_to_use = subkey_a_gates[i]#random int, inclusive for both numbers
+        gate_to_use = subkey_a_gates[i]
         if gate_to_use == 0:
             qc.i(i)
         elif gate_to_use == 1:

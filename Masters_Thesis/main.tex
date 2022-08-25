@@ -1385,7 +1385,7 @@ Algorithm~\ref{alg:PerezCodeEncryption} returns the encrypted quantum data packe
     \EndProcedure
     \ForEach{$j \ \in \ (0, 1 \cdots d - 1$)} \label{alg:PerezCodeEncryption:CUOuterLoop}
         \State \Call{Apply $U_i$ Gate}{$\rho$,$k_a'$,$j$}
-        \ForEach{$i \ \in \ (d + 1, d + 2 \cdots n - 1$)} \label{alg:PerezCodeEncryption:CULoop}
+        \ForEach{$i \ \in \ (d, d + 1 \cdots n - 1$)} \label{alg:PerezCodeEncryption:CULoop}
             \If {$k_b''(i - d) = j$} \label{alg:PerezCodeEncryption:BlockDataQubitIf}
                 \If {$k_a'(j) = 0$}
                     \State $\rho \Longleftarrow \mathit{CX}_{i,j} \rho \mathit{CX}_{i,j}$ \label{alg:PerezCodeEncryption:CuUnitary1}
@@ -1397,7 +1397,7 @@ Algorithm~\ref{alg:PerezCodeEncryption} returns the encrypted quantum data packe
             \EndIf
         \EndFor
     \EndFor
-    \ForEach{$i \ \in \ (d + 1, d + 2 \cdots n - 1$)} \label{alg:PerezCodeEncryption:DataQubitsLoop}
+    \ForEach{$i \ \in \ (d, d + 1 \cdots n - 1$)} \label{alg:PerezCodeEncryption:DataQubitsLoop}
         \State \Call{Apply $U_i$ Gate}{$\rho$,$k_a'$,$i$}
     \EndFor
     \State $j \Longleftarrow d - 1$
@@ -1430,16 +1430,16 @@ Algorithm~\ref{alg:PerezCodeEncryption} returns the encrypted quantum data packe
     \State $j \Longleftarrow 0$
     \ForEach{$i \ \in \ (0, 1 \cdots n - 1$)}
     \label{alg:PerezCodeDecryption:CircGatesLoop}
-    \If{$k_b'(i) == d$}
+    \If{$k_b'(i) = d$}
         \State $\rho \Longleftarrow \mathit{CIRC}_{i,j} \rho \mathit{CIRC}_{j,i}$ \label{alg:PerezCodeDecryption:CircGates}
         \State $j \Longleftarrow j + 1$
     \EndIf
     \EndFor
-    \ForEach{$i \ \in \ (d + 1, d + 2 \cdots n - 1$)} \label{alg:PerezCodeDecryption:DataQubitsLoop}
+    \ForEach{$i \ \in \ (d, d + 1 \cdots n - 1$)} \label{alg:PerezCodeDecryption:DataQubitsLoop}
         \State \Call{Apply $U_i^{\dagger}$ Gate}{$\rho$,$k_a'$,$i$}
     \EndFor
     \ForEach{$j \ \in \ (0, 1 \cdots d - 1$)} \label{alg:PerezCodeDecryption:CUOuterLoop}
-        \ForEach{$i \ \in \ (d + 1, d + 2 \cdots n - 1$)} \label{alg:PerezCodeDecryption:CULoop}
+        \ForEach{$i \ \in \ (d, d + 1 \cdots n - 1$)} \label{alg:PerezCodeDecryption:CULoop}
             \If {$k_b''(i - d) = j$}\label{alg:PerezCodeDecryption:BlockDataQubitIf}
                 \If {$k_a'(j) = 0$}
                     \State $\rho \Longleftarrow \mathit{CX}_{i,j} \rho \mathit{CX}_{i,j}$
@@ -1496,7 +1496,7 @@ Algorithm~\ref{alg:PerezCodeDecryption} applies the same operations as Algorithm
 \end{proof}
 
 \subsection{Security Analysis}
-Next, a mathematical analysis of the security of the proposed method is provided. $A_i$ will denote a single-qubit unitary an adversary applies to qubit position $i$. The transformations applied to $\rho$ in Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} are all from the Clifford group. That means, the entire operation acting on $\rho$ can be expressed using a single element from the Clifford group, call it $C$ (see Theorems~\ref{theorem:cliffordTimesClifford} and~\ref{theorem:cliffTensorProduct}). The following proofs will be concerned with an adversary that can only perform Paulis on the encrypted data. This simplifies the proofs, as the resulting transformation performed on the data packet will also be a Pauli. As in, with $C$ denoting the Clifford operation described by Algorithm~\ref{alg:PerezCodeEncryption}, the data packet $\rho$ will be transformed in such a way if the adversary attacks using $A \in P(n)$: 
+Next, a mathematical analysis of the security of the proposed method is provided. Note that the transformations applied to $\rho$ in Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} are all from the Clifford group. That means, the entire operation acting on $\rho$ can be expressed using a single element from the Clifford group, call it $C$ (see Theorems~\ref{theorem:cliffordTimesClifford} and~\ref{theorem:cliffTensorProduct}). The following proofs will be concerned with an adversary that can only perform Paulis on the encrypted data. This simplifies the proofs, as the resulting transformation performed on the data packet will also be a Pauli. As in, with $C$ denoting the Clifford operation described by Algorithm~\ref{alg:PerezCodeEncryption}, the data packet $\rho$ will be transformed in such a way if the adversary attacks using $A \in P(n)$: 
 \begin{align}
 C^{\dagger}AC \rho C^{\dagger}A^{\dagger}C = A' \rho A'^{\dagger}
 \end{align}
@@ -1510,19 +1510,19 @@ and remarking measurement of quantum states in Section~\ref{subsec:Measurements}
 
 Also note that proving the security of a QMA scheme when attacked by an adversary from $P(n)$ also proves the security for any type of attack. See Section $5.1$ of reference~\cite{broadbent2013quantum}. The proof for this relies on the fact that $P(n)$ forms a basis (see Corollary~\ref{corollary:paulisFormBasis}) and shows that any given adversarial attack can be expressed as a probabilistic mixture of Paulis.
 
-The following Lemmas will aid in the mathematical analysis of the proposed method. 
+The proofs in this subsection will regularly make use of $A_i$ denoting a single-qubit Pauli an adversary applies to qubit position $i$. Next, establishing some Lemmas will aid in the security analysis of the proposed method. 
 \begin{myLemmarep}
 \label{lemma:commutingEncryptionOperators}
 Let $U_i$ and $V_k$ be arbitrary single-qubit unitaries. Also let $\mathit{CU}_{i,j}$ be an arbitrary $\mathit{CU}_{i,j} \in \{\mathit{CX}_{i,j}, \mathit{CY}_{i,j}, \mathit{CZ}_{i,j}\}$ and let $\mathit{CU}_{k,j}$ be set to the same type of controlled-$U$ gate as $\mathit{CU}_{i,j}$. The operations $\mathit{CU}_{i,j}$ and $U_i$ commute with any of $\mathit{CU}_{k,j}$ and $V_k$, for any values of $i$, $j$ and $k$ where $i \neq j \neq k$.
 \end{myLemmarep}
 \begin{proof}
-For simplicity, let $I_x$ denote a $2$ by $2$ identity matrix throughout this proof. The subscripted index is added to convey the number and position of each of the $2$ by $2$ $I$ matrices each of $U_j$ and $V_k$ are composed of. The proofs for all three cases are as follows:
+For simplicity, let $I_x$ denote a $2$ by $2$ identity matrix throughout this proof. The subscripted index is added to convey the number and position of each of the $2$ by $2$ $I$ matrices each of $U_i$ and $V_k$ are composed of. The proofs for all three cases are as follows:
 
-\textbf{Case 1:} $U_i$ commutes with $V_k$ for any two values of $i$ and $k$ where $i \neq k$ because they act on different qubits. Without loss of generality, assume $i < k$. Without loss of generality, $U_j = I_{n-1} \otimes I_{n-2} \otimes \cdots \otimes U \otimes \cdots \otimes I_0$ commutes with $V_k = I_{n-1} \otimes I_{n-2} \otimes \cdots \otimes V \otimes \cdots \otimes I_0$, as seen:
+\textbf{Case 1:} $U_i$ commutes with $V_k$ for any two values of $i$ and $k$ where $i \neq k$ because they act on different qubits. Without loss of generality, assume $i < k$. Without loss of generality, $U_i = I_{n-1} \otimes I_{n-2} \otimes \cdots \otimes U \otimes \cdots \otimes I_0$ commutes with $V_k = I_{n-1} \otimes I_{n-2} \otimes \cdots \otimes V \otimes \cdots \otimes I_0$, as seen:
 \begin{align}
-U_jV_k = I_{n-1}I_{n-1} \otimes I_{n-2}I_{n-2} \cdots \otimes UI_j \otimes I_{j-1}I_{j-1} \cdots \otimes I_kV \cdots \otimes I_0I_0\\
-U_jV_k = I_{n-1}I_{n-1} \otimes I_{n-2}I_{n-2} \cdots \otimes I_jU \otimes I_{j-1}I_{j-1} \cdots \otimes VI_k \cdots \otimes I_0I_0\\
-V_kU_j = I_{n-1}I_{n-1} \otimes I_{n-2}I_{n-2} \cdots \otimes I_jU \otimes I_{j-1}I_{j-1} \cdots \otimes VI_k \cdots \otimes I_0I_0
+U_iV_k = I_{n-1}I_{n-1} \otimes I_{n-2}I_{n-2} \otimes \cdots \otimes UI_i \otimes I_{i-1}I_{i-1} \otimes \cdots \otimes I_kV \otimes \cdots \otimes I_0I_0\\
+U_iV_k = I_{n-1}I_{n-1} \otimes I_{n-2}I_{n-2} \otimes \cdots \otimes I_iU \otimes I_{i-1}I_{i-1} \otimes \cdots \otimes VI_k \otimes \cdots \otimes I_0I_0\\
+V_kU_i = I_{n-1}I_{n-1} \otimes I_{n-2}I_{n-2} \otimes \cdots \otimes I_iU \otimes I_{i-1}I_{i-1} \otimes \cdots \otimes VI_k \otimes \cdots \otimes I_0I_0
 \end{align}
 
 \textbf{Case 2:} $V_k$ commutes with $\mathit{CU}_{i,j}$ for any values of $i$, $j$ and $k$ where $i \neq j \neq k$ because, like in case 1, they act on different qubits. For some state $|\psi\rangle = c_0|x_0\rangle + c_1|x_1\rangle + c_2|x_2\rangle \cdots + c_{2^{n-1}}|x_{2^{n-1}}\rangle$ observe what may happen for an arbitrary $c_w\ket{x_w}$. $\mathit{CU}_{i,j}$ either applies an $I$, or a $U_j$ to a given $c_w\ket{x_w}$. For the subcase when $\mathit{CU}_{i,j}$ applies a $U_j$ to $c_w\ket{x_w}$, the transformation applied to $c_w\ket{x_w}$ is $U_jV_k = V_kU_j$. The proof for $U_j$ and $V_k$ commuting is the same as the one given for case 1. For the subcase when $\mathit{CU}_{i,j}$ applies a $I$, this of course commutes with $V_k$.
@@ -1537,9 +1537,9 @@ U_{j} \mathit{CU}_{i,j}U_i^{\dagger}A_{i}U_i\mathit{CU}_{i,j} U_{j} \label{eq:in
 \end{align}
 \end{myLemmarep}
 \begin{proof}
-The permuting and un-permuting of signature qubits result in the adversary's attack $A_{i'}$ being 'moved' to become $A_i$. That is, the $A_{i'}$ unitary is conjugated by a series of $\mathit{SWAP}$ gates to become $A_{i}$ where $d \leq i' \leq i < n$ (remark lines~\ref{alg:PerezCodeEncryption:CircGates} and~\ref{alg:PerezCodeDecryption:CircGates} or Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption}). After simplifying all the $\mathit{SWAP}$ gates for permuting and then un-permuting the signature qubits, the only gates left to simplify are the $\mathit{CU}_{k,w}$, $\mathit{CU}_{k,j}$, $U_k$ and $U_w$ gates for all $k \neq i$ and $w \neq j$. $U_k$ denotes gates the block Clifford code applies to the data qubits and $U_w$ denotes gates the block Clifford code applies to the signature qubits. Applying Lemma~\ref{lemma:commutingEncryptionOperators} multiple times allows to rearrange gates applied by the code into groupings of  $U_w^{\dagger}\mathit{CU}_{k,w}U_k^{\dagger}U_k\mathit{CU}_{k,w}U_w$ and $\mathit{CU}_{k,j}U_k^{\dagger}U_k\mathit{CU}_{k,j}$, which simplify to each equal $I$. This results in the only gates left to simplify or evaluate as the ones shown in Equation~\eqref{eq:integrityEncryptionRearrangement}.
+The permuting and un-permuting of signature qubits result in the adversary's attack $A_{i'}$ being 'moved' to become $A_i$. That is, the $A_{i'}$ unitary is conjugated by a series of $\mathit{SWAP}$ gates to become $A_{i}$ where $d \leq i < n$ and $i' \leq i$ (remark lines~\ref{alg:PerezCodeEncryption:CircGates} and~\ref{alg:PerezCodeDecryption:CircGates} or Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption}). After simplifying all the $\mathit{SWAP}$ gates for permuting and then un-permuting the signature qubits, the only gates left to simplify are the $\mathit{CU}_{k,w}$, $\mathit{CU}_{k,j}$, $U_k$ and $U_w$ gates for all $k \neq i$ and $w \neq j$. $U_k$ denotes gates the block Clifford code applies to the data qubits and $U_w$ denotes gates the block Clifford code applies to the signature qubits. Applying Lemma~\ref{lemma:commutingEncryptionOperators} multiple times allows to rearrange gates applied by the code into groupings of  $\mathit{CU}_{k,w}U_k^{\dagger}U_k\mathit{CU}_{k,w}$ and $\mathit{CU}_{k,j}U_k^{\dagger}U_k\mathit{CU}_{k,j}$, which simplify to each equal $I$. Following that simplification, gates can be rearranged into groupings of $U_w^{\dagger}U_w$ which also simplify to equal $I$. This results in the only gates left to simplify or evaluate as the ones shown in Equation~\eqref{eq:integrityEncryptionRearrangement}.
 \end{proof}
-Next, the probability of detecting a single-qubit adversarial attack is shown. That is, the adversarial attack $A \in {P(1)}$. Afterward, the proofs for the single-qubit attack will be extended to the general case where $A \in P(n)$.
+Next, the probability of detecting a single-qubit adversarial attack is shown. That is, the adversarial attack can take on a value of $X_i$, $Y_i$ or $Z_i$ for $i$ where $0 \leq i < n$. Afterward, the proofs for the single-qubit attack will be extended to the general case where $A \in P(n)$.
 \begin{theorem}
 \label{theorem:singleQubitAttackOnDataQubit}
 Let the data qubit at position $i$ be encrypted by a unitary $U_i$. Assume the adversary applies a single-qubit Pauli operation, $A_{i'} \in \{X_{i'}, Y_{i'}, Z_{i'}\}$. Also assume that after $A_{i'}$ is conjugated by all the $\mathit{SWAP}$ operations from the $\mathit{CIRC}$ gates during the encryption and decryption process, it becomes $A_i$ where $d \leq i < n$. If $U_i$ is equal to one of $I_i$, $H_i$ or $S_i^{\dagger}H_i$ with equal probability, the adversary will be detected with probability $\frac{2}{3}$.
@@ -1547,7 +1547,7 @@ Let the data qubit at position $i$ be encrypted by a unitary $U_i$. Assume the a
 \begin{proof}
 This can be seen by making use of the tables listed in Theorems \ref{theorem:CircGateIsClifford}, \ref{theorem:CNOTij}, \ref{theorem:CYij} and \ref{theorem:CZij}. Due to Lemma~\ref{lemma:integrityEncryptionRearrangement},
 $$U_{j} \mathit{CU}_{i,j}U_i^{\dagger}A_{i}U_i\mathit{CU}_{i,j} U_{j}$$
-is the transformation on the data packet $\rho$ as a result of the adversarial attack. Each $\mathit{CU}_{i,j} \in \{\mathit{CX}_{i,j}, \mathit{CY}_{i,j}, \mathit{CZ}_{i,j}\}$ 'flips' the signature qubit at position $j$ if $U_i^{\dagger}A_iU_i$ is equal to $X_i$ or $Y_i$. The transformation is fully described using the following tables:
+is the transformation on the data packet $\rho$ as a result of the adversarial attack. A given $\mathit{CU}_{i,j} \in \{\mathit{CX}_{i,j}, \mathit{CY}_{i,j}, \mathit{CZ}_{i,j}\}$ 'flips' the signature qubit at position $j$ if $U_i^{\dagger}A_iU_i$ is equal to $X_i$ or $Y_i$. The transformation is fully described using the following tables:
 \begin{table}[H]
 \caption{A table showing how a single-qubit Pauli attack applied to a data qubit affects the data packet when considering the $CX_{i,j}$ gate. \label{table:dataQubitAttackTransformation1}}
 \begin{center}
@@ -1596,7 +1596,7 @@ $A_{i}$ & $H_jS_j\mathit{CZ}_{i,j}A_i\mathit{CZ}_{i,j}S_j^{\dagger}H_j$ & $H_jS_
 \end{center}
 \end{adjustwidth}
 \end{table}
-In the above tables, each column header enumerates the possible values for $A_i$, and all the row headers enumerate the possible encryption operations. In each row of each table, $\frac{2}{3}$ of the resulting transformations on the data packet have an $X_j$ or $Y_j$, thus indicating an attack with probability $\frac{2}{3}$.
+In the above tables, each row headers enumerate the possible values for $A_i$, and all the column headers enumerate the possible encryption operations. In each row of each table, $\frac{2}{3}$ of the resulting transformations on the data packet have an $X_j$ or $Y_j$, thus indicating an attack with probability $\frac{2}{3}$.
 \end{proof}
 For some of the following analyses, the $2$-dimensional list $B$ will be used to improve conciseness. Denote $B(j,k)$ as the $k^{th}$ qubit position $i$ of a data qubit used as the control qubit for a $\mathit{CU}_{i,j}$ with the target qubit as the signature qubit at position $j$. In other words, each $B(j,k)$ for all $k \in \{0,1,2 \cdots \frac{m}{d} - 1\}$ and a fixed $j$ corresponds to an element in $k_b''$ equal to $j$ (remark, lines~\ref{alg:PerezCodeEncryption:BlockDataQubitIf} and~\ref{alg:PerezCodeDecryption:BlockDataQubitIf} in Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} respectively). For additional convenience, define $B(j)$ as a 'block': The positions of all the data qubits that get $\mathit{CU}_{i,j}$'d with the signature qubit at position $j$.
 \begin{myLemmarep}
@@ -1607,7 +1607,7 @@ When using the block Clifford code, the operation applied to the state $\rho$ du
 \end{align}
 \end{myLemmarep}
 \begin{proof}
-The permuting and un-permuting of signature qubits result in the adversary's attack $A_{j'}$ being 'moved' to become $A_j$. That is, the $A_{j'}$ unitary is conjugated by a series of $\mathit{SWAP}$ gates to become $A_{j}$ where $d \leq j \leq j' < n$ (remark lines~\ref{alg:PerezCodeEncryption:CircGates} and~\ref{alg:PerezCodeDecryption:CircGates} or Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption}). After simplifying all the $\mathit{SWAP}$ gates for permuting and then un-permuting the signature qubits, the only gates left to simplify are the $\mathit{CU}_{k,w}$, $U_k$ and $U_w$ gates for all $w \neq j$ and $k \notin B(j)$ and $k \neq j$. $U_k$ denotes gates the block Clifford code applies to the data qubits and $U_w$ denotes gates the block Clifford code applies to the signature qubits. Applying Lemma~\ref{lemma:commutingEncryptionOperators} multiple times allows to rearrange gates applied by the code into groupings of  $U_w^{\dagger}\mathit{CU}_{k,w}U_k^{\dagger}U_k\mathit{CU}_{k,w}U_w$, which simplify to each equal $I$. This results in the only gates left to simplify or evaluate as the ones shown in Equation~\eqref{eq:integrityEncryptionRearrangement2}.
+The permuting and un-permuting of signature qubits result in the adversary's attack $A_{j'}$ being 'moved' to become $A_j$. That is, the $A_{j'}$ unitary is conjugated by a series of $\mathit{SWAP}$ gates to become $A_{j}$ where $d \leq j \leq j' < n$ (remark lines~\ref{alg:PerezCodeEncryption:CircGates} and~\ref{alg:PerezCodeDecryption:CircGates} or Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption}). After simplifying all the $\mathit{SWAP}$ gates for permuting and then un-permuting the signature qubits, the only gates left to simplify are the $\mathit{CU}_{k,w}$, $U_k$ and $U_w$ gates for all $w \neq j$ and $k \notin B(j)$ and $k \neq j$. $U_k$ denotes gates the block Clifford code applies to the data qubits and $U_w$ denotes gates the block Clifford code applies to the signature qubits. Applying Lemma~\ref{lemma:commutingEncryptionOperators} multiple times allows to rearrange gates applied by the code into groupings of  $\mathit{CU}_{k,w}U_k^{\dagger}U_k\mathit{CU}_{k,w}$, which simplify to each equal $I$.  Following that simplification, gates can be rearranged into groupings of $U_w^{\dagger}U_w$ which also simplify to equal $I$. This results in the only gates left to simplify or evaluate as the ones shown in Equation~\eqref{eq:integrityEncryptionRearrangement2}.
 \end{proof}
 \begin{theorem}
 \label{theorem:singleQubitAttackOnSignatureQubit}
@@ -1619,13 +1619,13 @@ This can be seen by making use of the tables listed in Theorems \ref{theorem:Cir
 &U_j^{\dagger}\mathit{CU}_{B(j,0),j} \cdots \mathit{CU}_{B(j,\frac{m}{d}-1),j} A_{j} \mathit{CU}_{B(j,\frac{m}{d}-1),j} \cdots \mathit{CU}_{B(j,0),j}U_j \label{eq:signatureQubitAttackFirstEquation}\\
 =&U_j^{\dagger}\mathit{CU}_{B(j,0),j} \cdots \mathit{CU}_{B(j,\frac{m}{d}-2),j} A_{B(j,\frac{m}{d}-1)}' A_{j} \mathit{CU}_{B(j,\frac{m}{d}-2),j} \cdots \mathit{CU}_{B(j,0),j}U_j  \label{eq:signatureQubitAttackFirstEvaluation}\\
 =&A_{B(j,\frac{m}{d}-1)}' U_j^{\dagger}\mathit{CU}_{B(j,0),j} \cdots \mathit{CU}_{B(j,\frac{m}{d}-2),j} A_{j} \mathit{CU}_{B(j,\frac{m}{d}-2),j} \cdots \mathit{CU}_{B(j,0),j}U_j \\
-& \ \ \ \ \  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \vdots\\
+& \ \ \ \ \  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \vdots \nonumber \\
 =&A_{B(j,\frac{m}{d}-1)}' A_{B(j,\frac{m}{d}-2)}' \cdots A_{B(j,0)}' A_j \label{eq:signatureQubitAttackFinalSimplification}
 \end{align}
 From Equation \eqref{eq:signatureQubitAttackFirstEquation} to Equation \eqref{eq:signatureQubitAttackFirstEvaluation} the following simplification is made:
-$$A_{B(j,\frac{m}{d}-1)} A_{j} \mathit{CU}_{B(j,\frac{m}{d}-1),j} = A_{B(j,\frac{m}{d}-1)}'$$
+$$\mathit{CU}_{B(j,\frac{m}{d}-1),j} A_{j} \mathit{CU}_{B(j,\frac{m}{d}-1),j} = A_{B(j,\frac{m}{d}-1)}'$$
 and by the previous definition at the start of the proof,
-$$A_k' = A_{B(j,\frac{m}{d}-1)}' = A_{B(j,\frac{m}{d}-1)} A_{j}\mathit{CU}_{B(j,\frac{m}{d}-1),j} = C^{\dagger} A_j C$$
+$$A_k' = A_{B(j,\frac{m}{d}-1)}' = \mathit{CU}_{B(j,\frac{m}{d}-1),j} A_{j}\mathit{CU}_{B(j,\frac{m}{d}-1),j} = C^{\dagger} A_j C$$
 Evaluating Equation \eqref{eq:signatureQubitAttackFinalSimplification} results in the following transformations on the data packet due to the adversary's attack:
 \begin{table}[H]
 \caption{A table showing how a single-qubit Pauli attack applied to a signature qubit affects the data packet. \label{table:signatureQubitAttackTransformation}}
@@ -1641,10 +1641,10 @@ $A_j$ & $\mathit{CX}_{i,j}A_j\mathit{CX}_{i,j}$ & $\ H_j\mathit{CY}_{i,j}A_j\mat
 \end{tabular}
 \end{center}
 \end{table}
-In the above table, the column header enumerates the possible values for $A_i$, and the row header enumerates the possible encryption operations. In each row of the table, $\frac{2}{3}$ of the resulting transformations on the data packet have an $X_j$ or $Y_j$, thus indicating an attack with probability $\frac{2}{3}$.
+In the above table, the row headers enumerate the possible values for $A_i$, and the column headers enumerate the possible encryption operations. In each row of the table, $\frac{2}{3}$ of the resulting transformations on the data packet have an $X_j$ or $Y_j$, thus indicating an attack with probability $\frac{2}{3}$.
 \end{proof}
 \begin{corollary}
-Let a given signature qubit at position $j$ be acted on by one of $I_j$, $H_j$ or $S_j^{\dagger}H_j$ with equal probability. The adversary described in Theorem~\ref{theorem:singleQubitAttackOnSignatureQubit} has a $\frac{2}{3}$ probability that the resulting transformation on the data packet $\rho$ will contain $\frac{m}{d}$ number of $Z_i$ gates for $i \neq j$.
+Let a given signature qubit at position $j$ be acted on by $U_j$ which is equal to $I_j$, $H_j$ or $S_j^{\dagger}H_j$ with equal probability. The adversary described in Theorem~\ref{theorem:singleQubitAttackOnSignatureQubit} has a $\frac{2}{3}$ probability that the resulting transformation on the data packet $\rho$ will contain $\frac{m}{d}$ number of $Z_i$ gates for $i \neq j$.
 \end{corollary}
 
 \begin{theorem}
@@ -1653,13 +1653,13 @@ There is an injection between the preprocessed subkeys $k_a',k_b'$ given as inpu
 \begin{proof}
 The injection can be proven by showing that there is an injection between subkeys $k_a',k_b'$ and the mappings of the Pauli operators to themself when conjugated by the subkeys' corresponding $C$. This is because if two different $C$s give two different mappings from the Pauli operators to themselves then they must be different unitaries. The proof can be derived in part by the tables in Theorems~\ref{theorem:singleQubitAttackOnDataQubit} and~\ref{theorem:singleQubitAttackOnSignatureQubit}. A proof by case will be used. The first case will show that fixing $k_b'$ to an arbitrary value produces a different $C$ for each different $k_a'$. The second case will show that two different $k_b'$s will give two different $C$s (regardless of whether or not $k_a'$ is fixed to an arbitrary value).
 
-\textbf{Case 1:} First, fix $k_b'$ to an arbitrary value. It will be shown that each $k_a'$ produces a different $C$. Each column of each of Tables~\ref{table:dataQubitAttackTransformation1},\ref{table:dataQubitAttackTransformation2}, \ref{table:dataQubitAttackTransformation3} and \ref{table:signatureQubitAttackTransformation} corresponds to one of the three $U_i$ operators as determined by the $i^{th}$ element in $k_a'$ where $0 \leq i < n$. Let $X_{i'}$ have the same definition as in Theorem~\ref{theorem:singleQubitAttackOnDataQubit}, but with the corresponding $X_i$ such that $0 \leq i < n$ (thus $X_{i'}$ can be applied to any qubit position). By only considering the Pauli $X_{i'}$, one can see that each value $k_a'$ can take on produces a different mapping of $X_{i'}$ to $C^{\dagger} X_{i'} C$. Remark that these tables do not describe the effect that $\mathit{CIRC}_{i,j}$ gates have on the Pauli mapping. This is not an issue however, because $k_b'$ is fixed to an arbitrary value. The conjugation of a single-qubit Pauli by one or more $\mathit{CIRC}_{i,j}$ gates determined by $k_b'$ only changes the position of the Pauli (remark Theorem~\ref{theorem:CircGateIsClifford}).
+\textbf{Case 1:} First, fix $k_b'$ to an arbitrary value. It will be shown that each $k_a'$ produces a different $C$. Each column of each of Tables~\ref{table:dataQubitAttackTransformation1}, \ref{table:dataQubitAttackTransformation2}, \ref{table:dataQubitAttackTransformation3} and \ref{table:signatureQubitAttackTransformation} corresponds to one of the three $U_i$ operators as determined by the $i^{th}$ element in $k_a'$ where $0 \leq i < n$. Let $X_{i'}$ have the same definition as in Theorem~\ref{theorem:singleQubitAttackOnDataQubit}, but with the corresponding $X_i$ such that $0 \leq i < n$ (thus $X_{i'}$ can be applied to any qubit position). By only considering the Pauli $X_{i'}$, one can see that each value $k_a'$ can take on produces a different mapping of $X_{i'}$ to $C^{\dagger} X_{i'} C$. Remark that these tables do not describe the effect that $\mathit{CIRC}_{i,j}$ gates have on the Pauli mapping. This is not an issue however, because $k_b'$ is fixed to an arbitrary value. The conjugation of a single-qubit Pauli by one or more $\mathit{CIRC}_{i,j}$ gates determined by $k_b'$ only changes the position of the Pauli (remark Theorem~\ref{theorem:CircGateIsClifford}).
 
 \textbf{Case 2:} Next, it will be shown that two different $k_b'$s will give two different $C$s (regardless of whether or not $k_a'$ is fixed to an arbitrary value). Only the transformation described by Table \ref{table:signatureQubitAttackTransformation} will be considered for this case. This case has two subcases. The first subcase will show that if elements with value $d$ are placed differently in two $k_b'$s, then that will give two different $C$s. The second subcase will show that if elements with some value $j$ such that $0 \leq j < d$ are placed differently in two $k_b'$s, then that will give two different $C$s.
 
 \textbf{Subcase 1:} Each possible combination of placing the elements with value $d$ in $k_b'$ determines a different permutation of the Paulis $A_{j'} \in \{X_{j'}, Y_{j'}, Z_{j'}\}$ ($A_{j'}$ is defined in Theorem~\ref{theorem:singleQubitAttackOnSignatureQubit}) when conjugated by the $\mathit{CIRC}_{i,j}$ gates a part of the construction of $C$. Remark that each $A_{j'}$ for a given $k_b'$ is conjugated by a $\mathit{CIRC}_{i,j}$ to a qubit position $j$ where $0 \leq j < d$. Note that each of the single-qubit Paulis $A_j$ in the range of the mapping given by $C$ are each mapped onto by one $A_{j'}$ in the domain. This is because each column in Table \ref{table:signatureQubitAttackTransformation} has one resulting Pauli that does not apply additional $Z$ gates to the data packet. As a result, two given $k_b'$s with two different placements of elements with value $d$ will give two mappings via each $C$ which have different sets of elements in the domain that map to $A_{j} \in \{X_{j}, Y_{j}, Z_{j}\}$. Thus, two given $k_b'$s with different placements of elements with value $d$ will give a different $C$. Note that the previously mentioned Paulis may also be transformed to a different single-qubit Pauli, due to the $U_i$ gates determined by $k_a'$, in addition to being moved. However, this is not necessary to take into account: Only the positions that single-qubit Paulis are moved to is required to describe this subcase. 
 
-\textbf{Subcase 2:} For the next subcase, remark that the placement of each value $j$, where  $0 < j < d$, in $k_b'$ determines which data qubits are used as the control qubit for the signature qubit at position $j$. Two thirds of the outcomes in Table~\ref{table:signatureQubitAttackTransformation} show the placements of each value $j$ in $k_b'$ determine the positions of the $\frac{m}{d}$ number of $Z$ gates applied to the corresponding control qubits. Each row of the table has exactly one resulting Pauli with $\frac{m}{d}$ number of $Z$ gates. Again, considering how the $U_i$ gates change the resulting transformation is not necessary. As in, for two mappings given by keys where one or more of the elements with a value of $j$ are placed in different positions in both of the $k_b'$s, there exists at least one single-qubit Pauli in the domain that results in a different combination of $\frac{m}{d}$ number of $Z$ gates for each of the two mappings.
+\textbf{Subcase 2:} For the next subcase, remark that the placement of each value $j$, where  $0 \leq j < d$, in $k_b'$ determines which data qubits are used as the control qubit for the signature qubit at position $j$. Two thirds of the outcomes in Table~\ref{table:signatureQubitAttackTransformation} show the placements of each value $j$ in $k_b'$ determine the positions of the $\frac{m}{d}$ number of $Z$ gates applied to the corresponding control qubits. Each row of the table has exactly one resulting Pauli with $\frac{m}{d}$ number of $Z$ gates. Like in subcase 1, considering how the $U_i$ gates change the resulting transformation is not necessary. As in, for two mappings given by keys where one or more of the elements with a value of $j$ are placed in different positions in both of the $k_b'$s, there exists at least one single-qubit Pauli in the domain that results in a different combination of $\frac{m}{d}$ number of $Z$ gates for each of the two mappings.
 
 Let $P_i \in \{X_i, Y_i, Z_i\}$ where $0 \leq i < n$. Highlighting the two previously described subcases shows there are two different mappings from $P_{i}$ to $C^{\dagger} P_i C$ for two pairs of subkeys where $k_b'$ is different in each pair.
 \end{proof}
@@ -1677,9 +1677,9 @@ where each $A_k$ is the single-qubit Pauli applied at position $k$ a part of the
 \end{proof}
 \begin{theorem}
 \label{theorem:probabilityOfMultiQubitDetectionOnSingleBlock}
-Let each qubit in the data packet be acted on by a $U$ from the set $\{I, H, S^{\dagger}H\}$ with equal probabilities. An adversary that attacks $w$ number of qubits with single-qubit Pauli operations that are each at position $j$ or positions $i \in B(j)$ will be detected with probability:
+Let each qubit in the data packet be acted on by a $U_i$ from the set $\{I_i, H_i, S_i^{\dagger}H_i\}$ with equal probabilities. An adversary that attacks using a Pauli composed of $w$ non-identity single-qubit Paulis that are each placed at an arbitrary signature qubit position $j$ or positions $i \in B(j)$ will be detected with probability:
 \begin{align}
-f(w) &= \frac{1}{3}f(w - 1) + \frac{2}{3}(1 - f(w - 1))\\ \label{eq:probabilityOfMultiQubitDetectionOnSingleBlock}
+f(w) &= \frac{1}{3}f(w - 1) + \frac{2}{3}(1 - f(w - 1)) \label{eq:probabilityOfMultiQubitDetectionOnSingleBlock}\\
 &= \frac{1-(\frac{-1}{3})^w}{2} 
 \end{align}
 with a base case $f(0) = 0$. Additionally, $f(w) \approx \frac{1}{2}$ and $\frac{4}{9} \leq f(w) \leq \frac{2}{3}$.
@@ -1688,14 +1688,14 @@ with a base case $f(0) = 0$. Additionally, $f(w) \approx \frac{1}{2}$ and $\frac
 First, remark that
 Theorem~\ref{theorem:singleQubitAttackOnSignatureQubit} showed that single-qubit Pauli attacks on a signature qubit result in a $X_j$, $Y_j$ or $Z_j$ applied to the signature qubit with equal probability. We can see that the base case $f(1) = \frac{2}{3}$, agrees with the results from Theorem~\ref{theorem:singleQubitAttackOnSignatureQubit}. Similarly, Theorem~\ref{theorem:singleQubitAttackOnDataQubit} showed that single-qubit Pauli attacks on a data qubit result in a $X_j$, $Y_j$ or $Z_j$ applied to the corresponding signature qubit at position $j$ with equal probability. Again, we can see that the base case $f(1) = \frac{2}{3}$, agrees with the results from Theorem~\ref{theorem:singleQubitAttackOnDataQubit}. The base case $f(0) = 0$ when there is no adversarial attack also makes sense.
 
-Denote $B'$ as equal to $B$, excluding the indices of qubits that have not been attacked by a single-qubit Pauli. When considering $w > 1$, use of Theorem~\ref{theorem:extendingSingleQubitAttackToMultiQubitAttack} gives Equation~\eqref{eq:probabilityOfMultiQubitDetectionOnSingleBlock} by evaluating each $$C^{\dagger}A_{B'(j,w-1)}C, C^{\dagger}A_{B'(j,w-2)}C, \cdots C^{\dagger}A_{B'(j,0)}C$$ separately to acquire $C^{\dagger}AC$. Since the adversary is detected if and only if there is an $X_j$ or $Y_j$ in the resulting transformation $C^{\dagger}AC$ on the data packet, $f(w)$ is the probability the resulting transformation $C^{\dagger}AC$ has an $X_j$ or $Y_j$. The first term $$\frac{1}{3}f(w - 1)$$
-represents the $\frac{1}{3}$ probability that a $Z$ is applied by the $w^{th}$ single-qubit Pauli
+Denote $B'$ as equal to $B$, excluding the indices of qubits that have not been attacked by a single-qubit Pauli. When considering $w > 1$, use of Theorem~\ref{theorem:extendingSingleQubitAttackToMultiQubitAttack} gives Equation~\eqref{eq:probabilityOfMultiQubitDetectionOnSingleBlock} by evaluating each $$C^{\dagger}A_{B'(j,w-1)}C, C^{\dagger}A_{B'(j,w-2)}C, \cdots ,C^{\dagger}A_{B'(j,0)}C$$ separately to acquire $C^{\dagger}AC$. Since the adversary is detected if and only if there is an $X_j$ or $Y_j$ in the resulting transformation $C^{\dagger}AC$ on the data packet, $f(w)$ is the probability the resulting transformation $C^{\dagger}AC$ has an $X_j$ or $Y_j$. The first term $$\frac{1}{3}f(w - 1)$$
+is the $\frac{1}{3}$ probability that a $Z$ is applied by the $w^{th}$ single-qubit Pauli
 $$C^{\dagger}A_{B'(j,w-1)}C$$
-followed by an $X$ or $Y$ applied by $$C^{\dagger}A_{B'(j,w-2)}C C^{\dagger}A_{B'(j,w-3)}C \cdots C^{\dagger}A_{B'(j,0)}C.$$ The second term
-$$\frac{2}{3}(1 - f(k - 1))$$ 
-represents the $\frac{2}{3}$ probability that an $X$ or $Y$ is applied by
+multiplied by the probability that an $X$ or $Y$ is applied by $$C^{\dagger}A_{B'(j,w-2)}C C^{\dagger}A_{B'(j,w-3)}C \cdots C^{\dagger}A_{B'(j,0)}C.$$ The second term
+$$\frac{2}{3}(1 - f(w - 1))$$ 
+is the $\frac{2}{3}$ probability that an $X$ or $Y$ is applied by
 $$C^{\dagger}A_{B'(j,w-1)}C$$
-followed by a $Z$ applied by $$C^{\dagger}A_{B'(j,w-2)}C C^{\dagger}A_{B'(j,w-3)}C \cdots C^{\dagger}A_{B'(j,0)}C.$$ The negation in the second term corresponds to the fact that each $X$ or $Y$ applied to the signature qubit 'flips' it, changing the integrity detection results, while a $Z$ does not alter the integrity detection results. Another way of seeing the recursion is as the probability that all the $C^{\dagger}A_{B'(j,w-1)}C$, $C^{\dagger}A_{B'(j,w-2)}C \cdots C^{\dagger}A_{B'(j,0)}C$ have an odd number of $X_j$ and $Y_j$. This is more precisely seen by repeated application of the following equations:
+multiplied by the probability that a $Z$ is applied by $$C^{\dagger}A_{B'(j,w-2)}C C^{\dagger}A_{B'(j,w-3)}C \cdots C^{\dagger}A_{B'(j,0)}C.$$ The negation in the second term corresponds to the fact that each $X$ or $Y$ applied to the signature qubit 'flips' it, changing the integrity detection results, while a $Z$ does not alter the integrity detection results. Another way of seeing the recursion is as the probability that all the $C^{\dagger}A_{B'(j,w-1)}C$, $C^{\dagger}A_{B'(j,w-2)}C, \cdots ,C^{\dagger}A_{B'(j,0)}C$ have an odd number of $X_j$ and $Y_j$. This is more precisely seen by repeated application of the following equations:
 \begin{align}
 XX = ZZ = YY = I \\
 XY = YX = Z\\
