@@ -189,9 +189,9 @@ $\cdot$ & May be used to indicate multiplication instead of relying on brackets.
 %%\rowcolor{lightgray}
 Code & Number of Gates & Time Complexity & Integrity Detection Probability\\
 \hlineB{4}
-Clifford Code & $O\left(\frac{n^2}{\log_2 n}\right)$ & $O\left(n^3\right)$ & $1-\frac{2^{2 m+d}-1}{2^{2 n}-1} \approx 1-\left(\frac{1}{2}\right)^{d}$\\
+Clifford Code & $O\left(\frac{n^2}{\log_2 (n)}\right)$ & $O\left(n^3\right)$ & $1-\frac{2^{2 m+d}-1}{2^{2 n}-1} \approx 1-\left(\frac{1}{2}\right)^{d}$\\
 \hline
-Block Clifford Code & $\min \left(O\left(nd\right),O\left(\frac{n^2}{\log_2 n}\right)\right)$ & $O\left(n^2\log_2^2 n\right)$ & $\approx \sum_{x=1} ^{\min(d,w)} \left(1-\left(\frac{1}{2}\right)^{x}\right) {d \choose x} \frac{\left\{\begin{smallmatrix}w\\x\end{smallmatrix}\right\}x!}{d^w}$\\
+Block Clifford Code & $\min \left(O\left(nd\right),O\left(\frac{n^2}{\log_2 (n)}\right)\right)$ & $O\left(n^2\log_2^2 (n)\right)$ & $\approx \sum_{x=1} ^{\min(d,w)} \left(1-\left(\frac{1}{2}\right)^{x}\right) {d \choose x} \frac{\left\{\begin{smallmatrix}w\\x\end{smallmatrix}\right\}x!}{d^w}$\\
 \hline
 \end{tabular}
 \end{center}
@@ -201,7 +201,7 @@ Block Clifford Code & $\min \left(O\left(nd\right),O\left(\frac{n^2}{\log_2 n}\r
 %\end{changemargin}
 See Table~\ref{table:summaryOfResults} for a comparison between the block Clifford code and the Clifford code. Note that the 'Integrity Detection Probability' column is only concerned with Pauli attacks (see the attack model described in Section~\ref{section:attackModel}). The probability of detection for the block Clifford code approaches the probability of detection for the Clifford code as $w$ increases. Remark Table~\ref{table:symboldescription} for a description of symbols.
 
-The novel multiset permutation unranking method is described in Algorithm~\ref{alg:KeyMappingB} in Subsection~\ref{subsubsection:keyMappings}. It runs in $O\left (n^2 \log_2 ^2 n \right)$ time.
+The novel multiset permutation unranking method is described in Algorithm~\ref{alg:KeyMappingB} in Subsection~\ref{subsubsection:keyMappings}. It runs in $O\left (n^2 \log_2 ^2 (n) \right)$ time.
 
 \chapter{Required Background Knowledge}
 \label{sec:RequiredBackgroundKnowledge}
@@ -1067,17 +1067,14 @@ Data qubits are the qubits that make up the desired message the sender wants to 
 The measurement result of a quantum state is a probabilistic outcome dependent on the complex amplitudes of the state. Measurement can be interpreted via any of one of the three quantum state representations discussed in this thesis: bra-ket notation, state vector and density matrix.
 
 Remark that $\ket{\psi}^{\dagger} = \bra{\psi}$. In the state vector form, a measurement outcome $m$ along with measurement operator $M_m$ occurs with probability $p(m)$ such that
-
 \begin{align}
 p(m)=\left\langle\psi\left|M_{m}^{\dagger} M_{m}\right| \psi\right\rangle
 \end{align}
 and the resulting state after being measured is
-
 \begin{align}
 \frac{M_{m}|\psi\rangle}{\sqrt{\left\langle\psi\left|M_{m}^{\dagger} M_{m}\right| \psi\right\rangle}} \label{eq:disturbedState}
 \end{align}
 Equation~\eqref{eq:disturbedState} precisely characterizes how a quantum state is disturbed when measured. For this thesis, measurements will always be in the standard computational basis. One way to denote the measurement operators in the standard computational basis is as:
-
 \begin{align}
 Z_+ = \left[\begin{array}{ll}
 1 & 0 \\
@@ -1092,7 +1089,6 @@ Z_- = \left[\begin{array}{ll}
 \end{array}\right]
 \end{align}
 with corresponding measurement outcomes of $+1$ and $-1$ respectively. Note that these operators can only measure single-qubit states. Different notations may be given for the measurement outcomes; I chose $+1$ and $-1$ as they correspond to the eigenvector/eigenvalue pairs of the $Z$ matrix. That is, the resulting state after being measured,
-
 \begin{align}
 \frac{Z_+|\psi\rangle}{\sqrt{\left\langle\psi\left|Z_+^{\dagger} Z_+\right| \psi\right\rangle}}
 \end{align}
@@ -1100,7 +1096,6 @@ is equal to the eigenvector $\ket{0} = \left[\begin{array}{ll}
 1\\
 0
 \end{array}\right]$ with eigenvalue $+1$, and
-
 \begin{align}
 \frac{Z_-|\psi\rangle}{\sqrt{\left\langle\psi\left|Z_-^{\dagger} Z_-\right| \psi\right\rangle}}
 \end{align}
@@ -1108,21 +1103,16 @@ is equal to the eigenvector $\ket{1} = \left[\begin{array}{ll}
 0\\
 1
 \end{array}\right]$ with eigenvalue $-1$. For extending this single-qubit measurement to multi-qubit states, all that is needed is to take the tensor product of the measurement operators. In this thesis, the following measurement operators for measuring the rightmost $d$ signature qubits are given by:
-
-%\underbrace{0, 0, \cdots 0}_{\frac{m}{d} \text{ times}
-
 \begin{align}
 \underbrace{I \otimes I \otimes \cdots \otimes I}_{m \text{ times}} \otimes \underbrace{Z_{\pm} \otimes Z_{\pm} \otimes \cdots \otimes Z_{\pm}}_{d \text{ times}} \label{eq:signatureQubitMeasurementOperator}
 \end{align}
 where each $Z_{\pm} \in \{Z_-, Z_+\}$. This results in $2^d$ measurement operators with $2^d$ corresponding measurement outcomes. This measurement operator can be extended to a more general case: for each qubit that one wants to measure, apply a $Z_{\pm} $, else apply a $I$. 
 
 Conveniently, this thesis makes use of relatively simple measurements using the operators in Equation~\eqref{eq:signatureQubitMeasurementOperator}. That is, the state that is being measured is almost always in the form:
-
 \begin{align}
 \ket{\phi} \otimes \underbrace{\ket{b} \otimes \ket{b} \otimes \cdots \ket{b}}_{d \text{ times}} 
 \end{align}
 where $\ket{\phi}$ is an $m$-qubit state tensored with the $d$-qubit state $\underbrace{\ket{b} \otimes \ket{b} \otimes \cdots \otimes \ket{b}}_{d \text{ times}}$. Each $\ket{b} \in \{\ket{0},\ket{1}\}$, as an example:
-
 \begin{align}
 \underbrace{\ket{b} \otimes \ket{b} \otimes \cdots \otimes \ket{b}}_{d \text{ times}} = \ket{01 \cdots 0}
 \end{align}
@@ -1185,7 +1175,7 @@ In reference~\cite{barbeau2022authenticity}, the Clifford code was described in 
 \subsection{Algorithm}
 Given some encryption key $k$, a corresponding Clifford operation, $C$, for encrypting the data is determined via a mapping. The mapping runs in $O \left(n^3 \right)$ time and makes use of the symplectic group~\cite{Koenig2014}. The mapping of $k$ to its corresponding $C$ will be denoted as $k \rightarrow C$. The decryption operator corresponding to $k$ is determined via $C^{\dagger}$. $C$ acts on a quantum state $\rho$ such that $\rho = \sigma \otimes (|0\rangle \langle0|)^{\otimes d}$ where $\sigma$ is the desired quantum state to encrypt and $(|0\rangle \langle0|)^{\otimes d}$ is the signature portion of the message. When an adversary tampers with the encrypted data, the decryption operator may propagate some of the modifications made by the adversary onto the signature portion of the message, much like how checksums in classical data integrity detection work~\cite{checksumWikipedia}. If the signature portion of the message is modified from its original value after the decryption process due to an integrity attack, some (or all) of the measurement results on the signature qubits may be $-1$ instead of all $+1$. Measuring a $-1$ on one of the signature qubits after decrypting the message indicates an integrity attack.
 
-The asymptotically optimal number of gates from the Clifford generators to construct a given Clifford operation requires $O\left(\frac{n^2}{\log_2 n} \right)$ gates~\cite{bravyi2021hadamard,patel2008optimal}. Thus, the Clifford code uses $O \left(\frac{n^2}{\log_2 n} \right)$ gates from the Clifford generators. The largest part of the construction comes from applying $\mathit{CNOT}$ gates.
+The asymptotically optimal number of gates from the Clifford generators to construct a given Clifford operation requires $O\left(\frac{n^2}{\log_2 (n)} \right)$ gates~\cite{bravyi2021hadamard,patel2008optimal}. Thus, the Clifford code uses $O \left(\frac{n^2}{\log_2(n)} \right)$ gates from the Clifford generators. The largest part of the construction comes from applying $\mathit{CNOT}$ gates.
 
 The Clifford code detects an adversary which applies attacks from $P(n)$ with a probability of:
 \begin{align}
@@ -1474,7 +1464,7 @@ It makes most sense to consider $m$ as being asymptotically the same as $n$, bec
 \end{proof}
 
 \subsection{Construction from the Clifford Generators}
-As mentioned in Section~\ref{sec:IntegrityDetectionUsingCliffordOperationEncryption}, a Clifford gate can be constructed using $O\left(\frac{n^2}{\log_2 n}\right)$ number of gates from the Clifford generators. A construction for the block Clifford code from the Clifford generators is provided in this subsection which uses $O(nd)$ number of gates. More efficient constructions may be given, but this at least shows that for a fixed $d$ the block Clifford code uses asymptotically fewer gates from the Clifford generators than the Clifford code.
+As mentioned in Section~\ref{sec:IntegrityDetectionUsingCliffordOperationEncryption}, a Clifford gate can be constructed using $O\left(\frac{n^2}{\log_2 (n)}\right)$ number of gates from the Clifford generators. A construction for the block Clifford code from the Clifford generators is provided in this subsection which uses $O(nd)$ number of gates. More efficient constructions may be given, but this at least shows that for a fixed $d$ the block Clifford code uses asymptotically fewer gates from the Clifford generators than the Clifford code.
 \begin{theorem}
 There exists an implementation of Algorithm~\ref{alg:PerezCodeEncryption} which applies $O \left(nd \right)$ gates from the Clifford generators.
 \end{theorem}
@@ -1680,7 +1670,7 @@ where each $A_k$ is the single-qubit Pauli applied at position $k$ a part of the
 Let each qubit in the data packet be acted on by a $U_i$ from the set $\{I_i, H_i, S_i^{\dagger}H_i\}$ with equal probabilities. An adversary that attacks using a Pauli composed of $w$ non-identity single-qubit Paulis that are each placed at an arbitrary signature qubit position $j$ or positions $i \in B(j)$ will be detected with probability:
 \begin{align}
 f(w) &= \frac{1}{3}f(w - 1) + \frac{2}{3}(1 - f(w - 1)) \label{eq:probabilityOfMultiQubitDetectionOnSingleBlock}\\
-&= \frac{1-(\frac{-1}{3})^w}{2} 
+&= \frac{1-\left(\frac{-1}{3}\right)^w}{2} 
 \end{align}
 with a base case $f(0) = 0$. Additionally, $f(w) \approx \frac{1}{2}$ and $\frac{4}{9} \leq f(w) \leq \frac{2}{3}$.
 \end{theorem}
@@ -1705,7 +1695,6 @@ ZY = YZ = X
 where the constants $\{ e^{i\theta\pi/2} \mid \theta = 0,1,2,3\}$ are omitted (as they do not have any affect on quantum states).
 
 To show that $f(w) = \frac{1-(\frac{-1}{3})^w}{2}$ an expansion of the recursion reveals its summation form, which is then simplified using the geometric series summation formula:
-
 \begin{align}
 f(w) &= \frac{1}{3}f(w - 1) + \frac{2}{3}(1 - f(w - 1))\\
 &= \frac{-1}{3}f(w - 1) + \frac{2}{3}\\
@@ -1724,19 +1713,19 @@ f(w) &= \frac{1}{3}f(w - 1) + \frac{2}{3}(1 - f(w - 1))\\
 In Equation~\eqref{eq:multiQubitAttackOnBlockNonRecursive} the term $(\frac{-1}{3})^w$ becomes vanishingly small as $w$ increases. This is expressed more precisely by $\lvert \frac{1-(\frac{-1}{3})^{w+1}}{2} - \frac{1}{2} \rvert < \lvert \frac{1-(\frac{-1}{3})^w}{2} - \frac{1}{2} \rvert$. As a result, $f(w) \approx \frac{1}{2}$ and $\frac{4}{9} \leq f(w) \leq \frac{2}{3}$ for $w \geq 1$.
 \end{proof}
 
-To provide a formula for the security of the block Clifford code, one must consider how many non-identity Paulis the adversary's attack $A$ is composed of. Keeping this in mind, the following analyses will lead to an approximation for the probability of detection given the adversary can attack using an arbitrary Pauli from $P(n)$.
+To provide a formula for the security of the block Clifford code, one must consider how many non-identity single-qubit Paulis the adversary's attack $A$ is composed of. Keeping this in mind, the following analyses will lead to an approximation for the probability of detection given the adversary can attack using an arbitrary Pauli from $P(n)$.
 \begin{corollary}
 \label{corollary:adversaryAttacksKblocks}
-Given an adversary applies at least one single-qubit non-identity Pauli to each of $x$ blocks, the probability of detection, $p_d$, is:
+Given an adversary applies at least one non-identity single-qubit Pauli to each of $x$ blocks, the probability of detection, $p_d$, is:
 \begin{align}
-1 - (1-\frac{4}{9})^x \leq p_d \approx 1 - (\frac{1}{2})^x \leq 1 - (1-\frac{6}{9})^x
+1 - \left(1-\frac{4}{9}\right)^x \leq p_d \approx 1 - \left(\frac{1}{2}\right)^x \leq 1 - \left(1-\frac{6}{9}\right)^x
 \end{align}
 \end{corollary}
 \begin{proof}
-Theorem~\ref{theorem:probabilityOfMultiQubitDetectionOnSingleBlock} showed that if a non-identity Pauli $A$ has all of its non-identity single-qubit Paulis applied to a single block of qubits, the probability of the block's corresponding signature qubit being flipped and thus indicating a detection is $\frac{4}{9} \leq f(w) \approx \frac{1}{2} \leq \frac{6}{9}$. Combining these theorems together gives a probability less than $(1-\frac{4}{9})^{x}$, approximately $(\frac{1}{2})^{x}$  and greater than $(1-\frac{6}{9})^{x}$ that none of the $x$ signature qubits are flipped. The negation of this gives the probability that at least one of them is flipped, thus detecting an attack.
+Theorem~\ref{theorem:probabilityOfMultiQubitDetectionOnSingleBlock} showed that if a Pauli $A$ has all $w$ of its non-identity single-qubit Paulis applied to a single block of qubits, the probability of the block's corresponding signature qubit being flipped and thus indicating a detection is $\frac{4}{9} \leq f(w) \approx \frac{1}{2} \leq \frac{6}{9}$. That means there is a probability less than $(1-\frac{4}{9})^{x}$, approximately $(\frac{1}{2})^{x}$  and greater than $(1-\frac{6}{9})^{x}$ that none of the $x$ signature qubits are flipped. The negation of this gives the probability that at least one of them is flipped, thus detecting an attack.
 \end{proof}
 
-The 'balls into bins' and 'urn problem' are both closely related to the analysis of the block Clifford code's security for the more general case $A \in P(n)$~\cite{BallsIntoBinsProblemWiki,UrnProblemWiki}. The adversary has an attack $A \in P(n)$ composed of $0 < w \leq n$ non-identity single-qubit Paulis. Framing the analysis in the terminology of the analogous 'urn problem', each block $B(j)$ is an urn that contains $\frac{n}{d}$ balls with the colour $j$. Each non-identity single-qubit Pauli corresponds to a single removal of one of the balls from the urn. The number of distinctly coloured balls removed from the jar after sequentially removing $w$ balls corresponds to the number of blocks the adversary applies a single-qubit Pauli to. The urn problem with multiple coloured balls models the multivariate hypergeometric distribution (sampling with replacement).
+The 'balls into bins' and 'urn problem' are both closely related to the analysis of the block Clifford code's security for the more general case $A \in P(n)$~\cite{BallsIntoBinsProblemWiki,UrnProblemWiki}. Let the adversary's attack $A \in P(n)$ be composed of $0 < w \leq n$ non-identity single-qubit Paulis. Framing the analysis in the terminology of the analogous 'urn problem', each block $B(j)$ is an urn that contains $\frac{n}{d}$ balls with the colour $j$. Each non-identity single-qubit Pauli corresponds to a single removal of one of the balls from the urn. The number of distinctly coloured balls removed from the jar after sequentially removing $w$ balls corresponds to the number of blocks the adversary applies a non-identity single-qubit Pauli to. The urn problem with multiple coloured balls models the multivariate hypergeometric distribution (sampling with replacement).
 
 To make the analysis simpler and more compact, an approximation is given for the probability of detection making use of the 'balls into bins' analogy (sampling without replacement).
 
@@ -1759,7 +1748,7 @@ Equation~\eqref{eq:DetectionHelperFunctionUnsimplified} simplifies to equal Equa
 \begin{align}
 h(x,w,d)=&{d \choose x} \frac{\left\{\begin{smallmatrix}w\\x\end{smallmatrix}\right\}x!}{d^w} \label{eq:DetectionHelperFunctionUnsimplified} \\
 =& {d \choose x} \frac{\left(\frac{1}{x !} \sum_{i=0}^{x}(-1)^{i}{x \choose i}(x-i)^{w}\right)x!}{d^w}\\
-=& {d \choose x} \frac{\left( \sum_{i=0}^{x}(-1)^{i}{x \choose i}(x-i)^{w}\right)}{d^w}\\
+=& {d \choose x} \frac{\sum_{i=0}^{x}(-1)^{i}{x \choose i}(x-i)^{w}}{d^w}\\
 =& {d \choose x}\left(\sum_{i=0} ^{x}(-1)^{i}{x \choose i}\left(\frac{x-i}{d}\right)^w \right)
 \end{align}
 In Equation~\eqref{eq:stirlingNumberFunctionCombinedWithOtherTheorems}, $1-\left(\frac{1}{2}\right)^{x}$ is the approximation for the probability of detecting an adversary given they have applied at least one single-qubit Pauli to each of $x$ blocks (shown in Corollary~\ref{corollary:adversaryAttacksKblocks}). Equation~\eqref{eq:stirlingNumberFunction} is the probability of an adversary attacking $x$ blocks, as a function of the $w$ number of single-qubit Pauli attacks the adversary's attack is composed of. Thus, multiplying these two terms together and summing over all possible values of $x = 1, 2, \cdots \min(d,w)$ gives the approximation for the probability of detection.
@@ -1774,7 +1763,7 @@ Taking Equations~\eqref{eq:stirlingNumberFunctionCombinedWithOtherTheorems} and~
 \label{eq:blockCliffordCodeLessThanCliffordCode}
 \sum_{x=1} ^{\min(d,w)} \left(1-\left(\frac{1}{2}\right)^{x}\right) {d \choose x} \frac{\left\{\begin{smallmatrix}w\\x\end{smallmatrix}\right\}x!}{d^w} \leq 1-\left(\frac{1}{2}\right)^{d}
 \end{align}
-As described in Theorem~\ref{theorem:probabilityOfDetectionForBlockCliffordCode}, the function given by Equation~\eqref{eq:stirlingNumberFunction} gives the probability of $x$ number of blocks each having at least one non-identity single-qubit applied to them. Thus, evaluating Equation~\eqref{eq:stirlingNumberFunction} for all possible values of $x \in \{1,2, \cdots , \min (d,w)\}$ should be equal to $1$, because the probabilities of all possible outcomes must sum to $1$. As a result, Equation~\eqref{eq:stirlingNumberFunctionCombinedWithOtherTheorems} can be seen as a weighted sum of $1 - \left(\frac{1}{2}\right)^x$ for all possible values of $x$, where the weights sum to equal $1$. Remark that $x$ is at most equal to $d$. That means that:
+As described in Theorem~\ref{theorem:probabilityOfDetectionForBlockCliffordCode}, the function given by Equation~\eqref{eq:stirlingNumberFunction} gives the probability of exactly $x$ number of blocks each having at least one non-identity single-qubit applied to them. Thus, evaluating Equation~\eqref{eq:stirlingNumberFunction} for all possible values of $x \in \{1,2, \cdots , \min (d,w)\}$ should be equal to $1$, because the probabilities of all possible outcomes must sum to $1$. As a result, Equation~\eqref{eq:stirlingNumberFunctionCombinedWithOtherTheorems} can be seen as a weighted sum of $1 - \left(\frac{1}{2}\right)^x$ for all possible values of $x$, where the weights sum to equal $1$. Remark that $x$ is at most equal to $d$. That means that:
 $$1 - \left(\frac{1}{2}\right)^x \leq 1 - \left(\frac{1}{2}\right)^d$$ for $x \leq d$. Therefore Equation~\eqref{eq:blockCliffordCodeLessThanCliffordCode} holds true.
 \end{proof}
 \begin{theorem}
@@ -1797,14 +1786,14 @@ and the term $\left(\frac{x}{d}\right)^w$ approaches $0$, for all $x \neq d$, as
 \subsection{Key Mapping}
 \label{subsubsection:keyMappings}
 %\NP{Note to self: I could explore decreasing the time required for the subkey A mapping by storing $2$ bits per qubit. $00 = I$, $01 = H$, $10 = S^{\dagger}H$, $11 = $ the same gate as the one to the right of it.}
-Now, the key mapping will be explained in detail along with a time complexity analysis. Typically time complexity analyses consider arithmetic operations as $O\left(1\right)$. This is a good-enough approximation in most instances, but the key mapping in questions requires multiplication and division with very large numbers, thus $O\left(1\right)$ is not appropriate for these operations. The analyses will make this clear. 
+Now, the key mapping for the block Clifford code will be explained in detail along with a time complexity analysis. Typically time complexity analyses consider arithmetic operations as $O\left(1\right)$. This is a good-enough approximation in most instances, but the key mapping for the block Clifford code requires multiplication and division with very large numbers, thus $O\left(1\right)$ is not appropriate for these operations. The analyses will make this clear. 
 
 The key mapping takes as a input a binary string, $k$ and splits it into two 'subkeys', call them $k_a$ and $k_b$, meaning that $k = k_a,k_b$. Remark that subkey $k_a$ specifies the single-qubit unitary operations applied to both the data qubits and the signature qubits. The other subkey, $k_b$, specifies the permutation of signature qubits and which signature qubit $j$ is the target for each data qubit at position $i$ for each $\mathit{CU}_{i,j}$. When talking about binary, ternary and decimal numbers in this thesis, digits will be indexed from right to left starting at $0$ (just like how qubits are indexed in this thesis).
 
-The subkey $k_a$ mapping, described using pseudocode in Algorithm~\ref{alg:KeyMappingA}, determines which single-qubit unitary gates to apply by converting the binary representation of the subkey to a ternary number of length $n$, call it $k_a'$. The conversion from $k_a$ to $k_a'$ is done via a base conversion~\cite{BaseConversionWikipedia}. There is an additional step at line~\ref{alg:KeyMappingA:shortenTernaryString} in Algorithm~\ref{alg:KeyMappingA} which removes the $n^{th}$ digit from the ternary number representation if it is length $n+1$ (contains $n+1$ digits). This means that if line~\ref{alg:KeyMappingA:shortenTernaryString} were commented out (meaning it would no longer execute), then $k_a = k_a'$ when interpreted in their respective bases. Since the subkey $k_a$ specifies $3^n$ sets of operations, it must consist of $\ceil{\log_2 3^n} = \ceil{n \log_2 3} \approx \ceil{1.585 n}$ bits to express all possible $3^n$ gate combinations. This also means that, depending on the value of $n$, some bit strings of length $\ceil{1.585 n}$ may cause Algorithm~\ref{alg:KeyMappingA} to execute line~\ref{alg:KeyMappingA:shortenTernaryString}. In particular, any bit string $k_a$ representing a decimal number greater than $3^n - 1$ will result in a $k_a'$ with $n+1$ digits prior to executing line~\ref{alg:KeyMappingA:shortenTernaryString}.
+The subkey $k_a$ mapping, described using pseudocode in Algorithm~\ref{alg:KeyMappingA}, determines which single-qubit unitary gates to apply by converting the binary representation of the subkey to a ternary number of length $n$, call it $k_a'$. The conversion from $k_a$ to $k_a'$ is done via a base conversion~\cite{BaseConversionWikipedia}. There is an additional step at line~\ref{alg:KeyMappingA:shortenTernaryString} in Algorithm~\ref{alg:KeyMappingA} which removes the $n^{th}$ digit from the ternary number representation if it is length $n+1$ (contains $n+1$ digits). This means that if line~\ref{alg:KeyMappingA:shortenTernaryString} were commented out (meaning it would no longer execute), then $k_a = k_a'$ when interpreted in their respective bases. Since the subkey $k_a$ specifies $3^n$ sets of operations, it must consist of $\ceil{\log_2 (3^n)} = \ceil{n \log_2 (3)} \approx \ceil{1.585 n}$ bits to express all possible $3^n$ gate combinations. This also means that, depending on the value of $n$, some bit strings of length $\ceil{n \log_2 (3)}$ may cause Algorithm~\ref{alg:KeyMappingA} to execute line~\ref{alg:KeyMappingA:shortenTernaryString}. In particular, any bit string $k_a$ representing a decimal number greater than $3^n - 1$ will result in a $k_a'$ with $n+1$ digits prior to executing line~\ref{alg:KeyMappingA:shortenTernaryString}.
 
 \begin{example}
-If $n = 2$, $k_a$ will be specified using $\ceil{\log_2 3^2} = 4$ bits. The bit string $1001$ when converted to ternary is $100$, which is length $n+1$. The bit string $1000$ when converted to ternary is $22$, which is length $n$.
+If $n = 2$, $k_a$ will be specified using $\ceil{\log_2 (3^2)} = 4$ bits. The bit string $1001$ when converted to ternary is $100$, which is length $n+1$. The bit string $1000$ when converted to ternary is $22$, which is length $n$.
 \end{example}
 
 As a result of using a base conversion method, the subkey space will have some 'collisions', meaning that for a given $k_a$, there will be at most one other subkey that specifies the same operations to apply via Algorithm~\ref{alg:KeyMappingA}. Again, this isn't an issue as there is a very large number of values $k_a$ can take on. In the case that there are no collisions, the resulting set of $k_a'$s will give a perfectly uniform selection of each of the $U_i$ gates, thus satisfying the security requirements laid out in Theorems~\ref{theorem:singleQubitAttackOnDataQubit} and~\ref{theorem:singleQubitAttackOnSignatureQubit}. There is a negligible effect on the uniformity of the selected gates if there are collisions. If someone implementing the block Clifford code wants to be extra-diligent, they may opt to exclude each $k_a$ greater than $3^n - 1$ from the underlying security protocol to remove all collisions.
@@ -1814,13 +1803,13 @@ As a result of using a base conversion method, the subkey space will have some '
 For a given $k_a$, there will be at most one other subkey that specifies the same operations to apply via Algorithm~\ref{alg:KeyMappingA}.
 \end{theorem}
 \begin{proof}
-In the worst case, $2(3^n) - 2 = 2^{\ceil{\log_2 3^n}}$. This occurs when the $n$-digit ternary number with $n$ number of $2$s is equal to a $\ceil{\log_2 3^n}$-digit binary number with a single $1$ followed by $\ceil{\log_2 3^n} - 1$ number of $0$s. This means the first $2^{\ceil{\log_2 3^n} - 1} + 1$ binary numbers that $k_a$ can take on specify all $3^n$ ternary numbers, and the next $2^{\ceil{n \log_2 3} - 1} - 1$ binary numbers specify each of the first $3^n - 2$ ternary numbers again. See the following:
+In the worst case, $2(3^n) - 2 = 2^{\ceil{\log_2 (3^n)}}$. This occurs when the $n$-digit ternary number with $n$ number of $2$s is equal to a $\ceil{\log_2 (3^n)}$-digit binary number with a single $1$ followed by $\ceil{\log_2 (3^n)} - 1$ number of $0$s. This means the first $2^{\ceil{\log_2 (3^n)} - 1} + 1$ binary numbers that $k_a$ can take on specify all $3^n$ ternary numbers, and the next $2^{\ceil{n \log_2 (3)} - 1} - 1$ binary numbers specify each of the first $3^n - 2$ ternary numbers again. See the following:
 \begin{align}
-\underbrace{2, 2, 2, \cdots 2,2,2}_{n \text{ times}} &= 1, \underbrace{0, 0, 0, \cdots 0,0,0}_{\ceil{\log_2 3^n} - 1 \text{ times}}\\
-1,\underbrace{0, 0, 0, \cdots 0,0,0}_{n \text{ times}} &= 1, \underbrace{0, 0, 0, \cdots 0,0,0}_{\ceil{\log_2 3^n} - 2 \text{ times}}, 1\\
+\underbrace{2, 2, 2, \cdots 2,2,2}_{n \text{ times}} &= 1, \underbrace{0, 0, 0, \cdots 0,0,0}_{\ceil{\log_2 (3^n)} - 1 \text{ times}}\\
+1,\underbrace{0, 0, 0, \cdots 0,0,0}_{n \text{ times}} &= 1, \underbrace{0, 0, 0, \cdots 0,0,0}_{\ceil{\log_2 (3^n)} - 2 \text{ times}}, 1\\
 & \vdots \nonumber \\
-1, \underbrace{2, 2, 2, \cdots 2,2,2}_{n-2 \text{ times}}, 1,2 &= \underbrace{1, 1, 1, \cdots 1,1,1}_{\ceil{\log_2 3^n - 1}\text{ times}} 0\\
-1, \underbrace{2, 2, 2, \cdots 2,2,2}_{n-1 \text{ times}}, 0 &= \underbrace{1, 1, 1, \cdots 1,1,1}_{\ceil{\log_2 3^n}\text{ times}}
+1, \underbrace{2, 2, 2, \cdots 2,2,2}_{n-2 \text{ times}}, 1,2 &= \underbrace{1, 1, 1, \cdots 1,1,1}_{\ceil{\log_2 (3^n) - 1}\text{ times}} 0\\
+1, \underbrace{2, 2, 2, \cdots 2,2,2}_{n-1 \text{ times}}, 0 &= \underbrace{1, 1, 1, \cdots 1,1,1}_{\ceil{\log_2 (3^n)}\text{ times}}
 \end{align}
 \end{proof}
 
@@ -1845,10 +1834,10 @@ Although there may be faster methods for converting a number from binary to tern
   \end{algorithmic}
 \end{algorithm}
 
-The main while loop of Algorithm~\ref{alg:KeyMappingA} will iterate at most $\log_{3}3^n + 1 = n + 1$ times, where $n$ denotes the number of qubits in the data packet $\rho$. The division in the while loop at line~\ref{alg:divmod} will execute in $O\left(D(\ceil{1.585 n})\right)$ time, where $D\left(n\right)$ specifies the complexity time to divide an at most $n$-bit number by an at most $n$-bit number. Asymptotically, the fastest method for dividing two numbers is to take the reciprocal of the divisor, and then perform multiplication. This method takes $O\left(M(n)\right)$ time, where $M\left(n\right)$ specifies the complexity time to multiply two $n$-bit numbers~\cite{FastDivision,granlund2010gnu}. The asymptotically fastest multiplication algorithm takes $M\left(n\right) = O\left(n\log_2 n\right)$ time~\cite{harvey2021integer}. Utilizing the asymptotically fastest method of division, each iteration of the while loop takes:
+The main while loop of Algorithm~\ref{alg:KeyMappingA} will iterate at most $\log_{3}(3^n) + 1 = n + 1$ times, where $n$ denotes the number of qubits in the data packet $\rho$. The division in the while loop at line~\ref{alg:divmod} will execute in $O\left(D(\ceil{n \log_2 (3)})\right)$ time, where $D\left(n\right)$ specifies the time complexity to divide an at most $n$-bit number by an at most $n$-bit number. Asymptotically, the fastest method for dividing two numbers is to take the reciprocal of the divisor, and then perform multiplication. This method takes $O\left(M(n)\right)$ time, where $M\left(n\right)$ specifies the time complexity to multiply two $n$-bit numbers~\cite{FastDivision,granlund2010gnu}. The asymptotically fastest multiplication algorithm takes $M\left(n\right) = O\left(n\log_2 (n)\right)$ time~\cite{harvey2021integer}. Utilizing the asymptotically fastest method of division, each iteration of the while loop takes:
 \begin{align}
-O\left(D(\ceil{1.585 n})\right) = &O\left(\ceil{1.585 n}\log_2 \ceil{1.585 n}\right)\\
-= &O\left(n\log_2 n\right)
+O\left(D(\ceil{n \log_2 (3)})\right) = &O\left(\ceil{n \log_2 (3)}\log_2 \ceil{n \log_2 (3)}\right)\\
+= &O\left(n\log_2 (n)\right)
 \end{align}
 time, and with the loop iterating at most $n + 1$ times, Algorithm~\ref{alg:KeyMappingA} takes:
 \begin{align}
@@ -1856,31 +1845,31 @@ time, and with the loop iterating at most $n + 1$ times, Algorithm~\ref{alg:KeyM
 \end{align}
 time.
 
-The mapping for subkey $k_b$ makes use of the unranking algorithm for the combinatorial number system~\cite{CNSlectureNotes}. First, the unranking algorithm will be explained, followed by how it is used for the subkey $k_b$ mapping. Remark that an unranking function is a bijective function which maps a given integer $i \in {0, 1, \cdots \lvert S \rvert - 1}$ to a corresponding element $s \in S$, where $S$ is some defined defined set~\cite{shimizu2014unranking}. For the combinatorial number system unranking function, each $s$ is a $k$-combination from the set $S$ of all $\lvert S \rvert = {n \choose k}$ combinations. The combinatorial number system is used to map an index $N$ where $0 \leq N < {n \choose k}$ to a unique $k$-combination. The combinatorial number system relies on the following unique representation~\cite{siddique2016proof}:
+The mapping for subkey $k_b$ makes use of the unranking algorithm for the combinatorial number system~\cite{CNSlectureNotes}. First, the unranking algorithm will be explained, followed by how it is used for the subkey $k_b$ mapping. Remark that an unranking function is a bijective function which maps a given integer $i \in \{0, 1, \cdots \lvert S \rvert - 1\}$ to a corresponding element $s \in S$, where $S$ is some defined defined set~\cite{shimizu2014unranking}. For the combinatorial number system unranking function, each $s$ is a $k$-combination from the set $S$ of all $\lvert S \rvert = {n \choose k}$ combinations. The combinatorial number system is used to map an index $N$ where $0 \leq N < {n \choose k}$ to a unique $k$-combination. The combinatorial number system relies on the following unique representation for each $N$~\cite{siddique2016proof}:
 \begin{align}
 N={c_{k} \choose k}+\cdots+{c_{2} \choose 2}+{c_{1} \choose 1}
 \end{align}
-where each $c_{i+1} > c_i$. The element $c_i$ denotes the index of a chosen element in the $k$-combination. A greedy algorithm can be used to efficiently map an integer $N$ to its corresponding combination. It essentially works by finding the largest $c_k$ such that ${c_k \choose k} \leq N$, then recursively repeats the process to find the largest $c_{k-1}$ such that ${c_{k-1} \choose k-1} \leq N - {c_k \choose k}$, largest $c_{k-2}$ such that ${c_{k-2} \choose k-2} \leq N - {c_k \choose k} - {c_{k-1} \choose k-1}$, etc. until all $c_i$ have been chosen. The bulk of the computation in this algorithm is from the calculation of each ${m \choose j}$ where $0 \leq m \leq n$ and $0 < j \leq k$. Algorithm~\ref{alg:CNS} describes the greedy algorithm for implementing the combinatorial number system unranking function, which requires calculating at most $2n$ number of ${m \choose j}$s.
+where each $c_{i+1} > c_i$. The element $c_i$ denotes the index of a chosen element in the $k$-combination. A greedy algorithm can be used to efficiently map an integer $N$ to its corresponding combination. It essentially works by finding the largest $c_k$ such that ${c_k \choose k} \leq N$, then recursively repeats the process to find the largest $c_{k-1}$ such that ${c_{k-1} \choose k-1} \leq N - {c_k \choose k}$, largest $c_{k-2}$ such that ${c_{k-2} \choose k-2} \leq N - {c_k \choose k} - {c_{k-1} \choose k-1}$, etc. until each $c_i$ has been chosen. The bulk of the computation in this algorithm is from the calculation of each ${m \choose j}$ where $0 \leq m \leq n$ and $0 < j \leq k$. Algorithm~\ref{alg:CNS} describes the greedy algorithm for implementing the combinatorial number system unranking function, which requires calculating at most $2n$ number of ${m \choose j}$s.
 \begin{theorem}
-When making the same assumptions for multiplication and division operations as in Algorithm~\ref{alg:KeyMappingA}, an efficient algorithm for computing factorials,~\cite{borwein1985complexity}, allows calculating $2n$ number of ${m \choose j}$s runs in $O\left(n^2 (\log_2 n)^2 \log_2\log_2 n\right)$ time.
+When making the same assumptions for multiplication and division operations as in Algorithm~\ref{alg:KeyMappingA}, an efficient algorithm for computing factorials,~\cite{borwein1985complexity}, allows calculating $2n$ number of ${m \choose j}$s in $O\left(n^2 \log_2^2 (n) \log_2(\log_2 (n))\right)$ time.
 \end{theorem}
 \begin{proof}
-The algorithm presented in~\cite{borwein1985complexity} shows that calculating $n!$ can be computed in $O\left(\log_2\log_2 n M(n \log_2 n)\right)$ time. Subsequently, that means that ${n \choose k}$ can be calculated in the same amount of time, as it requires calculating three factorials all at most $n!$ in size, followed by two division operations, each costing $O\left(M(n \log_2 n)\right)$. Calculating the $2n$ number of ${m \choose j}$s would then result in a time complexity of:
+The algorithm presented in~\cite{borwein1985complexity} shows that calculating $n!$ can be computed in $O\left(\log_2(\log_2 (n)) M(n \log_2 (n))\right)$ time. Subsequently, that means that ${n \choose k}$ can be calculated in the same amount of time, as it requires calculating three factorials all at most $n!$ in size, followed by two division operations, each costing $O\left(M(n \log_2 (n))\right)$. Calculating the $2n$ number of ${m \choose j}$s would then result in a time complexity of:
 \begin{align}
-&O\left(n\log_2\log_2 n M(n \log_2 n)\right) \\
-=&O\left(n\log_2\log_2 n (n \log_2 n(\log_2 (n \log_2 n)))\right) \\
-=&O\left(n\log_2\log_2 n (n \log_2 n(\log_2 n + \log_2\log_2 n))\right) \\
-=&O\left(n\log_2\log_2 n (n (\log_2 n)^2 + n \log_2 n \log_2\log_2 n))\right)\\
-=&O\left(n^2 (\log_2 n)^2 \log_2\log_2 n + n^2 \log_2 n (\log_2\log_2 n)^2\right) \\
-=&O\left(n^2 (\log_2 n)^2 \log_2\log_2 n\right)
+&O\left(n\log_2(\log_2(n))M(n \log_2 (n))\right) \\
+=&O\left(n\log_2(\log_2 (n))n \log_2 (n)\log_2 (n \log_2 (n))\right) \\
+=&O\left(n\log_2 (\log_2 (n)) n \log_2 (n)(\log_2 (n) + \log_2(\log_2 (n)))\right) \\
+=&O\left(n\log_2(\log_2 (n)) (n \log_2^2 (n) + n \log_2 (n) \log_2(\log_2 (n))))\right)\\
+=&O\left(n^2 \log_2^2 (n) \log_2(\log_2 (n)) + n^2 \log_2 (n) (\log_2 (\log_2 (n)))^2\right) \\
+=&O\left(n^2 \log_2^2 (n) \log_2(\log_2 (n))\right)
 \end{align}
 \end{proof}
 A more efficient algorithm allows incrementally calculating each ${m \choose j}$ by reusing the previously calculated ${m \choose j}$, bringing the cost of calculating the $2n$ number of ${m \choose j}$s to:
 \begin{align}
-O\left(n M(k \log_2 n)\right) &= O\left(n k \log_2 n(\log_2(k \log_2 n))\right)\\
-&= O\left(n k \log_2 n(\log_2 k + \log_2\log_2 n)\right)
+O\left(n M(k \log_2 (n))\right) &= O\left(n k \log_2 (n)(\log_2(k \log_2 (n)))\right)\\
+&= O\left(n k \log_2 (n)(\log_2 (k) + \log_2(\log_2 (n)))\right)
 \end{align}
-Each time a new ${m \choose j}$ is calculated, it only differs from the previously calculated ${m \choose j}$ by one multiplication operation and one division operation (see Algorithm~\ref{alg:CNS}). Algorithm~\ref{alg:QuickNChooseK} shows how to calculate each successive ${m \choose j}$ in time $O\left(M(k \log_2 n)\right)$. Let $n'$ and $k'$ denote the previously calculated ${m \choose j}$'s coefficients such that $m = n'$ and $j = k'$. Additionally, define $n\_choose\_k'= {n' \choose k'}$. Algorithm~\ref{alg:CNS} uses Algorithm~\ref{alg:QuickNChooseK} as a subroutine on lines~\ref{alg:CNS:quick1},~\ref{alg:CNS:quick2} and~\ref{alg:CNS:quick3}.
+Each time a new ${m \choose j}$ is calculated, it only differs from the previously calculated ${m \choose j}$ by one multiplication operation and one division operation (see Algorithm~\ref{alg:CNS}). Algorithm~\ref{alg:QuickNChooseK} shows how to calculate each successive ${m \choose j}$ in $O\left(M(k \log_2 n)\right)$ time. Let $n'$ and $k'$ denote the previously calculated ${m \choose j}$'s coefficients such that $m = n'$ and $j = k'$. Additionally, define $\mathit{n\_choose\_k'}= {n' \choose k'}$. Algorithm~\ref{alg:CNS} uses Algorithm~\ref{alg:QuickNChooseK} as a subroutine on lines~\ref{alg:CNS:quick1},~\ref{alg:CNS:quick2} and~\ref{alg:CNS:quick3}.
 
 \begin{algorithm}[H]
 \setstretch{1.07}
@@ -1914,19 +1903,19 @@ where Equation~\eqref{eq:nChooseKequality1} corresponds to line~\ref{alg:QuickNC
 
 \begin{theorem}
 \label{theorem:QuickNChooseKcomplexity}
-Each execution of Algorithm~\ref{alg:QuickNChooseK} takes $$O\left(M(k \log_2(n))\right) = O \left(k\log_2 n(\log_2 k+\log_2\log_2 n)\right)$$ time.
+Each execution of Algorithm~\ref{alg:QuickNChooseK} takes $$O\left(M(k \log_2 (n))\right) = O \left(k\log_2 (n)(\log_2 (k)+\log_2(\log_2 (n)))\right)$$ time.
 \end{theorem}
 \begin{proof}
-Each execution has at most one division and one multiplication operation, each involving numbers with at most $\log_2({n \choose k})$ number of bits.
+Each execution has at most one division and one multiplication operation, each involving numbers with at most $\log_2 ({n \choose k})$ number of bits.
 \begin{align}
-\log_2 \left({n \choose k} \right) <& \log_2(n^k) \\
-=& k\log_2(n) \\
+\log_2 ({n \choose k}) <& \log_2 (n^k) \\
+=& k\log_2 (n) \\
 \end{align}
 Assuming multiplication and division cost $n \log_2 n$ where $n$ is the number of bits required to represent the largest of the $2$ numbers, a single execution of Algorithm~\ref{alg:QuickNChooseK} costs:
 \begin{align}
-2 (M(k\log_2 n ) &= 2 (k\log_2 n\log_2(k\log_2 n)) \\
-&= 2 (k\log_2 n(\log_2 k+\log_2\log_2 n)) \\
-&= O\left(k\log_2 n(\log_2 k+\log_2\log_2 n)\right)
+2 (M(k\log_2 (n) ) &= 2 (k\log_2 (n)\log_2(k\log_2 (n))) \\
+&= 2 (k\log_2 (n)(\log_2 (k)+\log_2(\log_2 (n)))) \\
+&= O\left(k\log_2 (n)(\log_2 (k)+\log_2(\log_2 (n)))\right)
 \end{align}
 \end{proof}
 
@@ -1972,13 +1961,13 @@ Assuming multiplication and division cost $n \log_2 n$ where $n$ is the number o
 
 \begin{theorem}
 \label{theorem:CNStimeComplexity}
-Algorithm~\ref{alg:CNS} takes $O\left(nk\log_2 n(\log_2 k+\log_2\log_2 n)\right)$ time.
+Algorithm~\ref{alg:CNS} takes $O\left(nk\log_2 (n)(\log_2 (k)+\log_2(\log_2 (n)))\right)$ time.
 \end{theorem}
 \begin{proof}
-The most expensive lines in Algorithm~\ref{alg:CNS} are calls to Algorithm~\ref{alg:QuickNChooseK} on lines \ref{alg:CNS:quick1}, \ref{alg:CNS:quick2} and \ref{alg:CNS:quick3}. Theorem~\ref{theorem:QuickNChooseKcomplexity} showed that Algorithm~\ref{alg:QuickNChooseK} runs in $$O\left(k\log_2 n(\log_2 k+\log_2\log_2 n)\right)$$ time. Careful inspection of Algorithm~\ref{alg:CNS} reveals that in the first loop, Algorithm~\ref{alg:QuickNChooseK} is called at most $n - k +2$ times and is called at most $n-1$ times in the second loop. This can be seen by how in the worst case $c_i$ sequentially takes on values from $(k-1,k, \cdots n)$ followed by sequentially taking on values from $(n-1,n-2 \cdots 1)$ when being used for a call to Algorithm~\ref{alg:QuickNChooseK}. Since $1 \leq k \leq n$, Algoritm~\ref{alg:QuickNChooseK} is called at most $(n - k + 2) + (n-1) = 2n - k + 1 \leq 2n$ times. Thus, the run time of Algorithm~\ref{alg:CNS} is:
-
+The most expensive lines in Algorithm~\ref{alg:CNS} are calls to Algorithm~\ref{alg:QuickNChooseK} on lines \ref{alg:CNS:quick1}, \ref{alg:CNS:quick2} and \ref{alg:CNS:quick3}. Theorem~\ref{theorem:QuickNChooseKcomplexity} showed that Algorithm~\ref{alg:QuickNChooseK} runs in $$O\left(k\log_2 (n)(\log_2 (k)+\log_2(\log_2 (n)))\right)$$ time. Careful inspection of Algorithm~\ref{alg:CNS} reveals that Algorithm~\ref{alg:QuickNChooseK} is called at most $n - k +2$ times in the first loop and at most $n-1$ times in the second loop. This can be seen by how in the worst case $c_i$ sequentially takes on values from $(k,k + 1, \cdots ,n)$ followed by sequentially taking on values from $(n-2,n-3, \cdots ,1)$ when being used for a call to Algorithm~\ref{alg:QuickNChooseK}. Since $1 \leq k \leq n$, Algoritm~\ref{alg:QuickNChooseK} is called at most $(n - k + 1) + (n-2) = 2n - k - 1 \leq 2(n - 1)$ times. Thus, the run time of Algorithm~\ref{alg:CNS} is:
 \begin{align}
-&2n (O\left(k\log_2 n(\log_2 k+\log_2\log_2 n)\right)) = O\left(nk\log_2 n(\log_2 k+\log_2\log_2 n)\right)
+&2(n - 1) (O\left(k\log_2 (n)(\log_2 (k)+\log_2(\log_2 (n))))\right)\\
+= &O\left(nk\log_2 (n)(\log_2 (k)+\log_2(\log_2 (n)))\right)
 \end{align}
 \end{proof}
 
@@ -1989,11 +1978,11 @@ Algorithm~\ref{alg:CNS} is used in Algorithm~\ref{alg:KeyMappingB}. Next, the ps
   \caption{Subkey $k_b$ Mapping($n$,$d$,$k_b$)}  \label{alg:KeyMappingB}
   \begin{algorithmic}[1]
   \State $k_b' \Longleftarrow (\underbrace{d, d, \cdots d}_{n \text{ times}})$
-  \State $\mathit{unpicked\_elements} = (0,1,2 \cdots n-1)$
+  \State $\mathit{unpicked\_elements} = (0,1,2, \cdots ,n-1)$
   \State $m = n - d$
-  \State $q \Longleftarrow k_b$
-  \ForEach{$i \in (0,1,2 \cdots d-1)$} \label{alg:KeyMappingB:mainLoop}
-  \State $q,r \Longleftarrow \mathit{divmod}(q,{n - i\frac{m}{d} \choose \frac{m}{d}})$ \label{alg:KeyMappingB:divmod}
+  \ForEach{$i \in (0,1,2, \cdots ,d-1)$} \label{alg:KeyMappingB:mainLoop}
+  \State $q,r \Longleftarrow \mathit{divmod}(k_b,{n - i\frac{m}{d} \choose \frac{m}{d}})$ \label{alg:KeyMappingB:divmod}
+  \State $k_b \Longleftarrow q$
   \State $\mathit{combination} =$ Combinatorial Number System Unranking($n - i\frac{m}{d}$,$\frac{m}{d}$,$r$) \label{alg:KeyMappingB:CNScall} \label{alg:KeyMappingB:CNS}
   \ForEach{$\mathit{element} \in \mathit{combination}$}
   \State $k_b'(\mathit{unpicked\_elements}.\mathit{pop}(\mathit{element})) \Longleftarrow i$ \label{alg:KeyMappingB:addToPermutation}
@@ -2008,17 +1997,17 @@ Remark that Algorithm~\ref{alg:KeyMappingB} takes as input a subkey $k_b$ and ma
     \{\underbrace{0, 0, \cdots 0}_{\frac{m}{d} \text{ times}}\underbrace{1, 1, \cdots 1}_{\frac{m}{d} \text{ times}}\cdots\underbrace{d-1, d-1, \cdots d-1}_{\frac{m}{d} \text{ times}}\underbrace{d, d, \cdots d}_{d \text{ times}}\}
 \end{equation}
 It generates a given permutation by applying the combinatorial number system unranking $d$ times, once for each block of qubits (see how line~\ref{alg:KeyMappingB:CNS} executes Algorithm~\ref{alg:CNS}). The output of Algorithm~\ref{alg:KeyMappingB} is a decimal string where each value $i$, where $0 \leq i < d$, determines which block each data qubit is associated with, and each value of $i = d$ denotes the position a signature qubit is moved to (recall Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} for further details). 
-The input, $k_b$, is in the range $$0 \leq k_b < {n \choose \frac{m}{d}}{n - \frac{m}{d} \choose \frac{m}{d}}{n - 2\frac{m}{d} \choose \frac{m}{d}}\cdots{\frac{m}{d} + d \choose \frac{m}{d}}$$ The input $k_b$ is converted to a number with variable-sized base where each digit at position $i$ is at most ${n - i\frac{m}{d} \choose \frac{m}{d}} - 1$. The method of base conversion uses the same technique as in Algorithm~\ref{alg:KeyMappingA} by successively applying Euclidean division to 'extract' the value at each digit (see line~\ref{alg:KeyMappingB:divmod} of Algorithm~\ref{alg:KeyMappingB}). The resulting variable-sized base number has $d$ digits, where the value and index of each digit correspond to a set of inputs for an execution of the combinatorial number system algorithm (recall line~\ref{alg:KeyMappingB:CNS}). 
+The input, $k_b$, is in the range $$0 \leq k_b < {n \choose \frac{m}{d}}{n - \frac{m}{d} \choose \frac{m}{d}}{n - 2\frac{m}{d} \choose \frac{m}{d}}\cdots{\frac{m}{d} + d \choose \frac{m}{d}}$$ The input $k_b$ is converted to a $d$-digit number with variable-sized base where the value of each digit at position $i$ is at most ${n - i\frac{m}{d} \choose \frac{m}{d}} - 1$. The method of base conversion uses the same technique as in Algorithm~\ref{alg:KeyMappingA} by successively applying Euclidean division to 'extract' the value at each digit (see line~\ref{alg:KeyMappingB:divmod} of Algorithm~\ref{alg:KeyMappingB}). The value and index of each digit in the resulting variable-sized base number correspond to a set of inputs for an execution of the combinatorial number system algorithm (recall line~\ref{alg:KeyMappingB:CNS}). 
 
-Each output of the combinatorial number system algorithm determines the locations of all the elements of some value a part of the multiset. For instance, the first combinatorial number system algorithm call determines the positions of all $\frac{m}{d}$ of the $0$s, followed by the next call determining the positions of the $\frac{m}{d}$ number of $1$s out of the remaining $n - \frac{m}{d}$ positions, etc. Line~\ref{alg:KeyMappingB:addToPermutation} shows the values from an output of Algorithm~\ref{alg:CNS} being used to assign values to the output of Algorithm~\ref{alg:KeyMappingB}. The $pop(x)$ method held by the $\mathit{unpicked\_elements}$ list denotes removing and returning the element at position $x$ in the list. An efficient tree-based data structure may be used to represent the list, enabling $pop(x)$ to run in $O\left(\log_2 n\right)$ time. To avoid having to 'reinvent the wheel', the Sorted Containers Python library is used to represent such a data structure in my implementation of Algorithm~\ref{alg:KeyMappingB}~\cite{sortedContainers}. The $\mathit{unpicked\_elements}$ list ensures that values in the output $k_b'$ are only ever assigned once. Note that $k_b'$ is initialized with its values all set to $d$ for convenience, as line~\ref{alg:KeyMappingB:addToPermutation} executes $m$ times, with the remaining unassigned elements in $k_b'$ defaulting to a value of $d$.
+Each output of the combinatorial number system algorithm determines the locations of all the elements of some value a part of the multiset. For instance, the first combinatorial number system algorithm call determines the positions of all $\frac{m}{d}$ of the $0$s, followed by the next call determining the positions of the $\frac{m}{d}$ number of $1$s out of the remaining $n - \frac{m}{d}$ positions, etc. Line~\ref{alg:KeyMappingB:addToPermutation} shows the values from an output of Algorithm~\ref{alg:CNS} being used to assign values to the output of Algorithm~\ref{alg:KeyMappingB}. The $\mathit{pop}(x)$ method held by the $\mathit{unpicked\_elements}$ list denotes removing and returning the element at position $x$ in the list. An efficient tree-based data structure may be used to represent the list, enabling $\mathit{pop}(x)$ to run in $O\left(\log_2 n\right)$ time. To avoid having to 'reinvent the wheel', the Sorted Containers Python library is used to represent such a data structure in my implementation of Algorithm~\ref{alg:KeyMappingB}~\cite{sortedContainers}. The $\mathit{unpicked\_elements}$ list ensures that values in the output $k_b'$ are only ever assigned at most once. Note that $k_b'$ is initialized with its values all set to $d$ for convenience because line~\ref{alg:KeyMappingB:addToPermutation} executes $m$ times, making the remaining unassigned elements in $k_b'$ default to a value of $d$.
 
 \begin{theorem}
-Algorithm~\ref{alg:KeyMappingB} runs in $O\left(n^2\log_2^2 n \right)$ time.
+Algorithm~\ref{alg:KeyMappingB} runs in $O\left(n^2\log_2^2 (n) \right)$ time.
 \end{theorem}
 \begin{proof}
-Theorem~\ref{theorem:CNStimeComplexity} showed that Algorithm~\ref{alg:CNS} runs in $$O\left(nk\log_2 n(\log_2 k+\log_2\log_2 n)\right)$$ time. Algorithm~\ref{alg:KeyMappingB} calls Algorithm~\ref{alg:CNS} as a subroutine $d$ times, each time with values at most $n$ and $\frac{m}{d}$ for input parameters $n$ and $k$ respectively. This results in a run time of:
+Theorem~\ref{theorem:CNStimeComplexity} showed that Algorithm~\ref{alg:CNS} runs in $$O\left(nk\log_2(n)(\log_2(k)+\log_2(\log_2(n)))\right)$$ time. Algorithm~\ref{alg:KeyMappingB} calls Algorithm~\ref{alg:CNS} as a subroutine $d$ times, each time with values at most $n$ and $\frac{m}{d}$ for input parameters $n$ and $k$ respectively. This results in a run time of:
 \begin{align}
-d(O\left(n\frac{m}{d}\log_2 n (\log_2 \frac{m}{d} + \log_2 \log_2 n)\right)) = O\left(n^2\log_2^2 n\right) \label{eq:KeyMappingBcomplexity1}
+d\left(O\left(n\frac{m}{d}\log_2 (n) \left(\log_2 (\frac{m}{d}) + \log_2 (\log_2 (n))\right)\right)\right) = O\left(n^2\log_2^2 (n)\right) \label{eq:KeyMappingBcomplexity1}
 \end{align}
 The other main computation in Algorithm~\ref{alg:KeyMappingB} is the base conversion on line~\ref{alg:KeyMappingB:divmod}. This results in $d$ division operations, each with numbers involving at most $\log_2(n!)$ number of bits:
 \begin{align}
@@ -2031,10 +2020,10 @@ This results in a run time of:
 O\left(d(M(\log_2(n!)))\right) &< O\left(d(M(n \log_2(n)))\right)\\
 &= O\left(d(M(n \log_2(n)))\right) \\
 &= O\left(dn \log_2(n)\log_2(n \log_2(n))\right) \\
-&= O\left(dn \log_2(n)(\log_2 n + \log_2\log_2(n)))\right) \\
+&= O\left(dn \log_2(n)(\log_2(n) + \log_2(\log_2(n)))\right) \\
 &= O\left(dn \log_2^2(n)\right) \label{eq:KeyMappingBcomplexity2}
 \end{align}
-Adding together the two complexity times in Equations~\eqref{eq:KeyMappingBcomplexity1} and~\eqref{eq:KeyMappingBcomplexity2} concludes the proof.
+Adding together the two time complexities in Equations~\eqref{eq:KeyMappingBcomplexity1} and~\eqref{eq:KeyMappingBcomplexity2} concludes the proof.
 \end{proof}
 
 This idea of 'variable-base numbers' seems to be uncommon within the broader scope of computer science and mathematics. The only other known usage of variable-base numbers I know of is with the Lehmer code and its similar variants~\cite{arndt2010matters}. As a result, I made sure that the proof of correctness for Algorithm~\ref{alg:KeyMappingB} is elaborate.
@@ -2047,45 +2036,43 @@ To prove its correctness, it must be shown that every possible permutation is ma
 
 I will define a few additional variables to prove the correctness of the algorithm. Denote $q_i$ as an integer such that:
 \begin{align}
-q_i \in \{0, 1 \cdots \left({n - i\frac{m}{d} \choose \frac{m}{d}}{n - (i+1)\frac{m}{d} \choose \frac{m}{d}}\cdots{\frac{m}{d} + d \choose \frac{m}{d}}\right) - 1 \}.
+q_i \in \{0, 1, \cdots ,\left({n - i\frac{m}{d} \choose \frac{m}{d}}{n - (i+1)\frac{m}{d} \choose \frac{m}{d}}\cdots{\frac{m}{d} + d \choose \frac{m}{d}}\right) - 1 \}
 \end{align}
-Also denote $r_i$ as the remainder given when performing Euclidean division with $q = q_i$ on line~\ref{alg:KeyMappingB:divmod} of Algorithm~\ref{alg:KeyMappingB}. A given execution of line~\ref{alg:KeyMappingB:divmod} rewritten using this new notation,
-
+Also let $r_i$ be the remainder and $q_i$ be the dividend when performing Euclidean division on line~\ref{alg:KeyMappingB:divmod} of Algorithm~\ref{alg:KeyMappingB}. A given execution of line~\ref{alg:KeyMappingB:divmod} rewritten using this new notation,
 \begin{align}
 q_{i+1},r_i \Longleftarrow \mathit{divmod}\left(q_i,{n - i\frac{m}{d} \choose \frac{m}{d}}\right)
 \end{align}
 gives the following:
 \begin{align}
-q_{i+1} \in \{0, 1 \cdots \left({n - (i+1)\frac{m}{d} \choose \frac{m}{d}}{n - (i+2)\frac{m}{d} \choose \frac{m}{d}}\cdots{\frac{m}{d} + d \choose \frac{m}{d}}\right) - 1 \}
+q_{i+1} \in \{0, 1, \cdots ,\left({n - (i+1)\frac{m}{d} \choose \frac{m}{d}}{n - (i+2)\frac{m}{d} \choose \frac{m}{d}}\cdots{\frac{m}{d} + d \choose \frac{m}{d}}\right) - 1 \}
 \end{align}
 and
 \begin{align}
-r_i \in \{0, 1 \cdots {n - i\frac{m}{d} \choose \frac{m}{d}} - 1\}
+r_i \in \{0, 1, \cdots ,{n - i\frac{m}{d} \choose \frac{m}{d}} - 1\}
 \end{align}
-Additionally, let $R_i = \{0, 1 \cdots {n - i\frac{m}{d} \choose \frac{m}{d}} - 1\}$, meaning $r_i \in R_i$. Remark that using Euclidean division means that
+Additionally, let $R_i = \{0, 1, \cdots ,{n - i\frac{m}{d} \choose \frac{m}{d}} - 1\}$, meaning $r_i \in R_i$. Remark that using Euclidean division means that
 \begin{align}
-q_{i} = {n - i\frac{m}{d} \choose \frac{m}{d}}q_{i+1} + r_{i} \label{eq:EuclidDivisionDefintion}
+q_{i} = q_{i+1}{n - i\frac{m}{d} \choose \frac{m}{d}} + r_{i} \label{eq:EuclidDivisionDefintion}
 \end{align}
 Rewriting Equation~\eqref{eq:EuclidDivisionDefintion} by substituting $q_{i+1}$ and $r_i$ for their maximum values, as previously defined, gives:
 \begin{align}
 q_{i} &= \left(\left({n - (i+1)\frac{m}{d} \choose \frac{m}{d}}{n - (i+2)\frac{m}{d} \choose \frac{m}{d}}\cdots \right) - 1\right) {n - i\frac{m}{d} \choose \frac{m}{d}} + {n - i\frac{m}{d} \choose \frac{m}{d}} - 1 \\
 &= \left({n - i\frac{m}{d} \choose \frac{m}{d}}{n - (i+1)\frac{m}{d} \choose \frac{m}{d}}\cdots{\frac{m}{d} + d \choose \frac{m}{d}}\right) - 1
 \end{align}
-which is the maximum value $q_i$ can take on (as previously defined). As a result, any combination of $r_i$ and $q_{i+1}$ will satisfy $q_i$ to be within its valid range of values. Moreover, due to Euclid's division lemma, each value of $q_i$ gives a unique $q_{i+1}$ and $r_i$. The inverse case also holds true of course, a given $q_{i+1}$ and $r_i$ gives a unique $q_i$ (remark that in both cases the divisor ${n - i\frac{m}{d} \choose \frac{m}{d}}$ is fixed). This means there is a bijection between $q_{i}$ and $(q_{i+1}, r_i)$. That is, there is a function $$f(q_i) = (q_{i+1}, r_i)$$ which has an inverse $$g(r_i,q_{i+1}) = q_i$$ given by Equation~\eqref{eq:EuclidDivisionDefintion} for a fixed ${n - i\frac{m}{d} \choose \frac{m}{d}}$. Any function that has an inverse is a bijection.
+which is the maximum value $q_i$ can take on (as previously defined). As a result, any combination of $r_i$ and $q_{i+1}$ will satisfy $q_i$ to be within its valid range of values. Moreover, due to Euclid's division lemma, each value of $q_i$ gives a unique $q_{i+1}$ and $r_i$. The inverse case also holds true of course, a given $q_{i+1}$ and $r_i$ gives a unique $q_i$ (remark that in both cases the divisor ${n - i\frac{m}{d} \choose \frac{m}{d}}$ is fixed). This means there is a bijection between $q_{i}$ and $(q_{i+1}, r_i)$. That is, there is a function $$f(q_i) = (q_{i+1}, r_i)$$ which has an inverse $$g(q_{i+1},r_i) = q_i$$ given by Equation~\eqref{eq:EuclidDivisionDefintion} for a fixed ${n - i\frac{m}{d} \choose \frac{m}{d}}$. Any function that has an inverse is a bijection.
 
 Remark that $i$ takes on values $0, 1, 2 \cdots d - 1$. An inductive proof will show that each possible combination of $r_0,r_1 \cdots r_{d-1}$ can be given by each possible value of $k_b$. The base case for $i = 0$ is as follows:
-
 \begin{align}
 q_{1},r_0 \Longleftarrow \mathit{divmod}\left(q_0,{n - 0\frac{m}{d} \choose \frac{m}{d}}\right)
 \end{align}
 resulting in
 \begin{align}
-q_{0} &= {n - 0\frac{m}{d} \choose \frac{m}{d}}q_{1} + r_{0} \\
-&= {n \choose \frac{m}{d}}q_{1} + r_{0}
+q_{0} &= q_1{n - 0\frac{m}{d} \choose \frac{m}{d}} + r_{0} \\
+&= q_1{n \choose \frac{m}{d}} + r_{0}
 \end{align}
-As shown previously, each possible value of $q_1$ and $r_0$ is given by each possible value of $q_0 = k_b$ (due to the bijection). Given $q_{i+1}$ and $r_i$ can take on all possible combinations, the proof for the inductive step follows as a result of the bijection between $q_{i}$ and $(q_{i+1}, r_i)$, and between $q_{i+1}$ and $(q_{i+2}, r_{i+1})$. As in, each possible combination of $q_{i+2}$ and $r_{i+1}$ is given by each possible value of $q_{i+1}$ while also allowing no restrictions on $r_i$. This results in any given $r_i$ and $r_{i+1}$ being able to take on any given combination, which then allows for any combination of $r_0,r_1 \cdots r_{d-1}$.
+As shown previously, each possible combination of $q_1$ and $r_0$ is given by each possible value of $q_0 = k_b$ (due to the bijection). Given $q_{i+1}$ and $r_i$ can take on all possible combinations, the proof for the inductive step follows as a result of the bijection between $q_{i}$ and $(q_{i+1}, r_i)$, and between $q_{i+1}$ and $(q_{i+2}, r_{i+1})$. As in, each possible combination of $q_{i+2}$ and $r_{i+1}$ is given by each possible value of $q_{i+1}$ while also allowing no restrictions on $r_i$. This results in any given $r_i$ and $r_{i+1}$ being able to take on any given combination, which then allows for any combination of $r_0,r_1 \cdots r_{d-1}$.
 
-Now I will finalize the proof. At execution $i$ of the main loop on line~\ref{alg:KeyMappingB:mainLoop}, there are $n - i\frac{m}{d}$ elements left to assign in $permutation$. Each possible value of $r_i$ corresponds to the $\lvert R_i \rvert = {n - i\frac{m}{d} \choose \frac{m}{d}}$ ways to place the next $\frac{m}{d}$ elements with value $i$ in $permutation$. Thus, all possible ways to permute the multiset:
+Now I will finalize the proof. At execution $i$ of the main loop on line~\ref{alg:KeyMappingB:mainLoop}, there are $n - i\frac{m}{d}$ elements left to assign in $\mathit{permutation}$. Each possible value of $r_i$ corresponds to the $\lvert R_i \rvert = {n - i\frac{m}{d} \choose \frac{m}{d}}$ ways to place the next $\frac{m}{d}$ elements with value $i$ in $\mathit{permutation}$. Thus, all possible ways to permute the multiset:
 \begin{align}
 {n \choose \frac{m}{d}}{n - \frac{m}{d} \choose \frac{m}{d}}{n - 2\frac{m}{d} \choose \frac{m}{d}}\cdots{\frac{m}{d} + d \choose \frac{m}{d}} = (\lvert R_0 \rvert)(\lvert R_1 \rvert)(\lvert R_2 \rvert)\cdots(\lvert R_{d-1} \rvert)
 \end{align}
@@ -2100,16 +2087,15 @@ For a given $k_b$, there will be at most one other subkey that specifies the sam
 \begin{proof}
 In the worst case, $2\lvert k_b' \rvert - 2 = 2^{\ceil{\log_2 \lvert k_b' \rvert}}$. This occurs when the largest possible $n$-digit variable-base number (as defined earlier) is equal to a $\ceil{\log_2 \lvert k_b' \rvert}$-digit binary number with a single $1$ followed by $\ceil{\log_2 \lvert k_b' \rvert} - 1$ number of $0$s. This means the first $2^{\ceil{\log_2 \lvert k_b' \rvert} - 1} + 1$ binary numbers that $k_b$ can take on specify all $\lvert k_b' \rvert$ of the variable-base numbers, and the next $2^{\ceil{\log_2 \lvert k_b' \rvert} - 1} - 1$ binary numbers specify each of the first $\lvert k_b' \rvert - 2$ variable base numbers again. See the following:
 \begin{align}
-{\frac{m}{d} + d \choose \frac{m}{d}} - 1 \cdots {n - 2\frac{m}{d} \choose \frac{m}{d}} - 1, {n - \frac{m}{d} \choose \frac{m}{d}} - 1, {n \choose \frac{m}{d}} - 1 &= 1, \underbrace{0, 0, 0, \cdots 0,0,0}_{\ceil{\log_2 \lvert k_b' \rvert} - 1 \text{ times}}\\
-1,\underbrace{0, 0, 0, \cdots 0,0,0}_{d - 1 \text{ times}} &= 1, \underbrace{0, 0, 0, \cdots 0,0,0}_{\ceil{\log_2 \lvert k_b' \rvert} - 2 \text{ times}}, 1\\
+{\frac{m}{d} + d \choose \frac{m}{d}} - 1, \cdots ,{n - 2\frac{m}{d} \choose \frac{m}{d}} - 1, {n - \frac{m}{d} \choose \frac{m}{d}} - 1, {n \choose \frac{m}{d}} - 1 &= 1, \underbrace{0, 0, 0, \cdots 0,0,0}_{\ceil{\log_2 \lvert k_b' \rvert} - 1 \text{ times}}\\
+1,\underbrace{0, 0, 0, \cdots 0,0,0}_{d \text{ times}} &= 1, \underbrace{0, 0, 0, \cdots 0,0,0}_{\ceil{\log_2 \lvert k_b' \rvert} - 2 \text{ times}}, 1\\
 & \vdots \nonumber \\
-1,{\frac{m}{d} + d \choose \frac{m}{d}} - 1 \cdots {n - 2\frac{m}{d} \choose \frac{m}{d}} - 1, {n - \frac{m}{d} \choose \frac{m}{d}} - 1, {n \choose \frac{m}{d}} - 4 &= \underbrace{1, 1, 1, \cdots 1,1,1}_{\ceil{\log_2 \lvert k_b' \rvert} -1\text{ times}} 0 \\
-1,{\frac{m}{d} + d \choose \frac{m}{d}} - 1 \cdots {n - 2\frac{m}{d} \choose \frac{m}{d}} - 1, {n - \frac{m}{d} \choose \frac{m}{d}} - 1, {n \choose \frac{m}{d}} - 3 &= \underbrace{1, 1, 1, \cdots 1,1,1}_{\ceil{\log_2 \lvert k_b' \rvert}\text{ times}}
+1,{\frac{m}{d} + d \choose \frac{m}{d}} - 1, \cdots ,{n - 2\frac{m}{d} \choose \frac{m}{d}} - 1, {n - \frac{m}{d} \choose \frac{m}{d}} - 1, {n \choose \frac{m}{d}} - 4 &= \underbrace{1, 1, 1, \cdots 1,1,1}_{\ceil{\log_2 \lvert k_b' \rvert} -1\text{ times}} 0 \\
+1,{\frac{m}{d} + d \choose \frac{m}{d}} - 1, \cdots ,{n - 2\frac{m}{d} \choose \frac{m}{d}} - 1, {n - \frac{m}{d} \choose \frac{m}{d}} - 1, {n \choose \frac{m}{d}} - 3 &= \underbrace{1, 1, 1, \cdots 1,1,1}_{\ceil{\log_2 \lvert k_b' \rvert}\text{ times}}
 \end{align}
 \end{proof}
 
 Note that although Theorems~\ref{theorem:collisionForMappingA} and~\ref{theorem:collisionForMappingB} showed a given subkey may have up to two collisions, the effect this has on the security of the protocol is negligible, given how large the key space is in comparison:
-
 \begin{align}
 2^{\ceil{\log_2 ({n \choose \frac{m}{d}}{n - \frac{m}{d} \choose \frac{m}{d}}{n - 2\frac{m}{d} \choose \frac{m}{d}}\cdots{\frac{m}{d} + d \choose \frac{m}{d}})}\ceil{\log_2 3^n}}
 \end{align}
