@@ -206,11 +206,11 @@ The novel multiset permutation unranking method is described in Algorithm~\ref{a
 \chapter{Required Background Knowledge}
 \label{sec:RequiredBackgroundKnowledge}
 \section{Introduction and External Resources}
-Quantum information science relies heavily on linear algebra and complex numbers. This thesis will not explain those concepts. The required linear algebra and complex number concepts for understanding this thesis can be found on Khan Academy, YouTube, in textbooks on the subject(s), etc. The textbook \emph{Quantum Computing for Computer Scientists} also provides a great explanation of complex numbers and many of the the linear algebra concepts required for understanding quantum information science~\cite{yanofsky2008quantum}. This thesis also makes use of concepts from probability, combinatorics and set theory as well as various proof techniques which are all explained in one of Michiel Smid's free textbooks~\cite{michielSmidTextbook}. Understating time complexity analysis and basic data structures will also be required, and are outlined in Pat Morin's free \emph{Open Data Structures} textbook~\cite{morin2013open}. Finally, a basic understanding of pseudocode is also required.
+Quantum information science relies heavily on linear algebra and complex numbers. This thesis will not explain the basics of those topics. The required linear algebra and complex number concepts for understanding this thesis can be found on Khan Academy, YouTube, in textbooks on the subject(s), etc. The textbook \emph{Quantum Computing for Computer Scientists} also provides a great explanation of complex numbers and many of the linear algebra concepts required for understanding quantum information science~\cite{yanofsky2008quantum}. This thesis also makes use of concepts from probability, combinatorics and set theory as well as various proof techniques which are all explained in one of Michiel Smid's free textbooks~\cite{michielSmidTextbook}. Understating time complexity analysis and basic data structures will also be required, and are outlined in Pat Morin's free \emph{Open Data Structures} textbook~\cite{morin2013open}. Finally, a basic understanding of pseudocode is also required.
 
 There are many excellent resources on quantum information science. \emph{Learn Quantum Computation Using Qiskit} is an excellent open source free textbook managed by IBM, which provides coding examples in its quantum computing language 'Qiskit'~\cite{Qiskit-Textbook}. \emph{Quantiki} is also another free online source of quantum information science, which explains information in an open source manner similar to IBM's textbook, but without the coding examples~\cite{QuantikiRef}. The \emph{Quantum Computing Stack Exchange} forum has many specific answered questions one may have about quantum computing and quantum networking~\cite{QuantumComputingStackExchange}. \emph{Wikipedia} also has some articles on quantum computing, but many of them are densely written and do not explain concepts from first principles. John Watrous also has a free textbook, \emph{The Theory of Quantum Information} which is a good reference for the more advanced reader, although the notation used in that textbook is not always consistent with the notation used in this thesis~\cite{watrous2018theory}. \emph{Quantum Computation and Quantum Information Theory} is generally regarded as a standard textbook on quantum computing~\cite{nielsen2002quantum}. \emph{Quantum Computing for Computer Scientists} explains concepts in a similar way to \emph{Quantum Computation and Quantum Information Theory}, but slightly more towards the language computer scientists are familiar with~\cite{yanofsky2008quantum}. Finally, \emph{Quantum Networking} is a helpful textbook specifically on quantum communications~\cite{van2014quantum}.
 
-For this thesis, topics will only be explained if they are not freely available, not widely understood, including them does not take much effort, or if my unique perspective on them aids in the understanding of this thesis. The following sections in this chapter will define the notation and foundational concepts in quantum information science that are required to understand this thesis.
+Most of the background knowledge described in this thesis is foundational knowledge used extensively in the field of quantum computing. Some more focused subtopics in quantum computing are elaborated on as well. The following sections in this chapter will describe the notation and foundational concepts that are required to understand this thesis.
 \section{A Comment on Conventions and Notation Used in this Thesis}
 Quantum computing and communications are fields welcome to physicists, mathematicians, network scientists, and computer scientists. These different branches of science all prefer a slightly different language (set of notations, and common conventions) to describe the ideas in quantum information science. This thesis, for instance, enumerates qubits from right to left, starting at 0, as seen in \emph{Learn Quantum Computation Using Qiskit}~\cite{Qiskit-Textbook}, which may be unfamiliar to some readers. The notation and conventions in this textbook almost entirely follow the ones used in the standard textbook, \emph{Quantum Computation and Quantum Information Theory}~\cite{nielsen2002quantum}. Any deviation from these conventions will be stated explicitly either in this chapter's various sections, or when needed.
 \section{What Does the Arrow Instead of the Equals Sign Mean?}
@@ -245,6 +245,7 @@ where each $c_i$ corresponds to the complex amplitude for the state $\ket{x_i}$.
 \label{eq:quantumStateConstraint}
 1 = \sum_{i=0}^{2^n - 1} \lvert c_i \rvert ^2
 \end{align}
+In other words, the state vector must be a unit vector (which is also a unitary matrix with only one column).
 
 The material in this thesis is concerned only with the quantum states of qubits (and not the more generalizable 'qudits', see Section~\ref{section:signedPolynomialCode}). In the standard computational basis (see Subsection~\ref{subsection:basisStates}), each state $\ket{x_i}$ corresponds to the binary string whose decimal representation is equal to $i$. The notation for representing a state in bra-ket notation is:
 \begin{align}
@@ -438,12 +439,12 @@ Quantum computing in its standard form involves performing operations on qubits 
 UU^{\dagger} = I = U^{\dagger}U
 \end{align}
 When operating on $n$ qubits, the unitary $U \in \mathbb{C}^{2^n \times 2^n}$.
-\subsection{Local Gates}
-\label{sec:localGate}
-A 'local gate' is a gate that acts only on a single qubit. As a result, a local gate always corresponds to a $2$ by $2$ unitary matrix, $U \in \mathbb{C}^{2 \times 2}$.
+\subsection{Single-Qubit Gates}
+\label{sec:signleQubitlGate}
+A 'single-qubit gate' is a gate that acts only on a single qubit. As a result, a single-qubit gate always corresponds to a $2$ by $2$ unitary matrix, $U \in \mathbb{C}^{2 \times 2}$.
 
 \subsection{Subscripts on Quantum Gates}
-For a quantum gate, $U$, which acts on a single qubit, the subscript $i$ in $U_i$ may be used to indicate which qubit position that gate is applied to. 
+For a single-qubit quantum gate, $U$, the subscript $i$ in $U_i$ may be used to indicate which qubit position that gate is applied to. 
 \begin{example}
 \label{ex:gateNotation1}
 For example, $Z_2$ acting on a system of four qubits would be explicitly represented as $I \otimes Z \otimes I \otimes I$.
@@ -452,7 +453,23 @@ For example, $Z_2$ acting on a system of four qubits would be explicitly represe
 \label{ex:gateNotation2}
 For example, $Y_4$ acting on a system of five qubits would be explicitly represented as $Y \otimes I \otimes I \otimes I \otimes I$.
 \end{example}
-Theorems~\ref{theoremPauli},~\ref{theorem:innerProductPaulis},~\ref{theorem:cliffordTimesClifford},~\ref{theorem:cliffTensorProduct} and~\ref{theorem:proofForProvingGateIsClifford} in Subsections~\ref{subsubsection:paulis} and~\ref{subsubsection:Clifford} use subscripts on gates in a different way. This is because, in those theorems, $C_i$ and $P_j$ are denoted as arbitrary Clifford gates and Pauli gates respectively. All other instances of subscripts being used on gates follow the convention as shown in Examples~\ref{ex:gateNotation1} and~\ref{ex:gateNotation2}. Theorem~\ref{theorem:pauliGenerators} is the first theorem in this thesis that uses that convention.
+
+Theorems~\ref{theoremPauli},~\ref{theorem:innerProductPaulis},~\ref{theorem:cliffordTimesClifford},~\ref{theorem:cliffTensorProduct} and~\ref{theorem:proofForProvingGateIsClifford} in Subsections~\ref{subsubsection:paulis} and~\ref{subsubsection:Clifford} use subscripts on gates in a different way. This is because, in those theorems, $C_i$ and $P_j$ are denoted as arbitrary Clifford gates and Pauli gates respectively. The following theorem is another example of using subscripts in this way.
+\begin{theorem}
+\label{theorem:singleQubitCommute}
+$U_i$ commutes with $V_k$ for any two values of $i$ and $k$ where $i \neq k$.
+\end{theorem}
+\begin{proof}
+In essence, this is because they act on different qubits.
+
+For simplicity, let $I_x$ denote a $2$ by $2$ identity matrix throughout this proof. The subscripted index is added to convey the number and position of each of the $2$ by $2$ $I$ matrices each of $U_i$ and $V_k$ are composed of. Without loss of generality, assume $i < k$. Without loss of generality, $U_i = I_{n-1} \otimes I_{n-2} \otimes \cdots \otimes U \otimes \cdots \otimes I_0$ commutes with $V_k = I_{n-1} \otimes I_{n-2} \otimes \cdots \otimes V \otimes \cdots \otimes I_0$, as seen:
+\begin{align}
+U_iV_k = I_{n-1}I_{n-1} \otimes I_{n-2}I_{n-2} \otimes \cdots \otimes UI_i \otimes I_{i-1}I_{i-1} \otimes \cdots \otimes I_kV \otimes \cdots \otimes I_0I_0\\
+U_iV_k = I_{n-1}I_{n-1} \otimes I_{n-2}I_{n-2} \otimes \cdots \otimes I_iU \otimes I_{i-1}I_{i-1} \otimes \cdots \otimes VI_k \otimes \cdots \otimes I_0I_0\\
+V_kU_i = I_{n-1}I_{n-1} \otimes I_{n-2}I_{n-2} \otimes \cdots \otimes I_iU \otimes I_{i-1}I_{i-1} \otimes \cdots \otimes VI_k \otimes \cdots \otimes I_0I_0
+\end{align}
+\end{proof}
+Asides from Theorem~\ref{theorem:singleQubitCommute} and the theorems previously listed, all other instances of subscripts being used on gates follow the convention as shown in Examples~\ref{ex:gateNotation1} and~\ref{ex:gateNotation2}. The context of the subscript should make the convention clear.
 
 \subsection{Pauli Matrices}
 \label{subsubsection:paulis}
@@ -518,7 +535,7 @@ If $P \neq P'$, then there exists at least one index $i$ such that $P_i \neq P'_
 $P(n) / U(1)$ forms an orthogonal basis for $\mathbb{C}^{2^n \times 2^n}$.
 \end{corollary}
 \begin{proof}
-The inner product of any pair of Pauli matrices is $0$ if the Pauli matrices are different, and $2^n$ if they are the same. This means they are all linearly independent. Any basis for $\mathbb{C}^{2^n \times 2^n}$ must contain $4^{n}$ elements, because each matrix has $4^n$ entries. Any subset of a vector space $V$ with dimension $N$ that consists of $N$ linearly independent elements is a basis for $V$. As a result, all of the $4^{n}$ linearly independent Pauli matrices in $P(n) / U(1)$ are a basis for $\mathbb{C}^{2^n \times 2^n}$ 
+The inner product of any pair of Pauli matrices is $0$ if the Pauli matrices are different, and $2^n$ if they are the same. This means they are all linearly independent. Any basis for $\mathbb{C}^{2^n \times 2^n}$ must contain $4^{n}$ elements, because each matrix has $4^n$ entries. Any subset of a vector space $V$ with dimension $N$ that consists of $N$ linearly independent elements is a basis for $V$. As a result, all of the $4^{n}$ linearly independent Pauli matrices in $P(n) / U(1)$ are a basis for $\mathbb{C}^{2^n \times 2^n}$. 
 \end{proof}
 
 \begin{theorem}
@@ -980,6 +997,14 @@ U(q_i)_jI(q_k)_j = &U_j = I(q_k)_jU(q_i)_j\\
 I(q_i)_jU(q_k)_j = &U_j = U(q_k)_jI(q_i)_j
 \end{align}
 where the left side of each equation is the transformation done by $$\mathit{CU}_{i,j}\mathit{CU}_{k,j}$$ and the right side of each equation is the transformation done by $$\mathit{CU}_{k,j}\mathit{CU}_{i,j}.$$
+\end{proof}
+
+\begin{theorem}
+\label{theorem:CUsCommuteDifferentIndices}
+Let $\mathit{CU}_{i,j}$ be an arbitrary $\mathit{CU}_{i,j} \in \{\mathit{CX}_{i,j}, \mathit{CY}_{i,j}, \mathit{CZ}_{i,j}\}$ and let $\mathit{CU}_{k,w}$ also be an arbitrary $\mathit{CU}_{k,w} \in \{\mathit{CX}_{k,w}, \mathit{CY}_{k,w}, \mathit{CZ}_{k,w}\}$. The operations $\mathit{CU}_{i,j}$ and $\mathit{CU}_{k,w}$ commute for any values of $i$, $j$, $k$ and $w$ where $i \neq j \neq k \neq w$.
+\end{theorem}
+\begin{proof}
+A density matrix can be rewritten as a linear combination of Pauli matrices, as they form a basis (remark Corollary~\ref{corollary:paulisFormBasis}). As a result, if one can show that two given matrices commute when conjugating any given Pauli, then they will also commute when conjugating any given density matrix. Obersving  Tables~\ref{table:CNOTisAcliffordGate},~\ref{table:CyIsAcliffordGate} and~\ref{table:CzIsAcliffordGate} shows that $\mathit{CU}_{i,j}$ and $\mathit{CU}_{k,w}$ commute (remark how single-qubit gates applied to different qubits commute, Theorem~\ref{theorem:singleQubitCommute}).
 \end{proof}
 
 \begin{theorem}
@@ -1506,18 +1531,13 @@ The proofs in this subsection will regularly make use of $A_i$ denoting a single
 Let $U_i$ and $V_k$ be arbitrary single-qubit unitaries. Also let $\mathit{CU}_{i,j}$ be an arbitrary $\mathit{CU}_{i,j} \in \{\mathit{CX}_{i,j}, \mathit{CY}_{i,j}, \mathit{CZ}_{i,j}\}$ and let $\mathit{CU}_{k,j}$ be set to the same type of controlled-$U$ gate as $\mathit{CU}_{i,j}$. The operations $\mathit{CU}_{i,j}$ and $U_i$ commute with any of $\mathit{CU}_{k,j}$ and $V_k$, for any values of $i$, $j$ and $k$ where $i \neq j \neq k$.
 \end{myLemmarep}
 \begin{proof}
-For simplicity, let $I_x$ denote a $2$ by $2$ identity matrix throughout this proof. The subscripted index is added to convey the number and position of each of the $2$ by $2$ $I$ matrices each of $U_i$ and $V_k$ are composed of. The proofs for all three cases are as follows:
+The proofs for all three cases are as follows:
 
-\textbf{Case 1:} $U_i$ commutes with $V_k$ for any two values of $i$ and $k$ where $i \neq k$ because they act on different qubits. Without loss of generality, assume $i < k$. Without loss of generality, $U_i = I_{n-1} \otimes I_{n-2} \otimes \cdots \otimes U \otimes \cdots \otimes I_0$ commutes with $V_k = I_{n-1} \otimes I_{n-2} \otimes \cdots \otimes V \otimes \cdots \otimes I_0$, as seen:
-\begin{align}
-U_iV_k = I_{n-1}I_{n-1} \otimes I_{n-2}I_{n-2} \otimes \cdots \otimes UI_i \otimes I_{i-1}I_{i-1} \otimes \cdots \otimes I_kV \otimes \cdots \otimes I_0I_0\\
-U_iV_k = I_{n-1}I_{n-1} \otimes I_{n-2}I_{n-2} \otimes \cdots \otimes I_iU \otimes I_{i-1}I_{i-1} \otimes \cdots \otimes VI_k \otimes \cdots \otimes I_0I_0\\
-V_kU_i = I_{n-1}I_{n-1} \otimes I_{n-2}I_{n-2} \otimes \cdots \otimes I_iU \otimes I_{i-1}I_{i-1} \otimes \cdots \otimes VI_k \otimes \cdots \otimes I_0I_0
-\end{align}
+\textbf{Case 1:} $U_i$ and $V_k$ commute. This case is proven in Theorem~\ref{theorem:singleQubitCommute}.
 
 \textbf{Case 2:} $V_k$ commutes with $\mathit{CU}_{i,j}$ for any values of $i$, $j$ and $k$ where $i \neq j \neq k$ because, like in case 1, they act on different qubits. For some state $|\psi\rangle = c_0|x_0\rangle + c_1|x_1\rangle + c_2|x_2\rangle \cdots + c_{2^{n-1}}|x_{2^{n-1}}\rangle$ observe what may happen for an arbitrary $c_w\ket{x_w}$. $\mathit{CU}_{i,j}$ either applies an $I$, or a $U_j$ to a given $c_w\ket{x_w}$. For the subcase when $\mathit{CU}_{i,j}$ applies a $U_j$ to $c_w\ket{x_w}$, the transformation applied to $c_w\ket{x_w}$ is $U_jV_k = V_kU_j$. The proof for $U_j$ and $V_k$ commuting is the same as the one given for case 1. For the subcase when $\mathit{CU}_{i,j}$ applies a $I$, this of course commutes with $V_k$.
 
-\textbf{Case 3:} This case is proven in Theorem~\ref{theorem:CUsCommute}.
+\textbf{Case 3:} $\mathit{CU}_{i,j}$ and $\mathit{CU}_{k,j}$ commute. This case is proven in Theorem~\ref{theorem:CUsCommute}.
 \end{proof}
 \begin{myLemmarep}
 \label{lemma:integrityEncryptionRearrangement}
@@ -1527,7 +1547,7 @@ U_{j} \mathit{CU}_{i,j}U_i^{\dagger}A_{i}U_i\mathit{CU}_{i,j} U_{j} \label{eq:in
 \end{align}
 \end{myLemmarep}
 \begin{proof}
-The permuting and un-permuting of signature qubits result in the adversary's attack $A_{i'}$ being 'moved' to become $A_i$. That is, the $A_{i'}$ unitary is conjugated by a series of $\mathit{SWAP}$ gates to become $A_{i}$ where $d \leq i < n$ and $i' \leq i$ (remark lines~\ref{alg:PerezCodeEncryption:CircGates} and~\ref{alg:PerezCodeDecryption:CircGates} or Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption}). After simplifying all the $\mathit{SWAP}$ gates for permuting and then un-permuting the signature qubits, the only gates left to simplify are the $\mathit{CU}_{k,w}$, $\mathit{CU}_{k,j}$, $U_k$ and $U_w$ gates for all $k \neq i$ and $w \neq j$. $U_k$ denotes gates the block Clifford code applies to the data qubits and $U_w$ denotes gates the block Clifford code applies to the signature qubits. Applying Lemma~\ref{lemma:commutingEncryptionOperators} multiple times allows to rearrange gates applied by the code into groupings of  $\mathit{CU}_{k,w}U_k^{\dagger}U_k\mathit{CU}_{k,w}$ and $\mathit{CU}_{k,j}U_k^{\dagger}U_k\mathit{CU}_{k,j}$, which simplify to each equal $I$. Following that simplification, gates can be rearranged into groupings of $U_w^{\dagger}U_w$ which also simplify to equal $I$. This results in the only gates left to simplify or evaluate as the ones shown in Equation~\eqref{eq:integrityEncryptionRearrangement}.
+The permuting and un-permuting of signature qubits result in the adversary's attack $A_{i'}$ being 'moved' to become $A_i$. That is, the $A_{i'}$ unitary is conjugated by a series of $\mathit{SWAP}$ gates to become $A_{i}$ where $d \leq i < n$ and $i' \leq i$ (remark lines~\ref{alg:PerezCodeEncryption:CircGates} and~\ref{alg:PerezCodeDecryption:CircGates} or Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption}). After simplifying all the $\mathit{SWAP}$ gates for permuting and then un-permuting the signature qubits, the only gates left to simplify are the $\mathit{CU}_{k,w}$, $\mathit{CU}_{k,j}$, $U_k$ and $U_w$ gates for all $k \neq i$ and $w \neq j$. $U_k$ denotes gates the block Clifford code applies to the data qubits and $U_w$ denotes gates the block Clifford code applies to the signature qubits. Applying Lemma~\ref{lemma:commutingEncryptionOperators} and Theorem~\ref{theorem:CUsCommuteDifferentIndices} multiple times allows to rearrange gates applied by the code into groupings of  $\mathit{CU}_{k,w}U_k^{\dagger}U_k\mathit{CU}_{k,w}$ and $\mathit{CU}_{k,j}U_k^{\dagger}U_k\mathit{CU}_{k,j}$, which simplify to each equal $I$. Following that simplification, gates can be rearranged into groupings of $U_w^{\dagger}U_w$ which also simplify to equal $I$. This results in the only gates left to simplify or evaluate as the ones shown in Equation~\eqref{eq:integrityEncryptionRearrangement}.
 \end{proof}
 Next, the probability of detecting a single-qubit adversarial attack is shown. That is, the adversarial attack can take on a value of $X_i$, $Y_i$ or $Z_i$ for $i$ where $0 \leq i < n$. Afterward, the proofs for the single-qubit attack will be extended to the general case where $A \in P(n)$.
 \begin{theorem}
@@ -1597,7 +1617,7 @@ When using the block Clifford code, the operation applied to the state $\rho$ du
 \end{align}
 \end{myLemmarep}
 \begin{proof}
-The permuting and un-permuting of signature qubits result in the adversary's attack $A_{j'}$ being 'moved' to become $A_j$. That is, the $A_{j'}$ unitary is conjugated by a series of $\mathit{SWAP}$ gates to become $A_{j}$ where $d \leq j \leq j' < n$ (remark lines~\ref{alg:PerezCodeEncryption:CircGates} and~\ref{alg:PerezCodeDecryption:CircGates} or Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption}). After simplifying all the $\mathit{SWAP}$ gates for permuting and then un-permuting the signature qubits, the only gates left to simplify are the $\mathit{CU}_{k,w}$, $U_k$ and $U_w$ gates for all $w \neq j$ and $k \notin B(j)$ and $k \neq j$. $U_k$ denotes gates the block Clifford code applies to the data qubits and $U_w$ denotes gates the block Clifford code applies to the signature qubits. Applying Lemma~\ref{lemma:commutingEncryptionOperators} multiple times allows to rearrange gates applied by the code into groupings of  $\mathit{CU}_{k,w}U_k^{\dagger}U_k\mathit{CU}_{k,w}$, which simplify to each equal $I$.  Following that simplification, gates can be rearranged into groupings of $U_w^{\dagger}U_w$ which also simplify to equal $I$. This results in the only gates left to simplify or evaluate as the ones shown in Equation~\eqref{eq:integrityEncryptionRearrangement2}.
+The permuting and un-permuting of signature qubits result in the adversary's attack $A_{j'}$ being 'moved' to become $A_j$. That is, the $A_{j'}$ unitary is conjugated by a series of $\mathit{SWAP}$ gates to become $A_{j}$ where $d \leq j \leq j' < n$ (remark lines~\ref{alg:PerezCodeEncryption:CircGates} and~\ref{alg:PerezCodeDecryption:CircGates} or Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption}). After simplifying all the $\mathit{SWAP}$ gates for permuting and then un-permuting the signature qubits, the only gates left to simplify are the $\mathit{CU}_{k,w}$, $U_k$ and $U_w$ gates for all $w \neq j$ and $k \notin B(j)$ and $k \neq j$. $U_k$ denotes gates the block Clifford code applies to the data qubits and $U_w$ denotes gates the block Clifford code applies to the signature qubits. Applying Lemma~\ref{lemma:commutingEncryptionOperators} and Theorem~\ref{theorem:CUsCommuteDifferentIndices} multiple times allows to rearrange gates applied by the code into groupings of  $\mathit{CU}_{k,w}U_k^{\dagger}U_k\mathit{CU}_{k,w}$, which simplify to each equal $I$.  Following that simplification, gates can be rearranged into groupings of $U_w^{\dagger}U_w$ which also simplify to equal $I$. This results in the only gates left to simplify or evaluate as the ones shown in Equation~\eqref{eq:integrityEncryptionRearrangement2}.
 \end{proof}
 \begin{theorem}
 \label{theorem:singleQubitAttackOnSignatureQubit}
@@ -1805,11 +1825,11 @@ For a given $k_a$, there will be at most one other subkey that specifies the sam
 \begin{proof}
 In the worst case, $2(3^n) - 2 = 2^{\ceil{\log_2 (3^n)}}$. This occurs when the $n$-digit ternary number with $n$ number of $2$s is equal to a $\ceil{\log_2 (3^n)}$-digit binary number with a single $1$ followed by $\ceil{\log_2 (3^n)} - 1$ number of $0$s. This means the first $2^{\ceil{\log_2 (3^n)} - 1} + 1$ binary numbers that $k_a$ can take on specify all $3^n$ ternary numbers, and the next $2^{\ceil{n \log_2 (3)} - 1} - 1$ binary numbers specify each of the first $3^n - 2$ ternary numbers again. See the following:
 \begin{align}
-\underbrace{2, 2, 2, \cdots 2,2,2}_{n \text{ times}} &= 1, \underbrace{0, 0, 0, \cdots 0,0,0}_{\ceil{\log_2 (3^n)} - 1 \text{ times}}\\
-1,\underbrace{0, 0, 0, \cdots 0,0,0}_{n \text{ times}} &= 1, \underbrace{0, 0, 0, \cdots 0,0,0}_{\ceil{\log_2 (3^n)} - 2 \text{ times}}, 1\\
+\underbrace{2, 2, 2, \cdots ,2,2,2}_{n \text{ times}} &= 1, \underbrace{0, 0, 0, \cdots ,0,0,0}_{\ceil{\log_2 (3^n)} - 1 \text{ times}}\\
+1,\underbrace{0, 0, 0, \cdots ,0,0,0}_{n \text{ times}} &= 1, \underbrace{0, 0, 0, \cdots ,0,0,0}_{\ceil{\log_2 (3^n)} - 2 \text{ times}}, 1\\
 & \vdots \nonumber \\
-1, \underbrace{2, 2, 2, \cdots 2,2,2}_{n-2 \text{ times}}, 1,2 &= \underbrace{1, 1, 1, \cdots 1,1,1}_{\ceil{\log_2 (3^n) - 1}\text{ times}} 0\\
-1, \underbrace{2, 2, 2, \cdots 2,2,2}_{n-1 \text{ times}}, 0 &= \underbrace{1, 1, 1, \cdots 1,1,1}_{\ceil{\log_2 (3^n)}\text{ times}}
+1, \underbrace{2, 2, 2, \cdots ,2,2,2}_{n-2 \text{ times}}, 1,2 &= \underbrace{1, 1, 1, \cdots ,1,1,1}_{\ceil{\log_2 (3^n) - 1}\text{ times}} 0\\
+1, \underbrace{2, 2, 2, \cdots ,2,2,2}_{n-1 \text{ times}}, 0 &= \underbrace{1, 1, 1, \cdots ,1,1,1}_{\ceil{\log_2 (3^n)}\text{ times}}
 \end{align}
 \end{proof}
 
@@ -1908,7 +1928,7 @@ Each execution of Algorithm~\ref{alg:QuickNChooseK} takes $$O\left(M(k \log_2 (n
 \begin{proof}
 Each execution has at most one division and one multiplication operation, each involving numbers with at most $\log_2 ({n \choose k})$ number of bits.
 \begin{align}
-\log_2 ({n \choose k}) <& \log_2 (n^k) \\
+\log_2 \left({n \choose k}\right) <& \log_2 (n^k) \\
 =& k\log_2 (n) \\
 \end{align}
 Assuming multiplication and division cost $n \log_2 n$ where $n$ is the number of bits required to represent the largest of the $2$ numbers, a single execution of Algorithm~\ref{alg:QuickNChooseK} costs:
@@ -2087,47 +2107,47 @@ For a given $k_b$, there will be at most one other subkey that specifies the sam
 \begin{proof}
 In the worst case, $2\lvert k_b' \rvert - 2 = 2^{\ceil{\log_2 \lvert k_b' \rvert}}$. This occurs when the largest possible $n$-digit variable-base number (as defined earlier) is equal to a $\ceil{\log_2 \lvert k_b' \rvert}$-digit binary number with a single $1$ followed by $\ceil{\log_2 \lvert k_b' \rvert} - 1$ number of $0$s. This means the first $2^{\ceil{\log_2 \lvert k_b' \rvert} - 1} + 1$ binary numbers that $k_b$ can take on specify all $\lvert k_b' \rvert$ of the variable-base numbers, and the next $2^{\ceil{\log_2 \lvert k_b' \rvert} - 1} - 1$ binary numbers specify each of the first $\lvert k_b' \rvert - 2$ variable base numbers again. See the following:
 \begin{align}
-{\frac{m}{d} + d \choose \frac{m}{d}} - 1, \cdots ,{n - 2\frac{m}{d} \choose \frac{m}{d}} - 1, {n - \frac{m}{d} \choose \frac{m}{d}} - 1, {n \choose \frac{m}{d}} - 1 &= 1, \underbrace{0, 0, 0, \cdots 0,0,0}_{\ceil{\log_2 \lvert k_b' \rvert} - 1 \text{ times}}\\
-1,\underbrace{0, 0, 0, \cdots 0,0,0}_{d \text{ times}} &= 1, \underbrace{0, 0, 0, \cdots 0,0,0}_{\ceil{\log_2 \lvert k_b' \rvert} - 2 \text{ times}}, 1\\
+{\frac{m}{d} + d \choose \frac{m}{d}} - 1, \cdots ,{n - 2\frac{m}{d} \choose \frac{m}{d}} - 1, {n - \frac{m}{d} \choose \frac{m}{d}} - 1, {n \choose \frac{m}{d}} - 1 &= 1, \underbrace{0, 0, 0, \cdots ,0,0,0}_{\ceil{\log_2 \lvert k_b' \rvert} - 1 \text{ times}}\\
+1,\underbrace{0, 0, 0, \cdots ,0,0,0}_{d \text{ times}} &= 1, \underbrace{0, 0, 0, \cdots ,0,0,0}_{\ceil{\log_2 \lvert k_b' \rvert} - 2 \text{ times}}, 1\\
 & \vdots \nonumber \\
-1,{\frac{m}{d} + d \choose \frac{m}{d}} - 1, \cdots ,{n - 2\frac{m}{d} \choose \frac{m}{d}} - 1, {n - \frac{m}{d} \choose \frac{m}{d}} - 1, {n \choose \frac{m}{d}} - 4 &= \underbrace{1, 1, 1, \cdots 1,1,1}_{\ceil{\log_2 \lvert k_b' \rvert} -1\text{ times}} 0 \\
-1,{\frac{m}{d} + d \choose \frac{m}{d}} - 1, \cdots ,{n - 2\frac{m}{d} \choose \frac{m}{d}} - 1, {n - \frac{m}{d} \choose \frac{m}{d}} - 1, {n \choose \frac{m}{d}} - 3 &= \underbrace{1, 1, 1, \cdots 1,1,1}_{\ceil{\log_2 \lvert k_b' \rvert}\text{ times}}
+1,{\frac{m}{d} + d \choose \frac{m}{d}} - 1, \cdots ,{n - 2\frac{m}{d} \choose \frac{m}{d}} - 1, {n - \frac{m}{d} \choose \frac{m}{d}} - 1, {n \choose \frac{m}{d}} - 4 &= \underbrace{1, 1, 1, \cdots ,1,1,1}_{\ceil{\log_2 \lvert k_b' \rvert} -1\text{ times}} 0 \\
+1,{\frac{m}{d} + d \choose \frac{m}{d}} - 1, \cdots ,{n - 2\frac{m}{d} \choose \frac{m}{d}} - 1, {n - \frac{m}{d} \choose \frac{m}{d}} - 1, {n \choose \frac{m}{d}} - 3 &= \underbrace{1, 1, 1, \cdots ,1,1,1}_{\ceil{\log_2 \lvert k_b' \rvert}\text{ times}}
 \end{align}
 \end{proof}
 
-Note that although Theorems~\ref{theorem:collisionForMappingA} and~\ref{theorem:collisionForMappingB} showed a given subkey may have up to two collisions, the effect this has on the security of the protocol is negligible, given how large the key space is in comparison:
+Note that although Theorems~\ref{theorem:collisionForMappingA} and~\ref{theorem:collisionForMappingB} showed a given subkey may have up to two collisions, the effect this has on the security of the protocol is negligible, given how large the key size is in comparison:
 \begin{align}
-2^{\ceil{\log_2 ({n \choose \frac{m}{d}}{n - \frac{m}{d} \choose \frac{m}{d}}{n - 2\frac{m}{d} \choose \frac{m}{d}}\cdots{\frac{m}{d} + d \choose \frac{m}{d}})}\ceil{\log_2 3^n}}
+\lvert k_a \rvert \cdot \lvert k_b \rvert = 2^{\ceil{\log_2 ({n \choose \frac{m}{d}}{n - \frac{m}{d} \choose \frac{m}{d}}{n - 2\frac{m}{d} \choose \frac{m}{d}}\cdots{\frac{m}{d} + d \choose \frac{m}{d}})}\ceil{\log_2 3^n}}
 \end{align}
 
 \begin{example}
-The key space for the block Clifford code when $n = 32$ and $d = 16$ is:
+The number of different keys the block Clifford code can have when $n = 32$ and $d = 16$ is:
 $$42,535,295,865,117,307,932,921,825,928,971,026,432$$
 which is about $42.5$ undecillion, or $42.5$ billion billion billion billion.
 \end{example}
 
-The effect of subkey $k_b'$ did not affect probability of detection in the security analysis in Theorems~\ref{theorem:singleQubitAttackOnDataQubit} and~\ref{theorem:singleQubitAttackOnSignatureQubit}. However, subkey $k_b'$ improves the block Clifford code in three ways. First, it increases the key size. Second, it protects against the vulnerability outlined in Table~\ref{table:signatureQubitAttackTransformation} where an adversary can apply a single-qubit Pauli to the packet and end up modifying $\frac{m}{d} + 1 = \frac{n}{d}$ qubits in the packet. This is a vulnerability in the sense that: The attack is detected with probability $\frac{2}{3}$ but will affect a non-negligible number of qubits. The number of qubits that are unaltered by the adversary may be of interest in certain applications (see Section~\ref{sec:Discussion} for a brief discussion on the usage of noisy qubits in quantum computing). By randomly permuting the signature qubits in the message, an adversary can not consistently perform the attack outlined in Table~\ref{table:signatureQubitAttackTransformation}. A rigorous analysis of this should be left to potential future work. Lastly, it ensures that qubits belonging to the same block are uniformly spread out within the encrypted message. This is similar to the previous point: It ensures the adversary can't reliably attack a single block with a very disruptive attack. As in, if the blocks were not designed in this way, the adversary could apply as many single-qubit Paulis to a single block's qubits and still only be detected with $\approx \frac{1}{2}$ probability while being able to corrupt $\frac{n}{d}$ number of qubits (remark Theorem~\ref{theorem:probabilityOfMultiQubitDetectionOnSingleBlock}).
+The gates performed due to subkey $k_b'$ did not affect the probability of detection in the security analysis in Theorems~\ref{theorem:singleQubitAttackOnDataQubit} and~\ref{theorem:singleQubitAttackOnSignatureQubit}. However, subkey $k_b'$ improves the block Clifford code in three ways. First, it increases the key size. Second, it protects against the vulnerability outlined in Table~\ref{table:signatureQubitAttackTransformation} where an adversary can apply a single-qubit Pauli to the packet and end up modifying $\frac{m}{d} + 1 = \frac{n}{d}$ qubits in the packet. This is a vulnerability in the sense that: The attack is detected with probability $\frac{2}{3}$ but will affect a non-negligible number of qubits. The number of qubits that are unaltered by the adversary may be of interest in certain applications (see Section~\ref{sec:Discussion} for a brief discussion on the usage of noisy qubits in quantum computing). By randomly permuting the signature qubits in the message, an adversary can not consistently perform the attack outlined in Table~\ref{table:signatureQubitAttackTransformation}. A rigorous analysis of this should be left to potential future work. Lastly, it ensures that qubits belonging to the same block are randomly placed within the encrypted message. This is similar to the previous point: It ensures the adversary can't focus a disruptive attack on only a single block. As in, if the blocks were not designed in this way, the adversary could more consistently apply many  non-identity single-qubit Paulis to a single block's qubits, and only be detected with $\approx \frac{1}{2}$ probability while being able to corrupt many qubits (remark Theorem~\ref{theorem:probabilityOfMultiQubitDetectionOnSingleBlock}). Future work may more rigorously analyze this.
 
-Algorithm~\ref{alg:KeyMappingB} can readily be extended to unrank permutations of any given multiset. As far as I am aware, this is the most efficient algorithm of its kind. There is some literature on generating successive permutations of multisets~\cite{takaoka2015multi} as well as unranking permutations of sets~\cite{myrvold2001ranking}. I could not find any published academic literature (papers, textbooks, etc.) on unranking permutations of multisets. I did find an online forum post describing an algorithm for unranking permutations of a multiset~\cite{unrankingMultisetStackOverflow}. The author of the algorithm claims it runs in $O\left(n^2\right)$ time, however, it is $O\left(n^3 \log_2^2 n\right)$ when considering the cost of multiplication operations within its main loop. Further work, outside the scope of this thesis, can fully analyze and expand upon this.
+Algorithm~\ref{alg:KeyMappingB} can readily be extended to unrank permutations of any given multiset. As far as I am aware, this is the most efficient algorithm of its kind. There is some literature on generating successive permutations of multisets~\cite{takaoka2015multi} as well as unranking permutations of sets~\cite{myrvold2001ranking}. I could not find any published academic literature (papers, textbooks, etc.) on unranking permutations of multisets. I did find an online forum post describing an algorithm for unranking permutations of a multiset~\cite{unrankingMultisetStackOverflow}. The author of the algorithm claims it runs in $O\left(n^2\right)$ time, however, it is $O\left(n^3 \log_2^2 (n)\right)$ when considering the cost of multiplication operations within its main loop. Further work, outside the scope of this thesis, can fully analyze and expand upon this.
 
 \section{Simulation}
 A simulation of the block Clifford code implemented with Qiskit is available to the public\footnote{\url{https://github.com/catproof/block-Clifford-code}}. It has been tested using Python 3.8.8. Unit tests are included in the repository which additionally verify
 \begin{enumerate}
     \item the correctness of both subkey mappings,
-    \item the block Clifford code's gate constructions from the Clifford generators and
+    \item the constructions from the Clifford generators of the gates used in the block Clifford code and
     \item the tables listed throughout this thesis which describe how a given Clifford operator transforms $2n$ Pauli generators.
 \end{enumerate}
 \section{Results}
 \begin{figure}
     \centering
     \includegraphics[scale=0.6]{Figures/multi_graph_pauli_attacks.png}
-    \caption{Figures showing the probability of detection for the Clifford code and the block Clifford code. Each $x$ value on the $x$-axis denotes an adversary attacking only using Paulis from $P(n)$ containing $x$ number of non-identity single-qubit Paulis.}
+    \caption{Figures showing the probability of detection for the Clifford code and the block Clifford code. Each $x$ value on the $x$-axis denotes an adversary attacking only using random Paulis from $P(n)$ containing $x$ number of non-identity single-qubit Paulis.}
     \label{fig:multiGraphPaulAttacks}
 \end{figure}
 
 Figure~\ref{fig:multiGraphPaulAttacks} compares the probability of detection for the Clifford code and the block Clifford code. Each subgraph corresponds to an experiment. The title for each subgraph depicts the values of $n$ and $d$ for each experiment. The horizontal sequence of dots (orange) is the probability of detection for the Clifford code given by Equation~\eqref{eq:CliffordCodeProbabilityOfDetection}. The curved sequence of dots (blue) that has error bars on it depicts a confidence interval of $99.9 \%$ based on the Wilson score interval~\cite{wilsonScoreInterval}; it shows the results from a simulation of the block Clifford code with $5000$ trials for each $x$ value on the graph. The Wilson score interval is a confidence interval used for distributions arising from Bernoulli trials (trials with an outcome of $1$ indicating success and $0$ indicating failure). In this case, $1$ denotes the adversary was detected in a trial and $0$ denotes the adversary was not detected in a trial. The curved sequence of dots (green) in Figure~\ref{fig:multiGraphPaulAttacks} without error bars is the approximated probability of detection for the block Clifford code given by Equation~\eqref{eq:stirlingNumberFunctionCombinedWithOtherTheorems}. 
 
-For all experiments, the block Clifford code quickly approaches a probability of detection comparable to the Clifford code. The experiment with $n = 32$ and $d = 16$ had the block Clifford code detect all $5000$ attacks for $19$ out of the $32$ values of $x$.
+For all experiments, the block Clifford code quickly approaches a probability of detection comparable to the Clifford code as the number of non-identity single-qubit Paulis, $x$, in the attack increases. The experiment with $n = 32$ and $d = 16$ had the block Clifford code detect all $5000$ attacks for $19$ out of the $32$ values of $x$.
 
 \chapter{Conclusion}
 \label{sec:Conclusion}
@@ -2136,50 +2156,50 @@ For all experiments, the block Clifford code quickly approaches a probability of
 \begin{figure}
     \centering
     \includegraphics[scale=0.6]{Figures/keymapping_runtimes.png}
-    \caption{A figure comparing $n^3$ (Clifford code) to $n^2 \log_2^2n$ (block Clifford code).}
+    \caption{A figure comparing $n^3$ (Clifford code) to $n^2 \log_2^2 (n)$ (block Clifford code).}
     \label{fig:keyMappingRunTimesComparison}
 \end{figure}
 
-The Clifford code's key mapping runs in $O\left(n^3\right)$ time, and the block Clifford code's key mapping runs in $O\left(n^2 \log_2^2 n\right)$ time. It is not yet known how large data packets in a quantum internet might be. However, in classical networks data packets can contain thousands of bits~\cite{rfc879}, which may indicate the size of packets in quantum networks of the future. Assuming quantum data packets will have thousands of qubits, one would want to invest in efficient key mappings. For example, if a data packet had $1000$ qubits, an $O\left(n^3\right)$ key mapping would result in a computation on the order of a billion operations. Although modern computers can perform these operations in a fraction of a second, it is still a relatively expensive operation for a computer to be performing frequently, especially in situations with stringent low latency requirements or limited computing power. Figure~\ref{fig:keyMappingRunTimesComparison} shows how much faster $n^3$ grows in comparison to $n^2 \log_2^2n$.
+The Clifford code's key mapping runs in $O\left(n^3\right)$ time, and the block Clifford code's key mapping runs in $O\left(n^2 \log_2^2 (n)\right)$ time. It is not yet known how large data packets in a quantum internet might be. However, in classical networks data packets can contain thousands of bits~\cite{rfc879}, which may indicate the size of packets in quantum networks of the future. Assuming quantum data packets will have thousands of qubits, one would want to invest in efficient key mappings. For example, if a data packet had $1000$ qubits, an $O\left(n^3\right)$ key mapping would result in a computation on the order of a billion operations. Although modern computers can perform these operations in a fraction of a second, it is still a relatively expensive operation for a computer to be performing frequently, especially in situations with stringent low latency requirements or limited computing power. Figure~\ref{fig:keyMappingRunTimesComparison} shows how much faster $n^3$ grows in comparison to $n^2 \log_2^2 (n)$.
 
 \begin{myLemmarep}
-$O\left(n^3\right)$ is asymptotically larger than $O\left(n^2 \log_2^2 n\right)$.
+$O\left(n^3\right)$ is asymptotically larger than $O\left(n^2 \log_2^2 (n)\right)$.
 \end{myLemmarep}
 \begin{proof}
 First, some simplifications are made:
 \begin{align}
-n^2 \log_2^2 n &< n^3\\
-\log_2^2 n &< n \\
-\log_2 n &< \sqrt{n} \label{eq:simplifiedRunTimeComparison}
+n^2 \log_2^2 (n) &< n^3\\
+\log_2^2 (n) &< n \\
+\log_2 (n) &< \sqrt{n} \label{eq:simplifiedRunTimeComparison}
 \end{align}
  The proof can be completed by using the racetrack principle. First, note that substituting $n = 16$ into Equation~\eqref{eq:simplifiedRunTimeComparison} shows that:
 \begin{align}
-\log_2 16 = \sqrt{16}
+\log_2 (16) = \sqrt{16}
 \end{align}
 Now, it must be shown that taking the derivatives of both sides of Equation~\eqref{eq:simplifiedRunTimeComparison} satisfies the inequality for all $n \geq 16$. Taking the derivatives of both sides gives:
 \begin{align}
-\frac{1}{n \ln 2} &< \frac{1}{2\sqrt{n}}\\
-\frac{2\sqrt{n}}{n \ln 2} &< 1\\
-\frac{4n}{n^2 (\ln 2)^2} &< 1\\
-\frac{4}{n (\ln 2)^2} &< 1\\
-\frac{4}{(\ln 2)^2} \approx 8.33 &< n
+\frac{1}{n \ln (2)} &< \frac{1}{2\sqrt{n}}\\
+\frac{2\sqrt{n}}{n \ln (2)} &< 1\\
+\frac{4n}{n^2 (\ln^2 (2))} &< 1\\
+\frac{4}{n (\ln^2 (2))} &< 1\\
+\frac{4}{(\ln^2 (2))} \approx 8.33 &< n
 \end{align}
 Thus concluding the proof.
 \end{proof}
 
 In Section~\ref{subsec:noise} a type of noise called depolarizing noise was characterized. There is reason to believe that many applications in quantum computing will work well with noisy qubits~\cite{noisyQuantuamMachineLearning,sheldon2019quantum,rosch2022quantum,approximateQuantumComputing,noiseToTheirAdvantage}. Given this assumption, a protocol such as the block Clifford code which can accept data packets with one or two noisy qubits with non-negligible probability (remark Figure~\ref{fig:multiGraphPaulAttacks}) may be advantageous.
 
-The block Clifford code also has a construction which uses $O\left(nd\right)$ gates from the Clifford generators. This construction may be optimal for certain values of $n$ and $d$, more investigation is needed. For a fixed $d$, this is certainly asymptotically less than the worst-case of $O\left(\frac{n^2}{\log_2^2 n}\right)$ for the Clifford code. Figure~\ref{fig:numberOfGatesComparison} shows how much faster $\frac{n^2}{\log_2 n}$ grows in comparison to $nd$ with $d= 64$.
+The block Clifford code also has a construction which uses $O\left(nd\right)$ gates from the Clifford generators. This construction may be optimal for certain values of $n$ and $d$; more investigation is needed. For a fixed $d$, this is certainly asymptotically less than the worst-case of $O\left(\frac{n^2}{\log_2^2 (n)}\right)$ for the Clifford code. Figure~\ref{fig:numberOfGatesComparison} shows how much faster $\frac{n^2}{\log_2 (n)}$ grows in comparison to $nd$ with $d= 64$.
 
 \begin{figure}
     \centering
     \includegraphics[scale=0.6]{Figures/number_of_gates.png}
-    \caption{A figure comparing $\frac{n^2}{\log_2 n}$ (Clifford code) to $nd$ (block Clifford code).}
+    \caption{A figure comparing $\frac{n^2}{\log_2 (n)}$ (Clifford code) to $nd$ (block Clifford code).}
     \label{fig:numberOfGatesComparison}
 \end{figure}
 
 \section{Future Work}
-More precisely characterizing how the block Clifford code handles noisy data may be the focus of future work. Additionally, finding an exact (as opposed to an approximate) characterization of the block Clifford code's security would be beneficial. 
+More precisely characterizing how the block Clifford code handles noisy data may be the focus of future work. Finding an exact (as opposed to an approximate) characterization of the block Clifford code's security would be beneficial. 
 
 The time complexity of the key mapping method for the block Clifford code could potentially be reduced. One way to tackle this problem would be to increase the memory it uses, in hopes that it will increase computational efficiency. The subkey $k_a$ mapping could be sped up by assigning groupings of two adjacent bits in the binary key to each single-qubit unitary. The mapping could read the groupings of two bits from the key sequentially, where $00$, $01$ and $10$ could correspond to each of $I$, $H$, and $S^{\dagger}H$. A grouping with $11$ could correspond to the single-qubit unitary determined by the previously read grouping of two bits. If $11$ were the first read grouping of bits, it could be assigned $I$. This would cause more key collisions, but could still determine an essentially uniform distribution of unitaries to apply to the packet. The subkey $k_b$ mapping could be sped up by computing all the ${m \choose j}$s ahead of time and storing them in memory so that they don't have to be calculated every time the subkey mapping is computed. 
 
