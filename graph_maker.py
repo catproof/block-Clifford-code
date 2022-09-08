@@ -130,13 +130,13 @@ def key_mapping_time_complexity_comparison(max_num_total_qubits = 4608):
     ax.plot(x, clifford_key_mapping_time, label='Clifford code',linewidth=0.65, color = (1,0.4,0))
     ax.plot(x, block_clifford_key_mapping_time, label='Block Clifford code',linewidth=0.65, color = 'blue')
 
-    ax.set(xlabel='Number of qubits in the data packet', ylabel='Asymptotic worst-case run time', title='Asymptotic Run Times of Key Mappings')
+    ax.set(xlabel='Number of qubits in the packet', ylabel='Asymptotic worst-case run time', title='Asymptotic Run Times of Key Mappings')
 
     ax.legend()
     fig.savefig("keymapping_runtimes.png", format='png', dpi=600)
     plt.show()
     
-key_mapping_time_complexity_comparison()
+# key_mapping_time_complexity_comparison()
 
 def clifford_gates_complexity(n):
     return n**2 / math.log2(n)
@@ -156,7 +156,7 @@ def gates_complexity_comparison(max_num_total_qubits = 4608, num_signature_qubit
     ax.plot(x, clifford_num_gates, label='Clifford code',linewidth=0.65, color = (1,0.4,0))
     ax.plot(x, block_clifford_num_gates, label='Block Clifford code (with d = 64)',linewidth=0.65, color = 'blue')
 
-    ax.set(xlabel='Number of qubits in the data packet', ylabel='Asymptotic worst-case number of gates', title='Asymptotic Number of Gates Used')
+    ax.set(xlabel='Number of qubits in the packet', ylabel='Asymptotic worst-case number of gates', title='Asymptotic Number of Gates Used')
 
     ax.legend()
     fig.savefig("number_of_gates.png", format='png', dpi=600)
@@ -194,7 +194,7 @@ def detection_accuracy_dot_graph(num_total_qubits, num_signature_qubits, file_na
     ax.set_ylim(0.49,1.01)
     ax.set_xlim(0.5,num_total_qubits + 0.5)
 
-    ax.set(xlabel='Number of on-identity single-qubit Paulis', ylabel='Probability of detection', title='Probability of Detecting Different Types of Pauli Attacks, n = ' + str(num_total_qubits) + ', d = ' + str(num_signature_qubits))
+    ax.set(xlabel='Number of non-identity single-qubit Paulis', ylabel='Probability of detection', title='Probability of Detecting Different Types of Pauli Attacks, n = ' + str(num_total_qubits) + ', d = ' + str(num_signature_qubits))
 
     ax.grid()    
 
