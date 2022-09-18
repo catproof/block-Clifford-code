@@ -66,7 +66,7 @@ Chapter~\ref{sec:Motivation} explains the motivation behind, and practical relev
 \label{sec:Motivation}
 Quantum networking is like quantum computing's 'little brother', still very much new to the world and in its 'infancy'. The article, \emph{The Internet Goes Quantum}~\cite{popkin2021internet}, explains the motivations behind the emerging study of quantum networking and gives an interesting overview of current progress and main topics. In short, quantum computers have certain advantages over classical computers and enabling an internet for communicating quantum data will yield even more advantages. When mentioning the word 'classical' in this thesis, I am either using it to describe computation, a computer, or data concerning bits (what your typical modern computer uses). Authentication methods used on classical data must be fundamentally different than the ones applied to quantum data, due to the unique properties of quantum data~\cite{barnum2002authentication}. The emerging quantum internet thus puts pressure on the further development of QMA schemes.
 
-Quantum data inherently has security properties, due to the 'no cloning theorem' stating that quantum data can not be copied. Additionally, quantum data can only be read once by a computer, before its state is disturbed and irreversibly lost, and typically the information gained from reading the quantum data is only a small portion of its entirety~\cite{nielsen2002quantum}. As a consequence, stolen quantum data has no perceivable use for the one who stole it, unless the characteristics of the data are known ahead of time. One could then assume that the most significant security threat to quantum data is modifying its contents. The method developed in this thesis is designed to detect an adversary modifying the contents of a quantum message.
+Quantum data inherently has security properties, due to the 'no-cloning theorem' stating that quantum data can not be copied. Additionally, quantum data can only be read once by a computer, before its state is disturbed and irreversibly lost, and typically the information gained from reading the quantum data is only a small portion of its entirety (\cite{nielsen2002quantum}, see Box 12.1 for the no-cloning theorem and Subsection 2.2.3 for more info on quantum measurement). As a consequence, stolen quantum data has no perceivable use for the one who stole it, unless the characteristics of the data are known ahead of time. One could then assume that the most significant security threat to quantum data is modifying its contents. The method developed in this thesis is designed to detect an adversary modifying the contents of a quantum message.
 
 The main goal of this thesis is to further advance the security capabilities of the quantum networks of the future. Some of the ideas on detecting integrity attacks may also one day apply to securing information in quantum computers, not just in quantum communications. This thesis describes a new solution for securing quantum data that shows improved efficiency, in terms of gates used and time complexity, compared to a similar QMA method. Efficiency may be paramount in applications with constrained computational resources, low latency requirements, large data packets or data throughput.
 
@@ -94,7 +94,7 @@ $C$ & An arbitrary Clifford matrix.
 $C(n)$ & The Clifford group acting on $n$ qubits.
 \\ \hline
 
-$d$ & The number of signature qubits within a quantum message.
+$d$ & The number of signature qubits appended to a quantum message.
 \\ \hline
 
 $\mathit{divmod}(a,b)$ & A pseudocode method for Euclidean division,~\cite{EuclideanDivisionWiki}, where $a$ is divided by $b$. The method returns a tuple, $q,r$, where $q$ is the quotient and $r$ is the remainder.
@@ -199,7 +199,7 @@ Block Clifford code & $\min \left(O\left(nd\right),O\left(\frac{n^2}{\log_2 (n)}
 \end{table}
 %\end{center}
 %\end{changemargin}
-See Table~\ref{table:summaryOfResults} for a comparison between the block Clifford code and the Clifford code. Note that the 'Integrity Detection Probability' column is only concerned with Pauli attacks (see the attack model described in Section~\ref{section:attackModel}). The probability of detection for the block Clifford code approaches the probability of detection for the Clifford code as $w$ increases. Remark Table~\ref{table:symboldescription} for a description of symbols.
+See Table~\ref{table:summaryOfResults} for a comparison between the block Clifford code and the Clifford code. Also, remark Table~\ref{table:symboldescription} for a description of symbols. Note that the 'Integrity Detection Probability' column is only concerned with Pauli attacks (see the attack model described in Section~\ref{section:attackModel}). For $w = 1$, the approximate probability of detection for the block Clifford code is $\frac{1}{2}$ and quickly approaches the probability of detection for the Clifford code as $w$ increases (see Subsection \ref{subsec:securityAnalysis} and Figure~\ref{fig:multiGraphPaulAttacks} for more details).
 
 The novel multiset permutation unranking method is described in Algorithm~\ref{alg:KeyMappingB} in Subsection~\ref{subsubsection:keyMappings}. It runs in $O\left (n^2 \log_2 ^2 (n) \right)$ time.
 
@@ -208,11 +208,11 @@ The novel multiset permutation unranking method is described in Algorithm~\ref{a
 \section{Introduction and External Resources}
 Quantum information science relies heavily on linear algebra and complex numbers. This thesis will not explain the basics of those topics. The required linear algebra and complex number concepts for understanding this thesis can be found on Khan Academy, YouTube, in textbooks on the subject(s), etc. The textbook \emph{Quantum Computing for Computer Scientists} also provides a great explanation of complex numbers and many of the linear algebra concepts required for understanding quantum information science~\cite{yanofsky2008quantum}. This thesis also makes use of concepts from probability, combinatorics and set theory as well as various proof techniques which are all explained in one of Michiel Smid's free textbooks~\cite{michielSmidTextbook}. Understating time complexity analysis and basic data structures will also be required, and are outlined in Pat Morin's free \emph{Open Data Structures} textbook~\cite{morin2013open}. Finally, a basic understanding of pseudocode is also required.
 
-There are many excellent resources on quantum information science. \emph{Learn Quantum Computation Using Qiskit} is an excellent open source free textbook managed by IBM, which provides coding examples in its quantum computing language 'Qiskit'~\cite{Qiskit-Textbook}. \emph{Quantiki} is also another free online source of quantum information science, which explains information in an open source manner similar to IBM's textbook, but without the coding examples~\cite{QuantikiRef}. The \emph{Quantum Computing Stack Exchange} forum has many specific answered questions one may have about quantum computing and quantum networking~\cite{QuantumComputingStackExchange}. \emph{Wikipedia} also has some articles on quantum computing, but many of them are densely written and do not explain concepts from first principles. John Watrous also has a free textbook, \emph{The Theory of Quantum Information} which is a good reference for the more advanced reader, although the notation used in that textbook is not always consistent with the notation used in this thesis~\cite{watrous2018theory}. \emph{Quantum Computation and Quantum Information Theory} is generally regarded as a standard textbook on quantum computing~\cite{nielsen2002quantum}. \emph{Quantum Computing for Computer Scientists} explains concepts in a similar way to \emph{Quantum Computation and Quantum Information Theory}, but slightly more towards the language computer scientists are familiar with~\cite{yanofsky2008quantum}. Finally, \emph{Quantum Networking} is a helpful textbook specifically on quantum communications~\cite{van2014quantum}.
+There are many excellent resources on quantum information science. \emph{Learn Quantum Computation Using Qiskit} is an excellent open source free textbook managed by IBM, which provides coding examples in its quantum computing language 'Qiskit'~\cite{Qiskit-Textbook}. \emph{Quantiki} is also another free online source of quantum information science, which explains information in an open source manner similar to IBM's textbook, but without the coding examples~\cite{QuantikiRef}. The \emph{Quantum Computing Stack Exchange} forum has many specific answered questions one may have about quantum computing and quantum networking~\cite{QuantumComputingStackExchange}. \emph{Wikipedia} also has some articles on quantum computing, but many of them are densely written and do not explain concepts from first principles. John Watrous also has a free textbook, \emph{The Theory of Quantum Information} which is a good reference for the more advanced reader, although the notation used in that textbook is not always consistent with the notation used in this thesis~\cite{watrous2018theory}. \emph{Quantum Computation and Quantum Information} is generally regarded as a standard textbook on quantum computing~\cite{nielsen2002quantum}. \emph{Quantum Computing for Computer Scientists} explains concepts in a similar way to \emph{Quantum Computation and Quantum Information}, but slightly more towards the language computer scientists are familiar with~\cite{yanofsky2008quantum}. Finally, \emph{Quantum Networking} is a helpful textbook specifically on quantum communications~\cite{van2014quantum}.
 
 Most of the background knowledge described in this thesis is foundational knowledge used extensively in the field of quantum computing. Some more focused subtopics in quantum computing are elaborated on as well. The following sections in this chapter will describe the notation and foundational concepts that are required to understand this thesis.
 \section{A Comment on Conventions and Notation Used in this Thesis}
-Quantum computing and communications are fields welcome to physicists, mathematicians, network scientists, and computer scientists. These different branches of science all prefer a slightly different language (set of notations, and common conventions) to describe the ideas in quantum information science. This thesis, for instance, enumerates qubits from right to left, starting at 0, as seen in \emph{Learn Quantum Computation Using Qiskit}~\cite{Qiskit-Textbook}, which may be unfamiliar to some readers. The notation and conventions in this textbook almost entirely follow the ones used in the standard textbook, \emph{Quantum Computation and Quantum Information Theory}~\cite{nielsen2002quantum}. Any deviation from these conventions will be stated explicitly either in this chapter's various sections, or when needed.
+Quantum computing and communications are fields welcome to physicists, mathematicians, network scientists, and computer scientists. These different branches of science all prefer a slightly different language (set of notations, and common conventions) to describe the ideas in quantum information science. This thesis, for instance, enumerates qubits from right to left, starting at 0, as seen in \emph{Learn Quantum Computation Using Qiskit}~\cite{Qiskit-Textbook}, which may be unfamiliar to some readers. The notation and conventions in this textbook almost entirely follow the ones used in the standard textbook, \emph{Quantum Computation and Quantum Information}~\cite{nielsen2002quantum}. Any deviation from these conventions will be stated explicitly either in this chapter's various sections, or when needed.
 \section{What Does the Arrow Instead of the Equals Sign Mean?}
 \label{sec:whatDoesTheArrowInsteadOfEqualsSignMean}
 In some equations in this thesis, the right arrow, $\Rightarrow$, is used in place of an equals sign, $=$, to emphasize when an equation is being modified.
@@ -229,6 +229,7 @@ Here is an example further clarifying. See the equations:
 In Equation~\eqref{eq:rightArrowExample} the right arrow is used, instead of the equals sign because the equation is being modified (in this case, being multiplied by $10$). It may be any other sort of modification, like addition, adding an exponent, etc. Using an equals sign would have been incorrect, as $10(2(2x + 7)) \neq 2(2x + 7)$.
 \section{Quantum States}
 \subsection{Definition}
+\label{definitionOfQuantumStates}
 A quantum state is said to be in a 'superposition' of different states, meaning it has probabilities corresponding to each of the different states it can 'collapse' to. Once observed, the superposition collapses to a particular state with its associated probability. If it is not observed, it behaves as if it is in all of those states \emph{simultaneously}. Quantum states can be described using state vectors or bra-ket notation.
 
 Denote an arbitrary quantum state $\ket{\psi}$. Denote $n$ as the number of qubits (also known as quantum bits) in the quantum state. A qubit is the quantum version of a bit (also known as a classical bit). A state vector of $n$ qubits is represented as:
@@ -246,6 +247,12 @@ where each $c_i$ corresponds to the complex amplitude for the state $\ket{x_i}$.
 1 = \sum_{i=0}^{2^n - 1} \lvert c_i \rvert ^2
 \end{align}
 In other words, the state vector must be a unit vector (which is also a unitary matrix with only one column).
+
+A state using this notation, $\ket{\psi}$, is sometimes refferred to as a 'ket'. So, you would pronounce the state, $\ket{\psi}$, as 'ket psi'. Also note that these special brackets can be changed around to denote the conjugate transpose of the corresponding ket:
+\begin{align}
+\ket{\psi}^\dagger = \bra{\psi}
+\end{align}
+which is what is called a 'bra'. So, you would pronounce the state, $\bra{\psi}$, as 'bra psi'. Hence the term 'bra-ket'. 
 
 The material in this thesis is concerned only with the quantum states of qubits (and not the more generalizable 'qudits', see Section~\ref{section:signedPolynomialCode}). In the standard computational basis (see Subsection~\ref{subsection:basisStates}), each state $\ket{x_i}$ corresponds to the binary string whose decimal representation is equal to $i$. The notation for representing a state in bra-ket notation is:
 \begin{align}
@@ -282,7 +289,7 @@ $$\ket{0} = \left[\begin{array}{c}
 which may also be referred to as the '$z$-basis'.
 
 The $x$-basis is:
-$$|+\rangle=\frac{|0\rangle+1\rangle}{\sqrt{2}},|-\rangle=\frac{|0\rangle-|1\rangle}{\sqrt{2}}$$
+$$|+\rangle=\frac{|0\rangle+|1\rangle}{\sqrt{2}},|-\rangle=\frac{|0\rangle-|1\rangle}{\sqrt{2}}$$
 and the $y$-basis is:
 $$|i\rangle=\frac{|0\rangle+i\ket{1}}{\sqrt{2}},|-i\rangle=\frac{|0\rangle-i\ket{1}}{\sqrt{2}}$$
 Some sources denote the $y$-basis differently, but I prefer the one listed above~\cite{basisStates}.
@@ -291,7 +298,7 @@ Section~\ref{sec:tensorProducts} explains tensor products and how they are used 
 \section{Tensor Products}
 \label{sec:tensorProducts}
 The tensor product sign is denoted using the symbol: $\otimes$. It is also sometimes referred to as the Kronecker product. Oddly enough, despite tensor products being used extensively in quantum information science, a rigorous definition of tensor products of matrices is omitted from some textbooks on the subject. A tensor product of two matrices, denoted $A \in \mathbb{C}^{m \times n}$ and $B \in \mathbb{C}^{m' \times n'}$, is precisely defined as: $$(A \otimes B)[i,j] = A[\floor{i/m'},\floor{j/n'}] \cdot B[i \bmod m', j \bmod n']$$
-The indices $i$ and $j$ indicate the value of the element at row $i$ and column $j$ in the corresponding matrices. Tensor products are also associative.
+where $A \otimes B \in \mathbb{C}^{mm' \times nn'}$. The indices $i$ and $j$ indicate the value of the element at row $i$ and column $j$ in the corresponding matrices. Tensor products are also associative.
 
 An example of a tensor product will help further explain how they are computed. Essentially, a tensor product $A \otimes B$ creates a new matrix where each element of $A$ is multiplied by the entirety of $B$.
 
@@ -424,11 +431,16 @@ Then the right side will be simplified and shown to be equal to the left side.
 
 
 \section{Density Matrix}
-A density matrix may additionally be used to represent a quantum state. A density matrix $\rho$ is simply defined as:
+\label{densityMatrix}
+ Density matrices are useful for representing mixed states, which are defined as probabilistic mixtures of different quantum states. A density matrix may additionally be used to represent quantum states that are not probabilistic mixtures, which are called pure states. A density matrix $\rho$ is simply defined as:
+\begin{align}
+\rho = \sum_i p_i\left|\psi_i\right\rangle\left\langle\psi_i\right|
+\end{align}
+where each $\ket{\psi_i}$ denotes a quantum state (as defined in Subsection~\ref{definitionOfQuantumStates}) and all $p_i$ sum to equal 1. State vectors and bra-ket notation can only represent pure states, i.e. as a single quantum state vector or as listing out the terms in bra-ket notation. For simplicity, this thesis is only concerned with pure states. Thus, the density matrices in this thesis all have $p_0 = 1$. For example:
 \begin{align}
 \rho = \ket{\psi} \bra{\psi}
 \end{align}
-where $\bra{\psi} = \ket{\psi}^{\dagger}$ and the 'dagger' symbol, $\dagger$, denotes the conjugate transpose of a matrix. Density matrices are useful for representing mixed states, which are defined as probabilistic mixtures of different quantum states. State vectors and bra-ket notation can only represent pure states, i.e. as a single quantum state vector or as listing out the terms in bra-ket notation. For simplicity, this thesis is only concerned with pure states. The theorems and concepts herein can all be extended to consider mixed-states.
+The theorems and concepts herein can all be extended to consider mixed-states.
 
 \section{Quantum Gates}
 \subsection{Definition}
@@ -485,18 +497,18 @@ Let $P(n)$ be the set of all n-qubit tensor products of Pauli matrices, includin
 \label{eq:pauliDefinition}
 P(n)=\left\{ e^{i\theta\pi/2} P_0 \otimes \cdots \otimes P_{n-1} \mid \theta = 0,1,2,3, P_i = X,Y,Z,I\right\}
 \end{align}
-Additionally, let $P(n) / U(1)$ be $P(n)$ but without the multiplicative constants $-1$, $i$ or $-i$.
+Additionally, let $P(n) / U(1)$ be $P(n)$ but ignoring the multiplicative constants $-1$, $i$ or $-i$.
 
 \begin{theorem}
 \label{theoremPauli}
-A matrix $A \in P(n + m)$ where $n + m \geq 2$ if and only if it can be represented as a tensor product of an element $B \in P(n)$ and an element $C \in P(m)$.
+A matrix $A \in P(n + m) $ where $n + m \geq 2$ if and only if it can be represented as a tensor product of an element $B \in P(n)$ and an element $C \in P(m)$.
 \end{theorem}
 \begin{proof}
-This is possible due to tensor products being associative. Let $B = P_0 \otimes P_1 \otimes \cdots \otimes P_{n-1}$ and let $C =  P_0 \otimes P_1 \otimes \cdots \otimes P_{m-1}$.
+This is possible due to tensor products being associative. Let $P_i \in P(1)$ be an arbitrary Pauli. Let $\alpha_A, \alpha_B, \alpha_C \in \{1, -1, i, -i\}$ such that $\alpha_B\alpha_C = \alpha_A$. Let $B = \alpha_B P_0 \otimes P_1 \otimes \cdots \otimes P_{n-1}$ and let $C = \alpha_C P_0 \otimes P_1 \otimes \cdots \otimes P_{m-1}$.
 \begin{align}
-A &=B \otimes C \\
-&= (P_0 \otimes P_1 \cdots P_{n-1}) \otimes (P_{n} \cdots P_{n+m-2} \otimes P_{n+m-1}) \\
-&= P_0 \otimes P_1 \otimes \cdots \otimes P_{n-1} \otimes P_n \otimes \cdots \otimes P_{n+m-2} \otimes P_{n+m-1}
+A &= \alpha_B B \otimes \alpha_C C \\
+&= \alpha_B (P_0 \otimes P_1 \cdots P_{n-1}) \otimes \alpha_C (P_{n} \cdots P_{n+m-2} \otimes P_{n+m-1}) \\
+&= \alpha_A P_0 \otimes P_1 \otimes \cdots \otimes P_{n-1} \otimes P_n \otimes \cdots \otimes P_{n+m-2} \otimes P_{n+m-1}
 \end{align}
 Both directions of the 'if and only if' are proven by following the above equations in forward, and then in reverse.
 \end{proof}
@@ -540,7 +552,7 @@ The inner product of any pair of Pauli matrices is $0$ if the Pauli matrices are
 
 \begin{theorem}
 \label{theorem:pauliGenerators}
-The generators of $P(n)$ are $X_i$ and $Z_j$, where $0 \leq i, j \leq n-1$, along with the coefficients, $1,-1,i,-i$.
+$X_i$ and $Z_j$, where $0 \leq i, j < n$, along with the coefficients $1,-1,i$ and $-i$ are generators of $P(n)$.
 \end{theorem}
 \begin{proof}
 $Y_i$ can be generated from $X_i$ and $Z_i$, along with the coefficient $-i$:
@@ -548,14 +560,6 @@ $$-iZ_iX_i = Y_i$$
 $I_i$ can be generated via:
 $$X_iX_i = I_i$$
 It then follows that any element from the formal definition of $P(n)$, in Equation~\eqref{eq:pauliDefinition}, can be generated via multiplication (remark Theorem~\ref{theoremPauli}).
-\end{proof}
-
-\begin{theorem}
-\label{theorem:paulisAreCliffords}
-Any element of $P(n)$ is also a part of $C(n)$, where $C(n)$ is defined in Subsection~\ref{subsubsection:Clifford}.
-\end{theorem}
-\begin{proof}
-This is due to the inherent property of the group $P(n)$ being closed under multiplication. That is, any two Pauli matrices multiplied by each other equals a Pauli matrix.
 \end{proof}
 
 \subsection{Clifford Gates}
@@ -586,7 +590,16 @@ is called the conjugation of $P$ by $C$. Equation~\eqref{eq:clifford} states tha
 =
 2^{n^{2}+2n} \cdot \displaystyle\prod_{j=1}^n \left(4^{j} -1 \right)
 \end{equation}
-The generators of the Clifford group are the $S$, $H$, and $\mathit{CNOT}$ gates via multiplication~\cite{ozols2008clifford}. In this thesis, I will use the Clifford generators as a way to get a good estimate of how many basis gates are needed to implement a given unitary operation on a quantum computer. Different quantum computing hardware architectures will use different sets of basis gates for expressing arbitrary unitary operations.
+The generators of the Clifford group are the $H$, $S$, and $\mathit{CNOT}$ gates via multiplication~\cite{ozols2008clifford} (see Subsections~\ref{subsec:hadamardGate},~\ref{subsec:sGate} and~\ref{subsubsec:CX} respectively for a description of these gates). In this thesis, we will use the Clifford generators as a way to get a good estimate of how many basis gates are needed to implement a given unitary operation on a quantum computer. Different quantum computing hardware architectures will use different sets of basis gates for expressing arbitrary unitary operations.
+
+\begin{theorem}
+\label{theorem:paulisAreCliffords}
+Any element of $P(n)$ is also a part of $C(n)$.
+\end{theorem}
+\begin{proof}
+This is due to the inherent property of the group $P(n)$ being closed under multiplication. That is, any two Pauli matrices multiplied by each other equals a Pauli matrix.
+\end{proof}
+
 \begin{theorem}
 \label{theorem:cliffordTimesClifford}
 An arbitrary Clifford $C_0$ times another arbitrary Clifford $C_1$ equals an arbitrary Clifford.
@@ -651,8 +664,9 @@ because any element from $P(n)$ multiplied by $\alpha$ is also in $P(n)$. Thus, 
 \end{proof}
 Additionally, it can be shown that a given mapping from the $2n$ generators determines a unique Clifford operator~\cite{ozols2008clifford}.
 
-\subsection{Hadamard Gate}\
-The Hadamard gate is simply just:
+\subsection{Hadamard Gate}
+\label{subsec:hadamardGate}
+The Hadamard gate is:
 $$H = \begin{bmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & \frac{-1}{\sqrt{2}}\end{bmatrix}$$
 The nice thing about the Hadamard gate is that it is equal to its inverse, as seen by $$H^{\dagger}H = HH^{\dagger} = HH = I.$$ Additionally, the Hadamard gate can be used to transform a qubit from the $z$-basis (the standard computational basis, remark Subsection~\ref{subsection:basisStates}) to the $x$-basis, or from the $x$-basis to the $z$-basis. The following illustrates the previous statement: Given some arbitrary single qubit $\ket{\psi} = c_0\ket{0} + c_1\ket{1}$, applying a $H$ to it,
 $$H\ket{\psi} = H(c_0\ket{0} + c_1\ket{1}) = c_0H\ket{0} + c_1H\ket{1} = c_0\ket{+} + c_1\ket{-}$$
@@ -680,7 +694,8 @@ $P$ & $H \ P \ H^{\dagger}$ \\
 \end{proof}
 
 \subsection{\texorpdfstring{$S$}{S} Gate}
-The $S$ gate, also known as the 'phase gate' is simply just:
+\label{subsec:sGate}
+The $S$ gate, also known as the 'phase gate' is:
 $$S = \begin{bmatrix} 1 & 0 \\ 0 & i\end{bmatrix}$$
 Applying the $S$ gates three times is equal to its inverse, as seen by $$SSSS = I = SS^{\dagger} = S^{\dagger}S.$$
 
@@ -1075,25 +1090,14 @@ The idea behind this algorithm here is that the consecutive $\mathit{CU}_{i,j}$ 
 % \NP{can add some more explanation here?}
 \end{proof}
 
-\section{Ranking and Unranking Functions}
-\label{subsec:unrankingFunction}
-A ranking function is a bijective function which maps an element $s \in S$, where $S$ is some defined set, to an integer $i \in \{0, 1, \cdots \lvert S \rvert - 1\}$. It thus gives a 'rank' to each element in the set. The inverse of a ranking function is called an unranking function: This is a bijective function which maps an integer $i \in \{0, 1, \cdots \lvert S \rvert - 1\}$ to a corresponding $s$ from a defined set $S$~\cite{shimizu2014unranking}. Unranking and ranking functions are useful for certain methods of encryption and have been studied extensively for permutations of sets~\cite{arndt2010matters}.
-
-\section{Quantum Message Authentication}
-Quantum Message Authentication (QMA) involves performing operations on a quantum message to ensure the message has not been tampered with by an adversary. Quantum states place the additional requirement that authentication can not be performed without encryption. Thus, the message must be modified by the authentication process~\cite{barnum2002authentication}. The work in~\cite{barbeau2022authenticity} showed that the Clifford code QMA scheme can also be extended to include replay detection.
-\subsection{Authenticity, Integrity and Replay Detection}
-In cryptography, authenticity, integrity and replay detection are all distinct but closely related terms. Authenticity detection ensures the message received by the receiver is sent from the sender. Integrity detection ensures that the message has not been tampered with by an adversary while in transit. Replay detection ensures that the message has not been resent or delayed by an adversary while in transit.
-\subsection{Keys and Key Mappings}
-The operations performed on the quantum message by a given sender and receiver are determined by some key $k$ along with a function that maps the key to its corresponding operations. The receiver applies the inverse of the operations the sender applies. The key is assumed to be classical, and is stored as a bit string.
-\subsection{Data Qubits and Signature Qubits}
-Data qubits are the qubits that make up the desired message the sender wants to send to the receiver. There are $m$ number data qubits in the quantum message $\rho$. Signature qubits are additional qubits added to the message for facilitating authentication. There are $d$ number data qubits in the quantum message $\rho$. The quantum message $\rho$ has $n = m + d$ qubits.
 \section{Measurement}
 \label{subsec:Measurements}
-The measurement result of a quantum state is a probabilistic outcome dependent on the complex amplitudes of the state. Measurement can be interpreted via any of one of the three quantum state representations discussed in this thesis: bra-ket notation, state vector and density matrix.
+The measurement result of a quantum state is a probabilistic outcome dependent on the complex amplitudes of the state. Measurement can be interpreted via any of one of the three quantum state representations discussed in this thesis: bra-ket notation, state vector and density matrix (see Subsection~\ref{definitionOfQuantumStates} and Section~\ref{densityMatrix}).
 
 Remark that $\ket{\psi}^{\dagger} = \bra{\psi}$. In the state vector form, a measurement outcome $m$ along with measurement operator $M_m$ occurs with probability $p(m)$ such that
 \begin{align}
-p(m)=\left\langle\psi\left|M_{m}^{\dagger} M_{m}\right| \psi\right\rangle
+p(m)&= \bra{\psi} M_{m}^{\dagger} M_{m} \ket{\psi} \\
+&=Tr(M_{m}^{\dagger} M_{m} \ket{\psi}\bra{\psi})
 \end{align}
 and the resulting state after being measured is
 \begin{align}
@@ -1137,12 +1141,20 @@ Conveniently, this thesis makes use of relatively simple measurements using the 
 \begin{align}
 \ket{\phi} \otimes \underbrace{\ket{b} \otimes \ket{b} \otimes \cdots \ket{b}}_{d \text{ times}} 
 \end{align}
-where $\ket{\phi}$ is an $m$-qubit state tensored with the $d$-qubit state $\underbrace{\ket{b} \otimes \ket{b} \otimes \cdots \otimes \ket{b}}_{d \text{ times}}$. Each $\ket{b} \in \{\ket{0},\ket{1}\}$, as an example:
+where $\ket{\phi}$ is an $m$-qubit state tensored with the $d$-qubit state
 \begin{align}
-\underbrace{\ket{b} \otimes \ket{b} \otimes \cdots \otimes \ket{b}}_{d \text{ times}} = \ket{01 \cdots 0}
+\underbrace{\ket{b} \otimes \ket{b} \otimes \cdots \otimes \ket{b}}_{d \text{ times}} \label{eq:sigQubitExample}
 \end{align}
+where each $\ket{b} \in \{\ket{0},\ket{1}\}$.
 
-This kind of state results in a very straightforward measurement of the rightmost $d$ qubits. Whatever state the rightmost $d$ qubits are in, directly corresponds to the measurement results. The measurement also does not disturb the state.  The following examples will help clarify.
+\begin{example}
+Let $d$ = 3. Equation~\eqref{eq:sigQubitExample} may result in the following state:
+\begin{align}
+\ket{b} \otimes \ket{b} \otimes \ket{b} = \ket{01 0}
+\end{align}
+\end{example}
+
+This kind of state results in a relatively straightforward measurement of the rightmost $d$ qubits. Whatever state the rightmost $d$ qubits are in, directly corresponds to the measurement results. The measurement also does not disturb the state.  The following examples will help clarify.
 \begin{example}
 If the state $\ket{\phi} \otimes \ket{0}$ is measured using the $2^d = 2^1 = 2$ measurement operators in Equation~\eqref{eq:signatureQubitMeasurementOperator}, the measurement outcome will be:
 $$+1$$
@@ -1154,6 +1166,55 @@ $$+1,-1,-1,+1,-1,+1$$
 with probability $1$ and the resulting state will be unaffected.
 \end{example}
 Each qubit set to $\ket{0}$ has a measurement result of $+1$ and each qubit set to $\ket{1}$ has a measurement result of $-1$. Also note that in the vast majority of situations in quantum computing it is unusual for the measurement to not affect the state.
+
+\section{Ranking and Unranking Functions}
+\label{subsec:unrankingFunction}
+A ranking function is a bijective function which maps an element $s \in S$, where $S$ is some defined set, to an integer $i \in \{0, 1, \cdots \lvert S \rvert - 1\}$. It thus gives a 'rank' to each element in the set. The inverse of a ranking function is called an unranking function: This is a bijective function which maps an integer $i \in \{0, 1, \cdots \lvert S \rvert - 1\}$ to a corresponding $s$ from a defined set $S$~\cite{shimizu2014unranking}. Unranking and ranking functions are useful for certain methods of encryption and have been studied extensively for permutations of sets~\cite{arndt2010matters}.
+
+\section{Quantum Message Authentication}
+Informally, quantum message authentication (QMA) involves performing operations on a quantum message to detect when the message has been tampered by an adversary. The operations performed on the message are determined by a classical key. If the message has been tampered, the QMA scheme must indicate this with some probability as a function of how much the message has been tampered. Quantum states place the additional requirement that authentication can not be performed without encryption. Thus, the message must be modified by the authentication process~\cite{barnum2002authentication}. The work in~\cite{barbeau2022authenticity} showed that the Clifford code QMA scheme can also be extended to include replay detection.
+
+Encryption must ensure that the quantum data is informationally secure. As in, there must be no way an adversary can learn something about the quantum data. For an $m$-qubit message, the key size of the QMA scheme must be at least $2m$ to encrypt the message. The block Clifford code (see Chapter~\ref{sec:PerezCode}) has not been proven to encrypt the data. However, if it is proven to not encrypt quantum data, it may be augmented to ensure encryption. This is elaborated on more in the chapter for the block Clifford code. Also note that the adversary considered in this thesis is restricted to Pauli attacks (see Section~\ref{section:attackModel}). Thus, the block Clifford code's ability to detect adversaries is not characterized for the general case where the adversary can apply any type of attack. It is common to use the proof of security against Pauli attacks to prove the more general case.
+
+Definitions~\ref{def:QMAgeneralForm} and~\ref{def:QMAsecurity} adhere to the ones found in the seminal paper~\cite{barnum2002authentication}. Definition~\ref{def:QMAgeneralForm} describes the general form of a QMA scheme. Definition~\ref{def:QMAsecurity} more precisely quantifies the security aspect of a QMA scheme.
+
+\begin{definition}
+\label{def:QMAgeneralForm}
+A QMA scheme requires a set of classical keys $K$ and two corresponding algorithms $S$ and $R$ that are polynomial time. Algorithm $S$ is used by the sender, who wishes to send a $m$-qubit message $M$ to the receiver who uses algorithm $R$.
+
+The algorithm $S$ takes as input $k$ and $M$ and outputs a packet to transmit, denoted by $\rho$, consisting of $n = m + d$ qubits. The algorithm $R$ must be able to recover $M$ from $\rho$. Additionally, $S$ must encrypt the message $M$ contained by $\rho$.
+
+The algorithm $R$ takes as input $k$ and $\rho'$ ($\rho'$ may or may not be equal to $\rho$) and outputs the message $M'$  (which may or may not be equal to $M'$). It also indicates accepting or rejecting the packet by outputting a single qubit set to either $\ket{ACC}$ or $\ket{REJ}$ respectively. It must always indicate $\ket{ACC}$ on the input $\rho$.
+\end{definition}
+
+For Definition~\ref{def:QMAsecurity} we will denote the following measurement operators:
+\begin{align}
+P_1^{|\psi\rangle} &=|\psi\rangle\left\langle\psi\left|\otimes I_V+I_M \otimes\right| \mathrm{REJ}\right\rangle\langle\mathrm{REJ}|-| \psi\rangle\langle\psi|\otimes| \mathrm{REJ}\rangle\langle\mathrm{REJ}| \\
+P_0^{|\psi\rangle} &=\left(I_M-|\psi\rangle\langle\psi|\right) \otimes(|\mathrm{ACC}\rangle\langle\mathrm{ACC}|)
+\end{align}
+$P_1^{|\psi\rangle}$ indicates a desirable outcome for the QMA scheme. It is the outcome associated to either the packet being unaffected by an adversary and accepted, or affected by an adversary and rejected. $P_0^{|\psi\rangle}$ indicates that the scheme failed.
+
+\begin{definition}
+\label{def:QMAsecurity}
+For a given message $\ket{\psi}$, a QMA scheme is $\epsilon$-secure so long as it satisfies both the completeness and soundness requirements.
+
+Completeness ensures that if the received packet has not been modified then the scheme will accept the message and recover it properly. More precisely, it is defined as:
+$$k \in \mathcal{K}: R_k\left(S_k(|\psi\rangle\langle\psi|)\right)=|\psi\rangle\langle\psi|\otimes| \mathrm{ACC}\rangle\langle\mathrm{ACC}|$$
+
+Soundness describes how well the scheme is at detecting attack. Given the adversary attacks with the operation $A$, the following describes the output state of $R$ given keys are uniformly distributed:
+$$\rho'=\frac{1}{|\mathcal{K}|} \sum_k R_k\left(A\left(S_k(|\psi\rangle\langle\psi|)\right)\right)$$
+The scheme must satisfy the following property to be sound:
+$$\operatorname{Tr}\left(P_1^{|\psi\rangle} \rho'\right) \geq 1-\epsilon$$
+\end{definition}
+
+In this thesis, the $\ket{ACC/REJ}$ qubit is abstracted away when describing the Clifford code (see Section~\ref{sec:IntegrityDetectionUsingCliffordOperationEncryption}) and block Clifford code. Also note that  block Clifford code does not easily fit into how security is defined in Definition~\ref{def:QMAsecurity}. A definition of security better-suited for the block Clifford code would include the characteristics of the attack applied by the adversary. I restrict the attack model such that $A \in P(n)$ and analytically and imperically demonstrate the block Clifford code's probability of detection based off how many non-identity single-qubit Paulis are in $A$.
+
+\subsection{Authenticity, Integrity and Replay Detection}
+In cryptography, authenticity, integrity and replay detection are all distinct but closely related terms. Authenticity detection ensures the message received by the receiver is sent from the sender. Integrity detection ensures that the message has not been tampered with by an adversary while in transit. Replay detection ensures that the message has not been resent or delayed by an adversary while in transit. The analysis in this thesis is only expressed in terms of integrity detection.
+\subsection{Keys and Key Mappings}
+The operations performed on the quantum message by a given sender and receiver are determined by some key $k$ along with a function that maps the key to its corresponding operations. The receiver applies the inverse of the operations the sender applies. The key is assumed to be classical, and is stored as a bit string.
+\subsection{Data Qubits and Signature Qubits}
+The packet $\rho$ is composed of the quantum message the sender would like to the send to the receiver as well as signature qubits. Data qubits are the qubits that make up the desired message the sender wants to send to the receiver. There are $m$ number of data qubits in the packet $\rho$. Signature qubits are the additional qubits added to the message for facilitating authentication. There are $d$ number of signature qubits in the packet $\rho$. The packet $\rho$ has $n = m + d$ qubits.
 
 %\NP{I should be sure to define the notation for measurement outcomes: $+1$ for $\ket{0}$ and $-1$ for $\ket{1}$} \NP{be sure to also explain what measuring along the 'Z basis' means}
 %\NP{Note to self: I like how Evelyn's thesis explains measurement. I can read that again to see how I could write my own section.}
@@ -1168,7 +1229,7 @@ This can be interpreted as applying a random non-identity Pauli (see Subsection~
 
 \section{Attack Model}
 \label{section:attackModel}
-Unless specified otherwise, the adversary in this thesis can only modify the data packet, denoted by $\rho$, while in transit by applying Pauli operations to it (see Subsection~\ref{subsubsection:paulis}). That is, the adversary is restricted to some operation $A \in P(n)$. This attack model will be applied to the Clifford code and the block Clifford code. I may in certain instances also specify the number of non-identity single-qubits the Pauli operator is composed of, as shown in Chapter~\ref{sec:PerezCode}. 
+Unless specified otherwise, the adversary in this thesis can only modify the data packet, denoted by $\rho$, while in transit by applying Pauli operations to it (see Subsection~\ref{subsubsection:paulis}). That is, the adversary is restricted to some operation $A \in P(n)$. This attack model will be applied to the Clifford code and the block Clifford code in Subsection~\ref{sec:IntegrityDetectionUsingCliffordOperationEncryption} and Chapter~\ref{sec:PerezCode} respectively. I may in certain instances also specify the number of non-identity single-qubits the Pauli operator is composed of, as shown in Chapter~\ref{sec:PerezCode}. 
 
 Denote $C$ and $C^{\dagger}$ as Clifford operations for encrypting and decrypting a data packet respectively, as described by either the Clifford code or the block Clifford code. The data packet $\rho$ will be transformed in such a way if the adversary attacks using $A \in P(n)$: 
 \begin{align}
@@ -1182,16 +1243,7 @@ where $A' \in P(n)$ by definition of the Clifford group (see Equation~\eqref{eq:
 \label{subsec:IntegrityDetectionUsingQuantumTomography}
 A technique for detecting integrity attacks using quantum tomography is clearly outlined in~\cite{satoh2018network}. The specific protocol for the tomography method is explained in more detail in~\cite{oka2016classical}. Quantum tomography is the process of repeatedly measuring copies of the same quantum state to determine what the state is.
 
-The core idea of this method of integrity detection is to use (what one may call) 'indicator qubits' which solely serve the purpose of monitoring the health of the channel the quantum message travels along. The health of the channel is monitored using quantum tomography. The indicator qubits are inserted at random positions within the entire transmitted message (one might also call the indicator qubits signature qubits). Both the sender and receiver must agree on which qubit positions in the message are for holding the data to transmit (the data qubits), and which ones are used for indicator qubits. The sender and receiver must keep the positions of the indicator qubits secret, to ensure the protocol works properly. If an adversary tampers with the message, it may tamper with some of the indicator qubits. If enough of the indicator qubits are modified then an attack is indicated. This method is particularly interesting because it can detect at exactly which node within a network the attack is happening, by making use of the 'entanglement swapping' process.
-\section{The Signed Polynomial Code}
-\label{section:signedPolynomialCode}
-The signed polynomial code,~\cite{ben2006secure,aharonov2017interactive}, was designed with qudits in mind and offers a level of integrity detection similar to the Clifford code. Qudits are the higher-dimension equivalent of qubits. A qubit is considered a two-state system, while a qudit is a $d$-state system where $d > 2$. The integrity detection of the method is affected by the dimension of the qudits.
-\section{The Trap Code}
-The trap code makes use of quantum error correction to detect adversaries. The security of the trap code is dependent on the number of errors the chosen error correction scheme can detect and thus also dependent on how many physical qubits are encoding each logical qubit in the data packet. See~\cite{nielsen2002quantum} for an in-depth explanation of quantum error correction.
-
-The key mapping for the trap code is similar to the block Clifford code, as the key determines Pauli operations applied to the qubits in the packet and a permutation of qubits~\cite{broadbent2013quantum}. As far as I am aware, the key mapping process for the trap code has not been explained in rigorous detail and is abstracted away whenever it appears in the literature. The multiset permutation unranking algorithm presented in this thesis may be used to facilitate the permuting of qubits in the trap code (see Subsection~\ref{subsubsection:keyMappings}).
-
-
+The core idea of this method of integrity detection is to use (what one may call) 'indicator qubits' which solely serve the purpose of monitoring the health of the channel the quantum message travels along. The health of the channel is monitored using quantum tomography. The indicator qubits are inserted at random positions within the entire transmitted message (one might also call the indicator qubits signature qubits). Both the sender and receiver must agree on which qubit positions in the message are for holding the data to transmit (the data qubits), and which ones are used for indicator qubits. The sender and receiver must keep the positions of the indicator qubits secret, to ensure the protocol works properly. If an adversary tampers with the message, it may tamper with some of the indicator qubits. If enough of the indicator qubits are modified then an attack is indicated. This method is particularly interesting because it can detect at exactly which node within a network the attack is happening, by making use of repeaters which use entanglement swapping (see Section 10.3 of~\cite{van2014quantum}).
 
 \section{The Clifford Code}
 \label{sec:IntegrityDetectionUsingCliffordOperationEncryption}
@@ -1219,8 +1271,10 @@ Example~\ref{ex:noIntegrityAttackClifford} shows a simple example of encryption 
 	\begin{align}
 	& \Rightarrow C^{\dagger}|01\rangle = (X \otimes X)\mathit{CNOT}|01\rangle = (X \otimes X)|01\rangle = |10\rangle
 	\end{align}
-	The original data $\sigma = |1\rangle\langle1|$ may still be read or used, and measuring the signature of the decrypted data does not indicate an integrity attack occurred. Example~\ref{ex:noticedIntegrityAttackClifford} uses the same data to encrypt and the same encryption/decryption operators, but outlines what happens if there is an adversary present.
+	The original data $\sigma = |1\rangle\langle1|$ may still be read or used, and measuring the signature of the decrypted data does not indicate an integrity attack occurred.
 \end{example}
+
+ Example~\ref{ex:noticedIntegrityAttackClifford} uses the same data to encrypt and the same encryption/decryption operators, but outlines what happens if there is an adversary present.
 
 \begin{example}
 \label{ex:noticedIntegrityAttackClifford}
@@ -1256,18 +1310,27 @@ Example~\ref{ex:noIntegrityAttackClifford} shows a simple example of encryption 
 	The decrypter of the data then measures $+1$ on the signature qubit, meaning the integrity attack is not detected, despite the adversary successfully tampering with the data. 
 \end{example}
 
+\section{The Signed Polynomial Code}
+\label{section:signedPolynomialCode}
+The signed polynomial code,~\cite{ben2006secure,aharonov2017interactive}, was designed with qudits in mind and offers a level of integrity detection similar to the Clifford code. Qudits are the higher-dimension equivalent of qubits. A qubit is considered a two-state system, while a qudit is a $d$-state system where $d > 2$. The integrity detection of the method is affected by the dimension of the qudits.
+\section{The Trap Code}
+The trap code makes use of quantum error correction to detect adversaries. The security of the trap code is dependent on the number of errors the chosen error correction scheme can detect and thus also dependent on how many physical qubits are encoding each logical qubit in the data packet. See~\cite{nielsen2002quantum} for an in-depth explanation of quantum error correction.
+
+The key mapping for the trap code is similar to the block Clifford code, as the key determines Pauli operations applied to the qubits in the packet and a permutation of qubits~\cite{broadbent2013quantum}. As far as I am aware, the key mapping process for the trap code has not been explained in rigorous detail and is abstracted away whenever it appears in the literature. The multiset permutation unranking algorithm presented in this thesis may be used to facilitate the permuting of qubits in the trap code (see Subsection~\ref{subsubsection:keyMappings}).
+
 \pagebreak
 \chapter{The Block Clifford Code}
 \label{sec:PerezCode}
 \section{Introduction}
-Chapter~\ref{sec:IntegrityDetectionUsingCliffordOperationEncryption} showed how to use Clifford operations to detect integrity attacks. This chapter describes a new type of code, the block Clifford code, which uses a subset of the Clifford operations. The block Clifford code uses asymptotically fewer gates (under reasonable assumptions) and has an asymptotically faster key mapping compared to the Clifford code. The one downside of this new method is that the probability of detecting integrity attacks is dependent on the number of qubits that are modified by the adversary. As a result of this, it gives lower levels of detection than the Clifford code when the adversary attacks a small number of qubits (this will be precisely quantified in the analysis). Under certain assumptions, this can be advantageous. Particularly, in situations where the receiver still wants to accept data packets that have a very small number of noisy qubits. Qubits may acquire noise when using an imperfect channel to travel from the sender to the receiver.
+Chapter~\ref{sec:IntegrityDetectionUsingCliffordOperationEncryption} showed how to use Clifford operations to detect integrity attacks. This chapter describes a new type of code, the block Clifford code, which uses a subset of the Clifford operations. The block Clifford code uses asymptotically fewer gates (under reasonable assumptions) and has an asymptotically faster key mapping compared to the Clifford code. The one downside of this new method is that the probability of detecting integrity attacks is dependent on the number of qubits that are modified by the adversary. As a result of this, it gives lower levels of detection than the Clifford code when the adversary attacks a small number of qubits (this will be precisely quantified in the analysis). Under certain assumptions, this can be advantageous. Particularly, in situations where the receiver still wants to accept data packets that have a very small number of noisy qubits. Qubits may acquire noise when using an imperfect channel to travel from the sender to the receiver. Also note that when I mention 'encryption' or 'decryption' with regards to the block Clifford code I am refferring to the quantum operations that are applied by the sender and receiver respectively. The definition of encryption in the quantum setting, as outlined in~\cite{barnum2002authentication}, refers to informationally secure data. I have not proven that the block Clifford code achieves this property, but I posit that if it doesn't then it could be extended to achieve this by increasing the number of different types of single-qubit gates $U_i$ that are applied (these gates are defined in Subsection~\ref{subsec:quantumOperations}).
 
-The method described in this chapter works by first appending signature qubits to the message, just like how the Clifford code does. The block Clifford code assigns a $\mathit{CX}_{i,j}$, $\mathit{CY}_{i,j}$ or $\mathit{CZ}_{i,j}$ gate (see Subsection~\ref{subsubsec:CU}) to each data qubit at position $i$ so that operations the adversary may perform on a given data qubit of the packet can subsequently affect a corresponding signature qubit at position $j$. Additionally, single-qubit operations are performed on each data qubit to ensure that the data is encrypted and that the adversary can not modify the packet with a certain operation that the code can never detect. The previously described operations are applied during the 'encryption step'. To decrypt the data, the inverse of the encryption step is applied. Just like with the Clifford code, if the signature qubits are measured to all be $+1$ (which is guaranteed to happen if they are all in the state $\Ket{0}$ upon measurement) then the code does not indicate an adversarial attack. Otherwise, an attack is indicated.
+The method described in this chapter works by first appending signature qubits to the message, just like how the Clifford code does. The block Clifford code assigns a $\mathit{CX}_{i,j}$, $\mathit{CY}_{i,j}$ or $\mathit{CZ}_{i,j}$ gate (see Subsection~\ref{subsubsec:CU}) to each data qubit at position $i$ so that operations the adversary may perform on a given data qubit of the packet can subsequently affect a corresponding signature qubit at position $j$. Additionally, single-qubit operations are performed on each data qubit to ensure that the adversary can not modify the packet with a certain operation that the code can never detect. The previously described operations are applied during the 'encryption step'. To decrypt the data, the inverse of the encryption step is applied. Just like with the Clifford code, if the signature qubits are measured to all be $+1$ (which is guaranteed to happen if they are all in the state $\Ket{0}$ upon measurement) then the code does not indicate an adversarial attack. Otherwise, an attack is indicated.
 
 Example~\ref{ex:noticedIntegrityAttackClifford} showed how a $\mathit{CX}_{i,j}$ gate which spans the data portion and signature portions of the packet enables integrity attack detection. Example~\ref{ex:unnoticedIntegrityAttackClifford} showed that without a $\mathit{CX}_{i,j}$, $\mathit{CY}_{i,j}$ or $\mathit{CZ}_{i,j}$ gate affecting the data and signature portion of the message, integrity attacks are harder to detect. The strength of the Clifford code arises when it performs many operations that span both the data qubits and signature qubits (via the $\mathit{CNOT}$ gates). The block Clifford code aims to preserve this property as much as possible.
 \section{Algorithm}
 \subsection{Quantum Operations}
-Just like with the Clifford Code, the block Clifford code first appends $d$ signature qubits to the message $\sigma$ so that $\rho = \sigma \otimes (\ket{0}\bra{0})^{\otimes d}$. Let $m$ be the number of data qubits the message $\sigma$ is made up of and let $n = m + d$. For simplicity, assume $m$ is evenly divisible by $d$ (the reason for this will be evident soon). Next, each signature qubit has a $U_j \in \{I_j,H_j,S_j^{\dagger}H_j\}$ applied to it based on the key (the key mapping is described in Subsection~\ref{subsubsection:keyMappings}) followed by $m$ number of $\mathit{CU}_{i,j}$ gates, where $\mathit{CU}_{i,j} \in \{\mathit{CX}_{i,j}, \mathit{CY}_{i,j}, \mathit{CZ}_{i,j}\}$, being applied to $\rho$ after each application of a $U_j$ gate, where $d \leq i < n$ and $0 \leq j < d$. Each data qubit is acted on by exactly one $\mathit{CU}_{i,j}$. Each signature qubit is acted on by exactly $\frac{m}{d}$ number of $\mathit{CU}_{i,j}$'s, where each value of $i$ is determined by the key. The $I_j$, $H_j$ and $S_j^{\dagger}H_j$ gates convert the signature qubits to $\ket{0}$, $\ket{+}$ and $\ket{-i}$ qubits respectively (remark Subsection~\ref{subsection:basisStates}). For each $\mathit{CU}_{i,j}$, $\mathit{CX}_{i,j}$ is used if $j$ is the position of a $\ket{0}$ signature qubit, $\mathit{CY}_{i,j}$ is used if $j$ is the position of a $\ket{+}$ signature qubit and $\mathit{CZ}_{i,j}$ is used $j$ is the position of a $\ket{-i}$ signature qubit. After that, each data qubit at position $i$ is acted on by a $U_i \in \{I_i,H_i,S_i^{\dagger}H_i\}$, determined by the key. Finally, a permutation of the signature qubits is performed. That is, each signature qubit is moved to a new position $j'$ within the packet (again, determined by the key), where $0 \leq j \leq j' < n$,  by applying a $\mathit{CIRC}_{j,j'}$ gate (see Subsection~\ref{subsubsec:CircGate}). As a result, each data qubit at position $i$ is moved to a new position $i'$ where $0 \leq i' \leq i < n$ to make room for the shifting signature qubits.
+\label{subsec:quantumOperations}
+Just like with the Clifford Code, the block Clifford code first appends $d$ signature qubits to the message $\sigma$ so that $\rho = \sigma \otimes (\ket{0}\bra{0})^{\otimes d}$. Let $m$ be the number of data qubits the message $\sigma$ is made up of and let $n = m + d$. For simplicity, assume $m$ is evenly divisible by $d$ (the reason for this will be evident soon). Next, each signature qubit has a $U_j \in \{I_j,H_j,S_j^{\dagger}H_j\}$ applied to it based on the key (the key mapping is described in Subsection~\ref{subsubsection:keyMappings}) followed by $m$ number of $\mathit{CU}_{i,j}$ gates, where $\mathit{CU}_{i,j} \in \{\mathit{CX}_{i,j}, \mathit{CY}_{i,j}, \mathit{CZ}_{i,j}\}$, being applied to $\rho$ after each application of a $U_j$ gate, where $d \leq i < n$ and $0 \leq j < d$. Each data qubit is acted on by exactly one $\mathit{CU}_{i,j}$. Each signature qubit is acted on by exactly $\frac{m}{d}$ number of $\mathit{CU}_{i,j}$'s, where each value of $i$ is determined by the key. The $I_j$, $H_j$ and $S_j^{\dagger}H_j$ gates convert the signature qubits to $\ket{0}$, $\ket{+}$ and $\ket{-i}$ qubits respectively (remark Subsection~\ref{subsection:basisStates}). For each $\mathit{CU}_{i,j}$, $\mathit{CX}_{i,j}$ is used if $j$ is the position of a $\ket{0}$ signature qubit, $\mathit{CY}_{i,j}$ is used if $j$ is the position of a $\ket{+}$ signature qubit and $\mathit{CZ}_{i,j}$ is used $j$ is the position of a $\ket{-i}$ signature qubit. After that, each data qubit at position $i$ is acted on by a $U_i \in \{I_i,H_i,S_i^{\dagger}H_i\}$, determined by the key. Finally, each signature qubit is moved to a new position $j'$ within the packet (again, determined by the key), where $0 \leq j \leq j' < n$,  by applying a $\mathit{CIRC}_{j,j'}$ gate (see Subsection~\ref{subsubsec:CircGate}). For conciseness, I will refer to the movement of the signature qubits as a 'permutation' of the signature qubits. As a result of this permutation, each data qubit at position $i$ is moved to a new position $i'$ where $0 \leq i' \leq i < n$ to make room for the shifting signature qubits.
  
 To decrypt, the previously described operations are performed in reverse order, and with their conjugate transpose taken. Finally, the signature qubits are measured. All the signature qubits are measured along the $z$ basis (see Section~\ref{subsec:Measurements}) and if they all have a measurement result of $+1$ then no attack is indicated, otherwise an attack is indicated.
 
@@ -1372,7 +1435,7 @@ The decrypter of the message measures the rightmost qubit, and detects an integr
 \end{example}
 A formal algorithm describing the encryption and decryption processes is presented using pseudocode in Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} respectively. The long left arrow, $\Longleftarrow$, indicates the variable to the left of the arrow being assigned the value to the right of the arrow. Unless otherwise specified, $U_i$ refers to the single-qubit unitaries applied at lines~\ref{alg:PerezCodeEncryption:dataQubitUnitary1},~\ref{alg:PerezCodeEncryption:dataQubitUnitary2} and~\ref{alg:PerezCodeEncryption:dataQubitUnitary3} of Algorithm~\ref{alg:PerezCodeEncryption} and $\mathit{CU}_{i,j}$ refers to the gates applied at lines~\ref{alg:PerezCodeEncryption:CuUnitary1},~\ref{alg:PerezCodeEncryption:CuUnitary2} and~\ref{alg:PerezCodeEncryption:CuUnitary3} of Algorithm~\ref{alg:PerezCodeEncryption}. The corresponding inverse operations via conjugate transpose are labelled in Algorithm~\ref{alg:PerezCodeDecryption} (remark that $\mathit{CU}_{i,j}^{\dagger} = \mathit{CU}_{i,j}$). Additionally, denote $i'$ and $j'$ as the positions the qubits at the original positions $i$ and $j$ respectively are moved to due to the $\mathit{CIRC}$ operations performed by the permutation of signature qubits. Also, denote the parenthesis $()$ in Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} as a list of ordered elements. The standard set-builder notation,~\cite{setBuilderNotationWikipedia}, is used to build these lists. As in, they are equivalent to sets in set-builder notation, but they additionally have an ordering of elements.
 
-The key $k$ is made up of two subkeys such that $k = k_a, k_b$. Algorithms~\ref{alg:KeyMappingA} and~\ref{alg:KeyMappingB} (see Subsection~\ref{subsubsection:keyMappings}) transform each of the subkeys $k_a$ and $k_b$ into $k_a'$ and $k_b'$ respectively. Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} expect the processed subkeys $k_a'$ and $k_b'$ as input parameters, which determines which gates a part of the block Clifford code to use. Subkey $k_a$ specifies the single-qubit unitary operations applied to each data qubit and signature qubit. Algorithm~\ref{alg:KeyMappingA} takes as input a subkey $k_a$ and maps that subkey to a ternary string, $k_a'$, of length $n$. Each value stored in $k_a'$ at a given index $i$ corresponds to one of the three single-qubit unitaries to apply to the qubit at position $i$ (here, $i$ denotes the position of either a data qubit or signature qubit). The other subkey, $k_b$, specifies the permutation of signature qubits and which signature qubit $j$ is the target for each data qubit at position $i$ for each $\mathit{CU}_{i,j}$. Algorithm~\ref{alg:KeyMappingB} takes as input a subkey $k_b$ and maps that subkey to a permutation, $k_b'$, of the multiset:
+The key $k$ is made up of two subkeys such that $k = k_a, k_b$. Algorithms~\ref{alg:KeyMappingA} and~\ref{alg:KeyMappingB} (see Subsection~\ref{subsubsection:keyMappings}) transform each of the subkeys $k_a$ and $k_b$ into $k_a'$ and $k_b'$ respectively. Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} expect the processed subkeys $k_a'$ and $k_b'$ as input parameters, that determine which gates a part of the block Clifford code to use. Subkey $k_a$ specifies the single-qubit unitary operations applied to each data qubit and signature qubit. Algorithm~\ref{alg:KeyMappingA} takes as input a subkey $k_a$ and maps that subkey to a ternary string, $k_a'$, of length $n$. Each value stored in $k_a'$ at a given index $i$ corresponds to one of the three single-qubit unitaries to apply to the qubit at position $i$ (here, $i$ denotes the position of either a data qubit or signature qubit). The other subkey, $k_b$, specifies the permutation of signature qubits and which signature qubit $j$ is the target for each data qubit at position $i$ for each $\mathit{CU}_{i,j}$. Algorithm~\ref{alg:KeyMappingB} takes as input a subkey $k_b$ and maps that subkey to a permutation, $k_b'$, of the multiset:
 \begin{equation}
     \{\underbrace{0, 0, \cdots 0}_{\frac{m}{d} \text{ times}}\underbrace{1, 1, \cdots 1}_{\frac{m}{d} \text{ times}}\cdots\underbrace{d-1, d-1, \cdots d-1}_{\frac{m}{d} \text{ times}}\underbrace{d, d, \cdots d}_{d \text{ times}}\}
 \end{equation}
@@ -1484,9 +1547,8 @@ Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} run i
 Algorithms~\ref{alg:PerezCodeEncryption} has three loops. The nested loop at line~\ref{alg:PerezCodeEncryption:CUOuterLoop} loops through $d$ values, with its inner loop at line~\ref{alg:PerezCodeEncryption:CULoop} looping through $m$ values, equating to $O\left(md\right)$. The loop at line~\ref{alg:PerezCodeEncryption:DataQubitsLoop} loops through $m = O\left(m\right)$ values, and the loop at line~\ref{alg:PerezCodeEncryption:CircGatesLoop} loops through $n = O\left(n\right)$ values. Additionally, the filtering at line~\ref{alg:PerezCodeEncryption:filterKb} takes $O\left(n\right)$ time. This means Algorithms~\ref{alg:PerezCodeEncryption} runs in  $O\left(md\right) + O\left(m\right) + O\left(n\right) + O\left(n\right) = O\left(md\right) = O\left(nd\right)$ time.
 
 Algorithms~\ref{alg:PerezCodeDecryption} has three loops. The nested loop at line~\ref{alg:PerezCodeDecryption:CUOuterLoop} loops through $d$ values, with its inner loop at line~\ref{alg:PerezCodeDecryption:CULoop} looping through $m$ values, equating to $O\left(md\right)$. The loop at line~\ref{alg:PerezCodeDecryption:DataQubitsLoop} loops through $m = O\left(m\right)$ values, and the loop at line~\ref{alg:PerezCodeDecryption:CircGatesLoop} loops through $n = O\left(n\right)$ values. Additionally, the filtering at line~\ref{alg:PerezCodeDecryption:filterKb} takes $O\left(n\right)$ time. This means Algorithms~\ref{alg:PerezCodeDecryption} runs in  $O\left(md\right) + O\left(m\right) + O\left(n\right) + O\left(n\right) = O\left(md\right) = O\left(nd\right)$ time.
-
-It makes most sense to consider $m$ as being asymptotically the same as $n$, because $m$ must be $\frac{n}{2} \leq m < n$ because of the way Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} are constructed. If $m < \frac{n}{2}$, then that would mean at least one data qubit would not be acted on by a $\mathit{CU}_{i,j}$ with a signature qubit. 
 \end{proof}
+It makes most sense to consider $m$ as being asymptotically the same as $n$, because $m$ must be $\frac{n}{2} \leq m < n$ because of the way Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} are constructed. If $m < \frac{n}{2}$, then that would mean at least one data qubit would not be acted on by a $\mathit{CU}_{i,j}$ with a signature qubit. 
 
 \subsection{Construction from the Clifford Generators}
 As mentioned in Section~\ref{sec:IntegrityDetectionUsingCliffordOperationEncryption}, a Clifford gate can be constructed using $O\left(\frac{n^2}{\log_2 (n)}\right)$ number of gates from the Clifford generators. A construction for the block Clifford code from the Clifford generators is provided in this subsection which uses $O(nd)$ number of gates. More efficient constructions may be given, but this at least shows that for a fixed $d$ the block Clifford code uses asymptotically fewer gates from the Clifford generators than the Clifford code.
@@ -1511,6 +1573,7 @@ Algorithm~\ref{alg:PerezCodeDecryption} applies the same operations as Algorithm
 \end{proof}
 
 \subsection{Security Analysis}
+\label{subsec:securityAnalysis}
 Next, a mathematical analysis of the security of the proposed method is provided. Note that the transformations applied to $\rho$ in Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} are all from the Clifford group. That means, the entire operation acting on $\rho$ can be expressed using a single element from the Clifford group, call it $C$ (see Theorems~\ref{theorem:cliffordTimesClifford} and~\ref{theorem:cliffTensorProduct}). The following proofs will be concerned with an adversary that can only perform Paulis on the encrypted data. This simplifies the proofs, as the resulting transformation performed on the data packet will also be a Pauli. As in, with $C$ denoting the Clifford operation described by Algorithm~\ref{alg:PerezCodeEncryption}, the data packet $\rho$ will be transformed in such a way if the adversary attacks using $A \in P(n)$: 
 \begin{align}
 C^{\dagger}AC \rho C^{\dagger}A^{\dagger}C = A' \rho A'^{\dagger}
@@ -1687,7 +1750,7 @@ where each $A_k$ is the single-qubit Pauli applied at position $k$ a part of the
 \end{proof}
 \begin{theorem}
 \label{theorem:probabilityOfMultiQubitDetectionOnSingleBlock}
-Let each qubit in the data packet be acted on by a $U_i$ from the set $\{I_i, H_i, S_i^{\dagger}H_i\}$ with equal probabilities. An adversary that attacks using a Pauli composed of $w$ non-identity single-qubit Paulis that are each placed at an arbitrary signature qubit position $j$ or positions $i \in B(j)$ will be detected with probability:
+Let each qubit in the data packet be acted on by a $U_i$ from the set $\{I_i, H_i, S_i^{\dagger}H_i\}$ with equal probabilities. Denote $w$ such that $0 \leq w < \frac{n}{d}$. An adversary that attacks using a Pauli composed of $w$ non-identity single-qubit Paulis that are each placed at an arbitrary signature qubit position $j$ or positions $i \in B(j)$ will be detected with probability:
 \begin{align}
 f(w) &= \frac{1}{3}f(w - 1) + \frac{2}{3}(1 - f(w - 1)) \label{eq:probabilityOfMultiQubitDetectionOnSingleBlock}\\
 &= \frac{1-\left(\frac{-1}{3}\right)^w}{2} 
@@ -1783,7 +1846,7 @@ Taking Equations~\eqref{eq:stirlingNumberFunctionCombinedWithOtherTheorems} and~
 \label{eq:blockCliffordCodeLessThanCliffordCode}
 \sum_{x=1} ^{\min(d,w)} \left(1-\left(\frac{1}{2}\right)^{x}\right) {d \choose x} \frac{\left\{\begin{smallmatrix}w\\x\end{smallmatrix}\right\}x!}{d^w} \leq 1-\left(\frac{1}{2}\right)^{d}
 \end{align}
-As described in Theorem~\ref{theorem:probabilityOfDetectionForBlockCliffordCode}, the function given by Equation~\eqref{eq:stirlingNumberFunction} gives the probability of exactly $x$ number of blocks each having at least one non-identity single-qubit applied to them. Thus, evaluating Equation~\eqref{eq:stirlingNumberFunction} for all possible values of $x \in \{1,2, \cdots , \min (d,w)\}$ should be equal to $1$, because the probabilities of all possible outcomes must sum to $1$. As a result, Equation~\eqref{eq:stirlingNumberFunctionCombinedWithOtherTheorems} can be seen as a weighted sum of $1 - \left(\frac{1}{2}\right)^x$ for all possible values of $x$, where the weights sum to equal $1$. Remark that $x$ is at most equal to $d$. That means that:
+As described in Theorem~\ref{theorem:probabilityOfDetectionForBlockCliffordCode}, the function given by Equation~\eqref{eq:stirlingNumberFunction} gives the probability of exactly $x$ number of blocks each having at least one non-identity single-qubit Pauli applied to them. Thus, evaluating Equation~\eqref{eq:stirlingNumberFunction} for all possible values of $x \in \{1,2, \cdots , \min (d,w)\}$ should be equal to $1$, because the probabilities of all possible outcomes must sum to $1$. As a result, Equation~\eqref{eq:stirlingNumberFunctionCombinedWithOtherTheorems} can be seen as a weighted sum of $1 - \left(\frac{1}{2}\right)^x$ for all possible values of $x$, where the weights sum to equal $1$. Remark that $x$ is at most equal to $d$. That means that:
 $$1 - \left(\frac{1}{2}\right)^x \leq 1 - \left(\frac{1}{2}\right)^d$$ for $x \leq d$. Therefore Equation~\eqref{eq:blockCliffordCodeLessThanCliffordCode} holds true.
 \end{proof}
 \begin{theorem}
@@ -1833,7 +1896,7 @@ In the worst case, $2(3^n) - 2 = 2^{\ceil{\log_2 (3^n)}}$. This occurs when the 
 \end{align}
 \end{proof}
 
-Although there may be faster methods for converting a number from binary to ternary~\cite{zhang2019efficient}, Algorithm~\ref{alg:KeyMappingA} can be used for converting $k_a$ to ternary. Algorithm~\ref{alg:KeyMappingA} is a standard way to perform base conversion, which involves successive divisions with remainder~\cite{BaseConversionWikipedia}. On line~\ref{alg:divmod} of Algorithm~\ref{alg:KeyMappingA}, $\mathit{divmod}$ denotes division with remainder, also known as Euclidean division~\cite{EuclideanDivisionWiki}. Here the subkey $k_a$ is the dividend and $3$ is the divisor, which returns $q$ as the quotient and $r$ as the remainder. The same $\mathit{divmod}$ method will be used for the other subkey mapping. Line~\ref{alg:prependternary} denotes prepending a single ternary digit onto the ternary string $k_a'$, which determines which single-qubit gates are applied to which qubit (remark Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption}). In Algorithm~\ref{alg:KeyMappingA}, $k_a'$ is referred to as a 'ternary string' instead of a 'ternary number' as the prepend operation is typically associated with strings in most computer languages. In practical terms, the results of the algorithm are the same (whether or not it returns a string or a number). Line~\ref{alg:prependZeros} ensures that the resulting ternary string is at least length $n$.
+Although there may be faster methods for converting a number from binary to ternary~\cite{zhang2019efficient}, Algorithm~\ref{alg:KeyMappingA} can be used for converting $k_a$ to ternary. Algorithm~\ref{alg:KeyMappingA} is a standard way to perform base conversion, which involves successive divisions with remainder~\cite{BaseConversionWikipedia}. On line~\ref{alg:divmod} of Algorithm~\ref{alg:KeyMappingA}, $\mathit{divmod}$ denotes division with remainder, also known as Euclidean division~\cite{EuclideanDivisionWiki}. Here the subkey $k_a$ is the dividend and $3$ is the divisor, which returns $q$ as the quotient and $r$ as the remainder. The same $\mathit{divmod}$ method will be used for the other subkey mapping. Line~\ref{alg:prependternary} denotes prepending a single ternary digit onto the ternary string $k_a'$, that determines which single-qubit gates are applied to which qubit (remark Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption}). In Algorithm~\ref{alg:KeyMappingA}, $k_a'$ is referred to as a 'ternary string' instead of a 'ternary number' as the prepend operation is typically associated with strings in most computer languages. In practical terms, the results of the algorithm are the same (whether or not it returns a string or a number). Line~\ref{alg:prependZeros} ensures that the resulting ternary string is at least length $n$.
 
 \begin{algorithm}[H]
 \setstretch{1.07}
@@ -2032,7 +2095,7 @@ d\left(O\left(n\frac{m}{d}\log_2 (n) \left(\log_2 (\frac{m}{d}) + \log_2 (\log_2
 The other main computation in Algorithm~\ref{alg:KeyMappingB} is the base conversion on line~\ref{alg:KeyMappingB:divmod}. This results in $d$ division operations, each with numbers involving at most $\log_2(n!)$ number of bits:
 \begin{align}
 \log_2(k_b) &= \log_2\left({n \choose \frac{m}{d}}{n - \frac{m}{d} \choose \frac{m}{d}}{n - 2\frac{m}{d} \choose \frac{m}{d}}\cdots{\frac{m}{d} + d \choose \frac{m}{d}}\right) \\
-&= \log_2\left(\left(\frac{n(n-1)\cdots n-\frac{m}{d}+1}{\frac{m}{d}!}\right)\left(\frac{(n-\frac{m}{d})(n-\frac{m}{d}-1)\cdots }{\frac{m}{d}!}\cdots\right)\right)\\
+&= \log_2\left(\left(\frac{n(n-1)\cdots n-\frac{m}{d}+1}{\frac{m}{d}!}\right)\left(\frac{(n-\frac{m}{d})(n-\frac{m}{d}-1)\cdots }{\frac{m}{d}!}\right)\cdots \right)\\
 &< \log_2(n!)
 \end{align}
 This results in a run time of:
