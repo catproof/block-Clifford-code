@@ -94,7 +94,7 @@ $C$ & An arbitrary Clifford matrix.
 $C(n)$ & The Clifford group acting on $n$ qubits.
 \\ \hline
 
-$d$ & The number of signature qubits appended to a quantum message.
+$d$ & The number of signature qubits appended to a quantum message (see Section~\ref{sec:QMA}).
 \\ \hline
 
 $\mathit{divmod}(a,b)$ & A pseudocode method for Euclidean division,~\cite{EuclideanDivisionWiki}, where $a$ is divided by $b$. The method returns a tuple, $q,r$, where $q$ is the quotient and $r$ is the remainder.
@@ -121,10 +121,10 @@ $k_a$ & The subkey $k_a$ such that $k = k_a,k_b$
 $k_b$ & The subkey $k_b$ such that $k = k_a,k_b$
 \\ \hline
 
-$m$ & The number of data qubits within a quantum message.
+$m$ & The number of data qubits within a quantum message (see Section~\ref{sec:QMA}).
 \\ \hline
 
-$n$ & The total number of qubits a quantum message is composed of. The message is often referred to as a 'packet'.
+$n$ & The total number of qubits a quantum message is composed of. The message is often referred to as a 'packet' (see Section~\ref{sec:QMA}).
 $$n = m + d$$
 \\ \hline
 
@@ -134,7 +134,7 @@ $O\left(f(n_1,n_2, \cdots ,n_k)\right)$ & Reads as 'big $O$ of $f(n_1,n_2, \cdot
 $P(n)$ & The set of matrices given by all possible $n$-qubit tensor products of Pauli matrices (including the identity matrix).
 \\ \hline
 
-$w$ & The number of non-identity single-qubit Pauli unitaries an adversarial attack is composed of. 
+$w$ & The number of non-identity single-qubit Pauli unitaries an adversarial attack is composed of (see Section~\ref{section:attackModel}). 
 \\ \hline
 
 $\left\{\begin{smallmatrix}w\\x\end{smallmatrix}\right\}$ & The Stirling number of the second kind. It counts the number of ways to partition a set of $w$ distinct elements into $x$ non-empty sets.
@@ -504,7 +504,7 @@ Additionally, let $P(n) / U(1)$ be $P(n)$ but ignoring the multiplicative consta
 A matrix $A \in P(n + m) $ where $n + m \geq 2$ if and only if it can be represented as a tensor product of an element $B \in P(n)$ and an element $C \in P(m)$.
 \end{theorem}
 \begin{proof}
-This is possible due to tensor products being associative. Let $P_i \in P(1)$ be an arbitrary Pauli. Let $\alpha_A, \alpha_B, \alpha_C \in \{1, -1, i, -i\}$ such that $\alpha_B\alpha_C = \alpha_A$. Let $B = \alpha_B P_0 \otimes P_1 \otimes \cdots \otimes P_{n-1}$ and let $C = \alpha_C P_0 \otimes P_1 \otimes \cdots \otimes P_{m-1}$.
+This is possible due to tensor products being associative. Let $P_i \in P(1)$ be an arbitrary Pauli. Let $\alpha_A, \alpha_B, \alpha_C \in \{1, -1, i, -i\}$ be arbitrary values such that $\alpha_B\alpha_C = \alpha_A$. Let $B = \alpha_B P_0 \otimes P_1 \otimes \cdots \otimes P_{n-1}$ and let $C = \alpha_C P_0 \otimes P_1 \otimes \cdots \otimes P_{m-1}$.
 \begin{align}
 A &= \alpha_B B \otimes \alpha_C C \\
 &= \alpha_B (P_0 \otimes P_1 \cdots P_{n-1}) \otimes \alpha_C (P_{n} \cdots P_{n+m-2} \otimes P_{n+m-1}) \\
@@ -1172,27 +1172,29 @@ Each qubit set to $\ket{0}$ has a measurement result of $+1$ and each qubit set 
 A ranking function is a bijective function which maps an element $s \in S$, where $S$ is some defined set, to an integer $i \in \{0, 1, \cdots \lvert S \rvert - 1\}$. It thus gives a 'rank' to each element in the set. The inverse of a ranking function is called an unranking function: This is a bijective function which maps an integer $i \in \{0, 1, \cdots \lvert S \rvert - 1\}$ to a corresponding $s$ from a defined set $S$~\cite{shimizu2014unranking}. Unranking and ranking functions are useful for certain methods of encryption and have been studied extensively for permutations of sets~\cite{arndt2010matters}.
 
 \section{Quantum Message Authentication}
-Informally, quantum message authentication (QMA) involves performing operations on a quantum message to detect when the message has been tampered by an adversary. The operations performed on the message are determined by a classical key. If the message has been tampered, the QMA scheme must indicate this with some probability as a function of how much the message has been tampered. Quantum states place the additional requirement that authentication can not be performed without encryption. Thus, the message must be modified by the authentication process~\cite{barnum2002authentication}. The work in~\cite{barbeau2022authenticity} showed that the Clifford code QMA scheme can also be extended to include replay detection.
+\label{sec:QMA}
+\subsection{Definition}
+Informally, quantum message authentication (QMA) is a method of quantum computing that allows the receiver of a quantum message to detect if it has been tampered with by an adversary. A QMA scheme performs operations on the message which are determined by a classical key. If the message has been tampered with by an adversary, the QMA scheme must indicate this with some probability as a function of how much the message has been tampered with. Quantum states place the additional requirement that authentication can not be performed without encryption. Thus, the message must be modified by the authentication process~\cite{barnum2002authentication}. The work in~\cite{barbeau2022authenticity} showed that the Clifford code QMA scheme can also be extended to include replay detection.
 
-Encryption must ensure that the quantum data is informationally secure. As in, there must be no way an adversary can learn something about the quantum data. For an $m$-qubit message, the key size of the QMA scheme must be at least $2m$ to encrypt the message. The block Clifford code (see Chapter~\ref{sec:PerezCode}) has not been proven to encrypt the data. However, if it is proven to not encrypt quantum data, it may be augmented to ensure encryption. This is elaborated on more in the chapter for the block Clifford code. Also note that the adversary considered in this thesis is restricted to Pauli attacks (see Section~\ref{section:attackModel}). Thus, the block Clifford code's ability to detect adversaries is not characterized for the general case where the adversary can apply any type of attack. It is common to use the proof of security against Pauli attacks to prove the more general case.
+Encryption must ensure that the quantum data is informationally secure. As in, there must be no way an adversary can learn something about the quantum data. For an $m$-qubit message, the key size of the QMA scheme must be at least $2m$ to encrypt the message. The block Clifford code (see Chapter~\ref{sec:PerezCode}) has not been proven to encrypt the data. However, if it is proven to not encrypt quantum data, it may be augmented to ensure encryption. This is elaborated on more in the chapter for the block Clifford code. Also note that the adversary considered in this thesis is restricted to Pauli attacks (see Section~\ref{section:attackModel}). Thus, the block Clifford code's ability to detect adversaries is not characterized for the general case where the adversary can apply any type of attack. It is common to use the proof of security against Pauli attacks to describe the more general case.
 
-Definitions~\ref{def:QMAgeneralForm} and~\ref{def:QMAsecurity} adhere to the ones found in the seminal paper~\cite{barnum2002authentication}. Definition~\ref{def:QMAgeneralForm} describes the general form of a QMA scheme. Definition~\ref{def:QMAsecurity} more precisely quantifies the security aspect of a QMA scheme.
+Definitions~\ref{def:QMAgeneralForm} and~\ref{def:QMAsecurity} adhere to the ones found in the seminal paper on QMA~\cite{barnum2002authentication}. Definition~\ref{def:QMAgeneralForm} describes the general form of a QMA scheme. Definition~\ref{def:QMAsecurity} more precisely quantifies the security aspect of a QMA scheme.
 
 \begin{definition}
 \label{def:QMAgeneralForm}
-A QMA scheme requires a set of classical keys $K$ and two corresponding algorithms $S$ and $R$ that are polynomial time. Algorithm $S$ is used by the sender, who wishes to send a $m$-qubit message $M$ to the receiver who uses algorithm $R$.
+A QMA scheme requires a set of classical keys $K$ and two corresponding algorithms $S$ and $R$ that are polynomial time. Algorithm $S$ is used by the sender, who wishes to send an $m$-qubit message $\sigma$ to the receiver who uses algorithm $R$.
 
-The algorithm $S$ takes as input $k$ and $M$ and outputs a packet to transmit, denoted by $\rho$, consisting of $n = m + d$ qubits. The algorithm $R$ must be able to recover $M$ from $\rho$. Additionally, $S$ must encrypt the message $M$ contained by $\rho$.
+The algorithm $S$ takes as input $k$ and $\sigma$ and outputs a packet to transmit, denoted by $\rho$, consisting of $n = m + d$ qubits. The algorithm $R$ must be able to recover $\sigma$ from $\rho$. Additionally, $S$ must encrypt the message $\sigma$ contained by $\rho$.
 
-The algorithm $R$ takes as input $k$ and $\rho'$ ($\rho'$ may or may not be equal to $\rho$) and outputs the message $M'$  (which may or may not be equal to $M'$). It also indicates accepting or rejecting the packet by outputting a single qubit set to either $\ket{ACC}$ or $\ket{REJ}$ respectively. It must always indicate $\ket{ACC}$ on the input $\rho$.
+The algorithm $R$ takes as input $k$ and $\rho'$ ($\rho'$ may or may not be equal to $\rho$) and outputs the message $\sigma'$  (which may or may not be equal to $\sigma'$) and a single qubit $V$. $R$ indicates accepting or rejecting the packet by setting $V$ to either $\ket{ACC}$ or $\ket{REJ}$ respectively. It must always indicate $\ket{ACC}$ on the input $\rho$.
 \end{definition}
 
-For Definition~\ref{def:QMAsecurity} we will denote the following measurement operators:
+Note that in Definition~\ref{def:QMAgeneralForm} the quantum message is denoted by $M$. In Definition~\ref{def:QMAsecurity} it is denoted by the pure state $\ket{\psi}$, as it is somewhat combersome to talk about the message being the same at the sender and the receiver when it is a mixed state. The reader is refferred to the appendix of~\cite{barnum2002authentication} for a discussion on how security of pure states in QMA schemes can be extended to mixed states. For Definition~\ref{def:QMAsecurity} we will denote the following measurement operators:
 \begin{align}
-P_1^{|\psi\rangle} &=|\psi\rangle\left\langle\psi\left|\otimes I_V+I_M \otimes\right| \mathrm{REJ}\right\rangle\langle\mathrm{REJ}|-| \psi\rangle\langle\psi|\otimes| \mathrm{REJ}\rangle\langle\mathrm{REJ}| \\
-P_0^{|\psi\rangle} &=\left(I_M-|\psi\rangle\langle\psi|\right) \otimes(|\mathrm{ACC}\rangle\langle\mathrm{ACC}|)
+P_1^{|\psi\rangle} &=|\psi\rangle\left\langle\psi\left|\otimes I_V+I_\sigma \otimes\right| \mathrm{REJ}\right\rangle\langle\mathrm{REJ}|-| \psi\rangle\langle\psi|\otimes| \mathrm{REJ}\rangle\langle\mathrm{REJ}| \\
+P_0^{|\psi\rangle} &=\left(I_\sigma-|\psi\rangle\langle\psi|\right) \otimes(|\mathrm{ACC}\rangle\langle\mathrm{ACC}|)
 \end{align}
-$P_1^{|\psi\rangle}$ indicates a desirable outcome for the QMA scheme. It is the outcome associated to either the packet being unaffected by an adversary and accepted, or affected by an adversary and rejected. $P_0^{|\psi\rangle}$ indicates that the scheme failed.
+$P_1^{|\psi\rangle}$ indicates a desirable outcome for the QMA scheme. It is the outcome associated to either the packet being unaffected by an adversary and accepted, or affected by an adversary and rejected. $P_0^{|\psi\rangle}$ indicates that the scheme failed. Also denote $S_k$ and $R_k$ as the operations performed by algorithm $S$ and $R$ respectively when given the input key $k$.
 
 \begin{definition}
 \label{def:QMAsecurity}
@@ -1201,13 +1203,13 @@ For a given message $\ket{\psi}$, a QMA scheme is $\epsilon$-secure so long as i
 Completeness ensures that if the received packet has not been modified then the scheme will accept the message and recover it properly. More precisely, it is defined as:
 $$k \in \mathcal{K}: R_k\left(S_k(|\psi\rangle\langle\psi|)\right)=|\psi\rangle\langle\psi|\otimes| \mathrm{ACC}\rangle\langle\mathrm{ACC}|$$
 
-Soundness describes how well the scheme is at detecting attack. Given the adversary attacks with the operation $A$, the following describes the output state of $R$ given keys are uniformly distributed:
-$$\rho'=\frac{1}{|\mathcal{K}|} \sum_k R_k\left(A\left(S_k(|\psi\rangle\langle\psi|)\right)\right)$$
+Soundness describes how well the scheme can detect an attack. For all adversarial attacks, denoted by the superoperator $A$, and assuming keys are uniformly distributed, the following describes the output of algorithm $R$:
+$$\rho_R=\frac{1}{|\mathcal{K}|} \sum_k R_k\left(A\left(S_k(|\psi\rangle\langle\psi|)\right)\right)$$
 The scheme must satisfy the following property to be sound:
-$$\operatorname{Tr}\left(P_1^{|\psi\rangle} \rho'\right) \geq 1-\epsilon$$
+$$\operatorname{Tr}\left(P_1^{|\psi\rangle} \rho_R\right) \geq 1-\epsilon$$
 \end{definition}
 
-In this thesis, the $\ket{ACC/REJ}$ qubit is abstracted away when describing the Clifford code (see Section~\ref{sec:IntegrityDetectionUsingCliffordOperationEncryption}) and block Clifford code. Also note that  block Clifford code does not easily fit into how security is defined in Definition~\ref{def:QMAsecurity}. A definition of security better-suited for the block Clifford code would include the characteristics of the attack applied by the adversary. I restrict the attack model such that $A \in P(n)$ and analytically and imperically demonstrate the block Clifford code's probability of detection based off how many non-identity single-qubit Paulis are in $A$.
+Note that the block Clifford code does not easily fit into how security is defined in Definition~\ref{def:QMAsecurity}. A definition of security better-suited for the block Clifford code would include the characteristics of the attack applied by the adversary. I restrict the attack model such that $A \in P(n)$ and analytically and imperically demonstrate the block Clifford code's probability of detection based off how many non-identity single-qubit Paulis are in $A$. Definitions~\ref{def:QMAgeneralForm2} and~\ref{def:QMAsecurity2} provide an adapted version of QMA for the block Clifford code.
 
 \subsection{Authenticity, Integrity and Replay Detection}
 In cryptography, authenticity, integrity and replay detection are all distinct but closely related terms. Authenticity detection ensures the message received by the receiver is sent from the sender. Integrity detection ensures that the message has not been tampered with by an adversary while in transit. Replay detection ensures that the message has not been resent or delayed by an adversary while in transit. The analysis in this thesis is only expressed in terms of integrity detection.
@@ -1229,7 +1231,7 @@ This can be interpreted as applying a random non-identity Pauli (see Subsection~
 
 \section{Attack Model}
 \label{section:attackModel}
-Unless specified otherwise, the adversary in this thesis can only modify the data packet, denoted by $\rho$, while in transit by applying Pauli operations to it (see Subsection~\ref{subsubsection:paulis}). That is, the adversary is restricted to some operation $A \in P(n)$. This attack model will be applied to the Clifford code and the block Clifford code in Subsection~\ref{sec:IntegrityDetectionUsingCliffordOperationEncryption} and Chapter~\ref{sec:PerezCode} respectively. I may in certain instances also specify the number of non-identity single-qubits the Pauli operator is composed of, as shown in Chapter~\ref{sec:PerezCode}. 
+Unless specified otherwise, the adversary in this thesis can only modify the data packet, denoted by $\rho$, while in transit by applying Pauli operations to it (see Subsection~\ref{subsubsection:paulis}). That is, the adversary is restricted to some operation $A \in P(n)$. This attack model will be applied to the Clifford code and the block Clifford code in Subsection~\ref{sec:IntegrityDetectionUsingCliffordOperationEncryption} and Chapter~\ref{sec:PerezCode} respectively. I may in certain instances also specify the number of non-identity single-qubits the Pauli operator is composed of, denoted by $w$, as shown in Chapter~\ref{sec:PerezCode}. 
 
 Denote $C$ and $C^{\dagger}$ as Clifford operations for encrypting and decrypting a data packet respectively, as described by either the Clifford code or the block Clifford code. The data packet $\rho$ will be transformed in such a way if the adversary attacks using $A \in P(n)$: 
 \begin{align}
@@ -1836,6 +1838,19 @@ h(x,w,d)=&{d \choose x} \frac{\left\{\begin{smallmatrix}w\\x\end{smallmatrix}\ri
 \end{align}
 In Equation~\eqref{eq:stirlingNumberFunctionCombinedWithOtherTheorems}, $1-\left(\frac{1}{2}\right)^{x}$ is the approximation for the probability of detecting an adversary given they have applied at least one single-qubit Pauli to each of $x$ blocks (shown in Corollary~\ref{corollary:adversaryAttacksKblocks}). Equation~\eqref{eq:stirlingNumberFunction} is the probability of an adversary attacking $x$ blocks, as a function of the $w$ number of single-qubit Pauli attacks the adversary's attack is composed of. Thus, multiplying these two terms together and summing over all possible values of $x = 1, 2, \cdots \min(d,w)$ gives the approximation for the probability of detection.
 \end{proof}
+Now, QMA will be defined in a way that is appropriate for the block Clifford code in its current state. I will state the definitions by outlining how they differ from Definitions~\ref{def:QMAgeneralForm} and~\ref{def:QMAsecurity}.
+\begin{definition}
+\label{def:QMAgeneralForm2}
+The same as Definition~\ref{def:QMAgeneralForm}, but without the requirement of encryption.
+\end{definition}
+\begin{definition}
+\label{def:QMAsecurity2}
+The same as Definition~\ref{def:QMAsecurity}, but only considering $A \in P(n)$. Also, $\epsilon$ will be a function of $w$, $n$ and $d$.
+\end{definition}
+The block Clifford code satisfies Definition~\ref{def:QMAgeneralForm2}. It also satisfies Definition~\ref{def:QMAsecurity2} as an approximation due to Theorem~\ref{theorem:probabilityOfDetectionForBlockCliffordCode}. Showing completeness is trivial: the receiver in block Clifford code is the inverse of the sender. Soundness is shown via:
+$$\operatorname{Tr}\left(P_1^{|\psi\rangle} \rho_R\right) \gtrapprox 1-\epsilon$$
+for all possible $\ket{\psi}$ such that $\epsilon$ is the negation of Equation~\eqref{eq:stirlingNumberFunctionCombinedWithOtherTheorems}.
+
 Next, the approximate probabilities of detection for the block Clifford code (Equation~\eqref{eq:stirlingNumberFunctionCombinedWithOtherTheorems}) and the Clifford code (Equation~\eqref{eq:CliffordCodeProbabilityOfDetection}) will be compared.
 \begin{theorem}
 The approximate probability of detection for the block Clifford code is less than or equal to the approximate probability of detection for the Clifford code.
