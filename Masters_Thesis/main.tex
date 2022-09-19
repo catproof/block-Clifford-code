@@ -48,6 +48,7 @@
 \newtheorem{corollary}{Corollary}[section]
 \newtheorem{definition}{Definition}[section]
 \newtheorem{example}{Example}[section]
+\newtheorem{conjecture}{Conjecture}[section]
 
 \begin{document}
 
@@ -248,7 +249,7 @@ where each $c_i$ corresponds to the complex amplitude for the state $\ket{x_i}$.
 \end{align}
 In other words, the state vector must be a unit vector (which is also a unitary matrix with only one column).
 
-A state using this notation, $\ket{\psi}$, is sometimes refferred to as a 'ket'. So, you would pronounce the state, $\ket{\psi}$, as 'ket psi'. Also note that these special brackets can be changed around to denote the conjugate transpose of the corresponding ket:
+A state using this notation, $\ket{\psi}$, is sometimes referred to as a 'ket'. So, you would pronounce the state, $\ket{\psi}$, as 'ket psi'. Also note that these special brackets can be changed around to denote the conjugate transpose of the corresponding ket:
 \begin{align}
 \ket{\psi}^\dagger = \bra{\psi}
 \end{align}
@@ -444,6 +445,7 @@ The theorems and concepts herein can all be extended to consider mixed-states.
 
 \section{Quantum Gates}
 \subsection{Definition}
+\label{subsec:quantumGates}
 A quantum gate (in its physical form) allows one to manipulate and change the state of a quantum state deliberately and predictably. This section will describe the gates used in this thesis and the notational conventions for gates that it uses. Quantum gates are mathematically represented via unitary matrices.
 \subsection{Unitary Transformations}
 Quantum computing in its standard form involves performing operations on qubits within closed systems via quantum gates. Unitary transformations are transformations that do not violate the closed system requirement. Unitary matrices are used to represent these transformations. A matrix $U$ is unitary if and only if it satisfies the following:
@@ -1171,6 +1173,16 @@ Each qubit set to $\ket{0}$ has a measurement result of $+1$ and each qubit set 
 \label{subsec:unrankingFunction}
 A ranking function is a bijective function which maps an element $s \in S$, where $S$ is some defined set, to an integer $i \in \{0, 1, \cdots \lvert S \rvert - 1\}$. It thus gives a 'rank' to each element in the set. The inverse of a ranking function is called an unranking function: This is a bijective function which maps an integer $i \in \{0, 1, \cdots \lvert S \rvert - 1\}$ to a corresponding $s$ from a defined set $S$~\cite{shimizu2014unranking}. Unranking and ranking functions are useful for certain methods of encryption and have been studied extensively for permutations of sets~\cite{arndt2010matters}.
 
+\section{Superoperators}
+\label{sec:superoperator}
+A superoperator is the generalized description of the possible transformations a quantum system can undergo. A superoperator is a mapping between density matrices such that it is completely positive and does not increase the trace of density matrices. Denote $T$ as an arbitrary superoperator acting on an $n$-qubit system and define each $E_k$ such that $E_k \in \mathbb{C}^{2^n \times 2^n}$. The canonical form for superoperators is~\cite{superperatorNotes}:
+$$T(\rho)=\sum_k E_k \rho E_k^{\dagger}$$
+such that
+$$\sum_k E_k^{\dagger} E_k=I$$
+for all possible density matrices $\rho$.
+
+In Subsection~\ref{subsec:quantumGates} quantum gates were defined. They have a more restricted definition than the superoperator representation because they must be unitary matrices. A unitary matrix is considered a superoperator, but a superoperator is not necessarily a unitary matrix.
+
 \section{Quantum Message Authentication}
 \label{sec:QMA}
 \subsection{Definition}
@@ -1186,30 +1198,33 @@ A QMA scheme requires a set of classical keys $K$ and two corresponding algorith
 
 The algorithm $S$ takes as input $k$ and $\sigma$ and outputs a packet to transmit, denoted by $\rho$, consisting of $n = m + d$ qubits. The algorithm $R$ must be able to recover $\sigma$ from $\rho$. Additionally, $S$ must encrypt the message $\sigma$ contained by $\rho$.
 
-The algorithm $R$ takes as input $k$ and $\rho'$ ($\rho'$ may or may not be equal to $\rho$) and outputs the message $\sigma'$  (which may or may not be equal to $\sigma'$) and a single qubit $V$. $R$ indicates accepting or rejecting the packet by setting $V$ to either $\ket{ACC}$ or $\ket{REJ}$ respectively. It must always indicate $\ket{ACC}$ on the input $\rho$.
+The algorithm $R$ takes as input $k$ and $\rho'$ ($\rho'$ may or may not be equal to $\rho$) and outputs the message $\sigma'$  (which may or may not be equal to $\sigma'$) and a single qubit $V$. $R$ indicates accepting or rejecting the packet by setting $V$ to either $\ket{\mathrm{ACC}}$ or $\ket{\mathrm{REJ}}$ respectively. It must always indicate $\ket{\mathrm{ACC}}$ on the input $\rho$.
 \end{definition}
 
-Note that in Definition~\ref{def:QMAgeneralForm} the quantum message is denoted by $M$. In Definition~\ref{def:QMAsecurity} it is denoted by the pure state $\ket{\psi}$, as it is somewhat combersome to talk about the message being the same at the sender and the receiver when it is a mixed state. The reader is refferred to the appendix of~\cite{barnum2002authentication} for a discussion on how security of pure states in QMA schemes can be extended to mixed states. For Definition~\ref{def:QMAsecurity} we will denote the following measurement operators:
+Note that in Definition~\ref{def:QMAgeneralForm} the quantum message is denoted by $\sigma$. In Definition~\ref{def:QMAsecurity} it is denoted by the pure state $\ket{\psi}$, as it is somewhat cumbersome to talk about the message being the same at the sender and the receiver when it is a mixed state. The reader is referred to the appendix of~\cite{barnum2002authentication} for a discussion on how security of pure states in QMA schemes can be extended to mixed states. For Definition~\ref{def:QMAsecurity} we will denote the following measurement operators:
 \begin{align}
 P_1^{|\psi\rangle} &=|\psi\rangle\left\langle\psi\left|\otimes I_V+I_\sigma \otimes\right| \mathrm{REJ}\right\rangle\langle\mathrm{REJ}|-| \psi\rangle\langle\psi|\otimes| \mathrm{REJ}\rangle\langle\mathrm{REJ}| \\
 P_0^{|\psi\rangle} &=\left(I_\sigma-|\psi\rangle\langle\psi|\right) \otimes(|\mathrm{ACC}\rangle\langle\mathrm{ACC}|)
 \end{align}
-$P_1^{|\psi\rangle}$ indicates a desirable outcome for the QMA scheme. It is the outcome associated to either the packet being unaffected by an adversary and accepted, or affected by an adversary and rejected. $P_0^{|\psi\rangle}$ indicates that the scheme failed. Also denote $S_k$ and $R_k$ as the operations performed by algorithm $S$ and $R$ respectively when given the input key $k$.
+$P_1^{|\psi\rangle}$ indicates a desirable outcome for the QMA scheme. It is the outcome associated with either algorithm $R$ outputting $\ket{\psi}$, thus recovering the message unaffected by the adversary, or the qubit $V$ being set to $\ket{\mathrm{REJ}}$. $P_0^{|\psi\rangle}$ indicates all other outcomes. Also denote $S_k$ and $R_k$ as the operations performed by algorithm $S$ and $R$ respectively when given the input key $k$.
 
 \begin{definition}
 \label{def:QMAsecurity}
 For a given message $\ket{\psi}$, a QMA scheme is $\epsilon$-secure so long as it satisfies both the completeness and soundness requirements.
 
 Completeness ensures that if the received packet has not been modified then the scheme will accept the message and recover it properly. More precisely, it is defined as:
-$$k \in \mathcal{K}: R_k\left(S_k(|\psi\rangle\langle\psi|)\right)=|\psi\rangle\langle\psi|\otimes| \mathrm{ACC}\rangle\langle\mathrm{ACC}|$$
+$$k \in K: R_k\left(S_k(|\psi\rangle\langle\psi|)\right)=|\psi\rangle\langle\psi|\otimes| \mathrm{ACC}\rangle\langle\mathrm{ACC}|$$
 
-Soundness describes how well the scheme can detect an attack. For all adversarial attacks, denoted by the superoperator $A$, and assuming keys are uniformly distributed, the following describes the output of algorithm $R$:
-$$\rho_R=\frac{1}{|\mathcal{K}|} \sum_k R_k\left(A\left(S_k(|\psi\rangle\langle\psi|)\right)\right)$$
+Soundness describes how well the scheme can defend against an attack. For all adversarial attacks, denoted by the superoperator $A$ (remark Section~\ref{sec:superoperator}), and assuming keys are uniformly distributed, the following describes the output of algorithm $R$:
+$$\rho_R=\frac{1}{|K|} \sum_k R_k\left(A\left(S_k(|\psi\rangle\langle\psi|)\right)\right)$$
 The scheme must satisfy the following property to be sound:
-$$\operatorname{Tr}\left(P_1^{|\psi\rangle} \rho_R\right) \geq 1-\epsilon$$
+\begin{align}
+\operatorname{Tr}\left(P_1^{|\psi\rangle} \rho_R\right) \geq 1-\epsilon
+\label{eq:measureSoundness}
+\end{align}
 \end{definition}
 
-Note that the block Clifford code does not easily fit into how security is defined in Definition~\ref{def:QMAsecurity}. A definition of security better-suited for the block Clifford code would include the characteristics of the attack applied by the adversary. I restrict the attack model such that $A \in P(n)$ and analytically and imperically demonstrate the block Clifford code's probability of detection based off how many non-identity single-qubit Paulis are in $A$. Definitions~\ref{def:QMAgeneralForm2} and~\ref{def:QMAsecurity2} provide an adapted version of QMA for the block Clifford code.
+For Equation~\eqref{eq:measureSoundness} remark how quantum measurements work (Section~\ref{subsec:Measurements}). Also note that the block Clifford code does not easily fit into how security is defined in Definition~\ref{def:QMAsecurity}. A definition of security better-suited for the block Clifford code would include the characteristics of the attack applied by the adversary. I restrict the attack model such that $A \in P(n)$ and analytically and emperically demonstrate the block Clifford code's probability of detecting an adversary based off how many non-identity single-qubit Paulis are in $A$. Definitions~\ref{def:QMAgeneralForm2} and~\ref{def:QMAsecurity2} provide an adapted version of QMA for the block Clifford code.
 
 \subsection{Authenticity, Integrity and Replay Detection}
 In cryptography, authenticity, integrity and replay detection are all distinct but closely related terms. Authenticity detection ensures the message received by the receiver is sent from the sender. Integrity detection ensures that the message has not been tampered with by an adversary while in transit. Replay detection ensures that the message has not been resent or delayed by an adversary while in transit. The analysis in this thesis is only expressed in terms of integrity detection.
@@ -1324,7 +1339,7 @@ The key mapping for the trap code is similar to the block Clifford code, as the 
 \chapter{The Block Clifford Code}
 \label{sec:PerezCode}
 \section{Introduction}
-Chapter~\ref{sec:IntegrityDetectionUsingCliffordOperationEncryption} showed how to use Clifford operations to detect integrity attacks. This chapter describes a new type of code, the block Clifford code, which uses a subset of the Clifford operations. The block Clifford code uses asymptotically fewer gates (under reasonable assumptions) and has an asymptotically faster key mapping compared to the Clifford code. The one downside of this new method is that the probability of detecting integrity attacks is dependent on the number of qubits that are modified by the adversary. As a result of this, it gives lower levels of detection than the Clifford code when the adversary attacks a small number of qubits (this will be precisely quantified in the analysis). Under certain assumptions, this can be advantageous. Particularly, in situations where the receiver still wants to accept data packets that have a very small number of noisy qubits. Qubits may acquire noise when using an imperfect channel to travel from the sender to the receiver. Also note that when I mention 'encryption' or 'decryption' with regards to the block Clifford code I am refferring to the quantum operations that are applied by the sender and receiver respectively. The definition of encryption in the quantum setting, as outlined in~\cite{barnum2002authentication}, refers to informationally secure data. I have not proven that the block Clifford code achieves this property, but I posit that if it doesn't then it could be extended to achieve this by increasing the number of different types of single-qubit gates $U_i$ that are applied (these gates are defined in Subsection~\ref{subsec:quantumOperations}).
+Chapter~\ref{sec:IntegrityDetectionUsingCliffordOperationEncryption} showed how to use Clifford operations to detect integrity attacks. This chapter describes a new type of code, the block Clifford code, which uses a subset of the Clifford operations. The block Clifford code uses asymptotically fewer gates (under reasonable assumptions) and has an asymptotically faster key mapping compared to the Clifford code. The one downside of this new method is that the probability of detecting integrity attacks is dependent on the number of qubits that are modified by the adversary. As a result of this, it gives lower levels of detection than the Clifford code when the adversary attacks a small number of qubits (this will be precisely quantified in the analysis). Under certain assumptions, this can be advantageous. Particularly, in situations where the receiver still wants to accept data packets that have a very small number of noisy qubits. Qubits may acquire noise when using an imperfect channel to travel from the sender to the receiver. Also note that when I mention 'encryption' or 'decryption' with regards to the block Clifford code I am referring to the quantum operations that are applied by the sender and receiver respectively. The definition of encryption in the quantum setting, as outlined in~\cite{barnum2002authentication}, refers to informationally secure data. I have not proven that the block Clifford code achieves this property, but I posit that if it doesn't then it could be extended to achieve this by increasing the number of different types of single-qubit gates $U_i$ that are applied (these gates are defined in Subsection~\ref{subsec:quantumOperations}).
 
 The method described in this chapter works by first appending signature qubits to the message, just like how the Clifford code does. The block Clifford code assigns a $\mathit{CX}_{i,j}$, $\mathit{CY}_{i,j}$ or $\mathit{CZ}_{i,j}$ gate (see Subsection~\ref{subsubsec:CU}) to each data qubit at position $i$ so that operations the adversary may perform on a given data qubit of the packet can subsequently affect a corresponding signature qubit at position $j$. Additionally, single-qubit operations are performed on each data qubit to ensure that the adversary can not modify the packet with a certain operation that the code can never detect. The previously described operations are applied during the 'encryption step'. To decrypt the data, the inverse of the encryption step is applied. Just like with the Clifford code, if the signature qubits are measured to all be $+1$ (which is guaranteed to happen if they are all in the state $\Ket{0}$ upon measurement) then the code does not indicate an adversarial attack. Otherwise, an attack is indicated.
 
@@ -1495,48 +1510,48 @@ Algorithm~\ref{alg:PerezCodeEncryption} returns the encrypted quantum data packe
 %\newgeometry{top=2cm}
 \begin{algorithm}[H]
 \setstretch{1.07}
-  \caption{Block Clifford Code Decryption($\rho$,$n$,$d$,$k_a'$,$k_b'$)}  \label{alg:PerezCodeDecryption}
+  \caption{Block Clifford Code Decryption($\rho'$,$n$,$d$,$k_a'$,$k_b'$)}  \label{alg:PerezCodeDecryption}
   \begin{algorithmic}[1]
     \State $k_b'' \Longleftarrow (x \mid x \in k_b', x \neq d)$ \label{alg:PerezCodeDecryption:filterKb}
-    \Procedure{Apply $U_i^{\dagger}$ Gate}{$\rho$,$k_a'$,$i$}
+    \Procedure{Apply $U_i^{\dagger}$ Gate}{$\rho'$,$k_a'$,$i$}
         \If {$k_a'(i) = 0$}
-            \State $\rho \Longleftarrow I_i \rho I_i$
+            \State $\rho' \Longleftarrow I_i \rho' I_i$
         \ElsIf {$k_a'(i) = 1$}
-            \State $\rho \Longleftarrow H_iS_i\rho S_i^{\dagger}H$
+            \State $\rho' \Longleftarrow H_iS_i\rho' S_i^{\dagger}H$
         \ElsIf {$k_a'(i) = 2$}
-            \State $\rho \Longleftarrow H_i \rho H_i$
+            \State $\rho' \Longleftarrow H_i \rho' H_i$
         \EndIf
     \EndProcedure
     \State $j \Longleftarrow 0$
     \ForEach{$i \ \in \ (0, 1 \cdots n - 1$)}
     \label{alg:PerezCodeDecryption:CircGatesLoop}
     \If{$k_b'(i) = d$}
-        \State $\rho \Longleftarrow \mathit{CIRC}_{i,j} \rho \mathit{CIRC}_{j,i}$ \label{alg:PerezCodeDecryption:CircGates}
+        \State $\rho \Longleftarrow \mathit{CIRC}_{i,j} \rho' \mathit{CIRC}_{j,i}$ \label{alg:PerezCodeDecryption:CircGates}
         \State $j \Longleftarrow j + 1$
     \EndIf
     \EndFor
     \ForEach{$i \ \in \ (d, d + 1 \cdots n - 1$)} \label{alg:PerezCodeDecryption:DataQubitsLoop}
-        \State \Call{Apply $U_i^{\dagger}$ Gate}{$\rho$,$k_a'$,$i$}
+        \State \Call{Apply $U_i^{\dagger}$ Gate}{$\rho'$,$k_a'$,$i$}
     \EndFor
     \ForEach{$j \ \in \ (0, 1 \cdots d - 1$)} \label{alg:PerezCodeDecryption:CUOuterLoop}
         \ForEach{$i \ \in \ (d, d + 1 \cdots n - 1$)} \label{alg:PerezCodeDecryption:CULoop}
             \If {$k_b''(i - d) = j$}\label{alg:PerezCodeDecryption:BlockDataQubitIf}
                 \If {$k_a'(j) = 0$}
-                    \State $\rho \Longleftarrow \mathit{CX}_{i,j} \rho \mathit{CX}_{i,j}$
+                    \State $\rho' \Longleftarrow \mathit{CX}_{i,j} \rho' \mathit{CX}_{i,j}$
                 \ElsIf {$k_a'(j) = 1$}
-                    \State $\rho \Longleftarrow \mathit{CZ}_{i,j} \rho \mathit{CZ}_{i,j}$
+                    \State $\rho' \Longleftarrow \mathit{CZ}_{i,j} \rho' \mathit{CZ}_{i,j}$
                 \ElsIf {$k_a'(j) = 2$}
-                    \State $\rho \Longleftarrow \mathit{CY}_{i,j} \rho \mathit{CY}_{i,j}$
+                    \State $\rho' \Longleftarrow \mathit{CY}_{i,j} \rho' \mathit{CY}_{i,j}$
                 \EndIf
             \EndIf
         \EndFor
-        \State \Call{Apply $U_i^{\dagger}$ Gate}{$\rho$,$k_a'$,$j$}
+        \State \Call{Apply $U_i^{\dagger}$ Gate}{$\rho'$,$k_a'$,$j$}
     \EndFor
     \State measure the $d$ signature qubits
     \If {at least one signature qubit measurement returns $-1$}
-    \State \textbf{return} $\rho$,$\mathbf{reject}$
+    \State \textbf{return} $\sigma' \otimes \ket{\mathrm{REJ}}\bra{\mathrm{REJ}}$
     \Else
-    \State \textbf{return} $\rho$,$\mathbf{accept}$
+    \State \textbf{return} $\sigma' \otimes \ket{\mathrm{ACC}}\bra{\mathrm{ACC}}$
     \EndIf
   \end{algorithmic}
 \end{algorithm}
@@ -1590,11 +1605,11 @@ and remarking measurement of quantum states in Section~\ref{subsec:Measurements}
 
 Also note that the proof for the security of a QMA scheme when attacked by an adversary from $P(n)$ can be used to prove the security against any type of attack. See Section $3.1$ of reference~\cite{aharonov2017interactive}. This relies on the fact that $P(n)$ forms a basis (see Corollary~\ref{corollary:paulisFormBasis}) which means that any given adversarial attack can be expressed as a probabilistic mixture of Paulis.
 
-The proofs in this subsection will regularly make use of $A_i$ denoting a single-qubit Pauli an adversary applies to qubit position $i$. Next, establishing some Lemmas will aid in the security analysis of the proposed method. 
-\begin{myLemmarep}
+The proofs in this subsection will regularly make use of $A_i$ denoting a single-qubit Pauli an adversary applies to qubit position $i$. Next, some prerequisite theorems will be established to eventually provide the security analysis of the proposed method. 
+\begin{theorem}
 \label{lemma:commutingEncryptionOperators}
 Let $U_i$ and $V_k$ be arbitrary single-qubit unitaries. Also let $\mathit{CU}_{i,j}$ be an arbitrary $\mathit{CU}_{i,j} \in \{\mathit{CX}_{i,j}, \mathit{CY}_{i,j}, \mathit{CZ}_{i,j}\}$ and let $\mathit{CU}_{k,j}$ be set to the same type of controlled-$U$ gate as $\mathit{CU}_{i,j}$. The operations $\mathit{CU}_{i,j}$ and $U_i$ commute with any of $\mathit{CU}_{k,j}$ and $V_k$, for any values of $i$, $j$ and $k$ where $i \neq j \neq k$.
-\end{myLemmarep}
+\end{theorem}
 \begin{proof}
 The proofs for all three cases are as follows:
 
@@ -1604,15 +1619,15 @@ The proofs for all three cases are as follows:
 
 \textbf{Case 3:} $\mathit{CU}_{i,j}$ and $\mathit{CU}_{k,j}$ commute. This case is proven in Theorem~\ref{theorem:CUsCommute}.
 \end{proof}
-\begin{myLemmarep}
+\begin{theorem}
 \label{lemma:integrityEncryptionRearrangement}
 Let $A_{i'}$ be a single-qubit adversarial attack applied to a qubit at position $i'$, and let $A_i$ be the same operation but applied to a data qubit position $i$. When using the block Clifford code, the operation applied to the state $\rho$ as a result of the operations for encrypting, followed by an adversary attacking a single data qubit using $A_{i'}$ and then decrypting, can be simplified in such a way:
 \begin{align}
 U_{j} \mathit{CU}_{i,j}U_i^{\dagger}A_{i}U_i\mathit{CU}_{i,j} U_{j} \label{eq:integrityEncryptionRearrangement}
 \end{align}
-\end{myLemmarep}
+\end{theorem}
 \begin{proof}
-The permuting and un-permuting of signature qubits result in the adversary's attack $A_{i'}$ being 'moved' to become $A_i$. That is, the $A_{i'}$ unitary is conjugated by a series of $\mathit{SWAP}$ gates to become $A_{i}$ where $d \leq i < n$ and $i' \leq i$ (remark lines~\ref{alg:PerezCodeEncryption:CircGates} and~\ref{alg:PerezCodeDecryption:CircGates} or Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption}). After simplifying all the $\mathit{SWAP}$ gates for permuting and then un-permuting the signature qubits, the only gates left to simplify are the $\mathit{CU}_{k,w}$, $\mathit{CU}_{k,j}$, $U_k$ and $U_w$ gates for all $k \neq i$ and $w \neq j$. $U_k$ denotes gates the block Clifford code applies to the data qubits and $U_w$ denotes gates the block Clifford code applies to the signature qubits. Applying Lemma~\ref{lemma:commutingEncryptionOperators} and Theorem~\ref{theorem:CUsCommuteDifferentIndices} multiple times allows to rearrange gates applied by the code into groupings of  $\mathit{CU}_{k,w}U_k^{\dagger}U_k\mathit{CU}_{k,w}$ and $\mathit{CU}_{k,j}U_k^{\dagger}U_k\mathit{CU}_{k,j}$, which simplify to each equal $I$. Following that simplification, gates can be rearranged into groupings of $U_w^{\dagger}U_w$ which also simplify to equal $I$. This results in the only gates left to simplify or evaluate as the ones shown in Equation~\eqref{eq:integrityEncryptionRearrangement}.
+The permuting and un-permuting of signature qubits result in the adversary's attack $A_{i'}$ being 'moved' to become $A_i$. That is, the $A_{i'}$ unitary is conjugated by a series of $\mathit{SWAP}$ gates to become $A_{i}$ where $d \leq i < n$ and $i' \leq i$ (remark lines~\ref{alg:PerezCodeEncryption:CircGates} and~\ref{alg:PerezCodeDecryption:CircGates} or Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption}). After simplifying all the $\mathit{SWAP}$ gates for permuting and then un-permuting the signature qubits, the only gates left to simplify are the $\mathit{CU}_{k,w}$, $\mathit{CU}_{k,j}$, $U_k$ and $U_w$ gates for all $k \neq i$ and $w \neq j$. $U_k$ denotes gates the block Clifford code applies to the data qubits and $U_w$ denotes gates the block Clifford code applies to the signature qubits. Applying Theorem~\ref{lemma:commutingEncryptionOperators} and Theorem~\ref{theorem:CUsCommuteDifferentIndices} multiple times allows to rearrange gates applied by the code into groupings of  $\mathit{CU}_{k,w}U_k^{\dagger}U_k\mathit{CU}_{k,w}$ and $\mathit{CU}_{k,j}U_k^{\dagger}U_k\mathit{CU}_{k,j}$, which simplify to each equal $I$. Following that simplification, gates can be rearranged into groupings of $U_w^{\dagger}U_w$ which also simplify to equal $I$. This results in the only gates left to simplify or evaluate as the ones shown in Equation~\eqref{eq:integrityEncryptionRearrangement}.
 \end{proof}
 Next, the probability of detecting a single-qubit adversarial attack is shown. That is, the adversarial attack can take on a value of $X_i$, $Y_i$ or $Z_i$ for $i$ where $0 \leq i < n$. Afterward, the proofs for the single-qubit attack will be extended to the general case where $A \in P(n)$.
 \begin{theorem}
@@ -1620,7 +1635,7 @@ Next, the probability of detecting a single-qubit adversarial attack is shown. T
 Let the data qubit at position $i$ be encrypted by a unitary $U_i$. Assume the adversary applies a single-qubit Pauli operation, $A_{i'} \in \{X_{i'}, Y_{i'}, Z_{i'}\}$. Also assume that after $A_{i'}$ is conjugated by all the $\mathit{SWAP}$ operations from the $\mathit{CIRC}$ gates during the encryption and decryption process, it becomes $A_i$ where $d \leq i < n$. If $U_i$ is equal to one of $I_i$, $H_i$ or $S_i^{\dagger}H_i$ with equal probability, the adversary will be detected with probability $\frac{2}{3}$.
 \end{theorem}
 \begin{proof}
-This can be seen by making use of the tables listed in Theorems \ref{theorem:CircGateIsClifford}, \ref{theorem:CNOTij}, \ref{theorem:CYij} and \ref{theorem:CZij}. Due to Lemma~\ref{lemma:integrityEncryptionRearrangement},
+This can be seen by making use of the tables listed in Theorems \ref{theorem:CircGateIsClifford}, \ref{theorem:CNOTij}, \ref{theorem:CYij} and \ref{theorem:CZij}. Due to Theorem~\ref{lemma:integrityEncryptionRearrangement},
 $$U_{j} \mathit{CU}_{i,j}U_i^{\dagger}A_{i}U_i\mathit{CU}_{i,j} U_{j}$$
 is the transformation on the data packet $\rho$ as a result of the adversarial attack. A given $\mathit{CU}_{i,j} \in \{\mathit{CX}_{i,j}, \mathit{CY}_{i,j}, \mathit{CZ}_{i,j}\}$ 'flips' the signature qubit at position $j$ if $U_i^{\dagger}A_iU_i$ is equal to $X_i$ or $Y_i$. The transformation is fully described using the following tables:
 \begin{table}[H]
@@ -1674,22 +1689,22 @@ $A_{i}$ & $H_jS_j\mathit{CZ}_{i,j}A_i\mathit{CZ}_{i,j}S_j^{\dagger}H_j$ & $H_jS_
 In the above tables, each row headers enumerate the possible values for $A_i$, and all the column headers enumerate the possible encryption operations. In each row of each table, $\frac{2}{3}$ of the resulting transformations on the data packet have an $X_j$ or $Y_j$, thus indicating an attack with probability $\frac{2}{3}$.
 \end{proof}
 For some of the following analyses, the $2$-dimensional list $B$ will be used to improve conciseness. Denote $B(j,k)$ as the $k^{th}$ qubit position $i$ of a data qubit used as the control qubit for a $\mathit{CU}_{i,j}$ with the target qubit as the signature qubit at position $j$. In other words, each $B(j,k)$ for all $k \in \{0,1,2 \cdots \frac{m}{d} - 1\}$ and a fixed $j$ corresponds to an element in $k_b''$ equal to $j$ (remark, lines~\ref{alg:PerezCodeEncryption:BlockDataQubitIf} and~\ref{alg:PerezCodeDecryption:BlockDataQubitIf} in Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption} respectively). For additional convenience, define $B(j)$ as a 'block': The positions of all the data qubits that get $\mathit{CU}_{i,j}$'d with the signature qubit at position $j$.
-\begin{myLemmarep}
+\begin{theorem}
 \label{lemma:integrityEncryptionRearrangement2}
 When using the block Clifford code, the operation applied to the state $\rho$ due to encrypting, followed by an adversary attacking a single signature qubit using $A_{j'}$ and then decrypting, can be simplified in such a way:
 \begin{align}
 &U_j^{\dagger}\mathit{CU}_{B(j,0),j} \cdots \mathit{CU}_{B(j,\frac{m}{d}-1),j} A_{j} \mathit{CU}_{B(j,\frac{m}{d}-1),j} \cdots \mathit{CU}_{B(j,0),j} U_j \label{eq:integrityEncryptionRearrangement2}
 \end{align}
-\end{myLemmarep}
+\end{theorem}
 \begin{proof}
-The permuting and un-permuting of signature qubits result in the adversary's attack $A_{j'}$ being 'moved' to become $A_j$. That is, the $A_{j'}$ unitary is conjugated by a series of $\mathit{SWAP}$ gates to become $A_{j}$ where $d \leq j \leq j' < n$ (remark lines~\ref{alg:PerezCodeEncryption:CircGates} and~\ref{alg:PerezCodeDecryption:CircGates} or Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption}). After simplifying all the $\mathit{SWAP}$ gates for permuting and then un-permuting the signature qubits, the only gates left to simplify are the $\mathit{CU}_{k,w}$, $U_k$ and $U_w$ gates for all $w \neq j$ and $k \notin B(j)$ and $k \neq j$. $U_k$ denotes gates the block Clifford code applies to the data qubits and $U_w$ denotes gates the block Clifford code applies to the signature qubits. Applying Lemma~\ref{lemma:commutingEncryptionOperators} and Theorem~\ref{theorem:CUsCommuteDifferentIndices} multiple times allows to rearrange gates applied by the code into groupings of  $\mathit{CU}_{k,w}U_k^{\dagger}U_k\mathit{CU}_{k,w}$, which simplify to each equal $I$.  Following that simplification, gates can be rearranged into groupings of $U_w^{\dagger}U_w$ which also simplify to equal $I$. This results in the only gates left to simplify or evaluate as the ones shown in Equation~\eqref{eq:integrityEncryptionRearrangement2}.
+The permuting and un-permuting of signature qubits result in the adversary's attack $A_{j'}$ being 'moved' to become $A_j$. That is, the $A_{j'}$ unitary is conjugated by a series of $\mathit{SWAP}$ gates to become $A_{j}$ where $d \leq j \leq j' < n$ (remark lines~\ref{alg:PerezCodeEncryption:CircGates} and~\ref{alg:PerezCodeDecryption:CircGates} or Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption}). After simplifying all the $\mathit{SWAP}$ gates for permuting and then un-permuting the signature qubits, the only gates left to simplify are the $\mathit{CU}_{k,w}$, $U_k$ and $U_w$ gates for all $w \neq j$ and $k \notin B(j)$ and $k \neq j$. $U_k$ denotes gates the block Clifford code applies to the data qubits and $U_w$ denotes gates the block Clifford code applies to the signature qubits. Applying Theorem~\ref{lemma:commutingEncryptionOperators} and Theorem~\ref{theorem:CUsCommuteDifferentIndices} multiple times allows to rearrange gates applied by the code into groupings of  $\mathit{CU}_{k,w}U_k^{\dagger}U_k\mathit{CU}_{k,w}$, which simplify to each equal $I$.  Following that simplification, gates can be rearranged into groupings of $U_w^{\dagger}U_w$ which also simplify to equal $I$. This results in the only gates left to simplify or evaluate as the ones shown in Equation~\eqref{eq:integrityEncryptionRearrangement2}.
 \end{proof}
 \begin{theorem}
 \label{theorem:singleQubitAttackOnSignatureQubit}
 Let the signature qubit at position $j$ be encrypted by a unitary $U_j$. Assume the adversary applies a single-qubit Pauli operation, $A_{j'} \in \{X_{j'}, Y_{j'}, Z_{j'}\}$. Also assume that after $A_{j'}$ is conjugated by all the $\mathit{SWAP}$ operations from the $\mathit{CIRC}$ gates during the encryption and decryption process, it becomes $A_j$ where $0 \leq j < d$. If $U_j$ is equal to one of $I_j$, $H_j$ or $S_j^{\dagger}H_j$ with equal probability, the adversary will be detected with probability $\frac{2}{3}$.
 \end{theorem}
 \begin{proof}
-This can be seen by making use of the tables listed in Theorems \ref{theorem:CircGateIsClifford}, \ref{theorem:CNOTij}, \ref{theorem:CYij} and \ref{theorem:CZij}. Additionally, denote $A'_k$ as the single-qubit Pauli applied at position $k$ a part of the resulting transformation $A' = C^{\dagger} A_j C$. Due to Lemma~\ref{lemma:integrityEncryptionRearrangement2}, the resulting transformation on the data packet can be evaluated as:
+This can be seen by making use of the tables listed in Theorems \ref{theorem:CircGateIsClifford}, \ref{theorem:CNOTij}, \ref{theorem:CYij} and \ref{theorem:CZij}. Additionally, denote $A'_k$ as the single-qubit Pauli applied at position $k$ a part of the resulting transformation $A' = C^{\dagger} A_j C$. Due to Theorem~\ref{lemma:integrityEncryptionRearrangement2}, the resulting transformation on the data packet can be evaluated as:
 \begin{align}
 &U_j^{\dagger}\mathit{CU}_{B(j,0),j} \cdots \mathit{CU}_{B(j,\frac{m}{d}-1),j} A_{j} \mathit{CU}_{B(j,\frac{m}{d}-1),j} \cdots \mathit{CU}_{B(j,0),j}U_j \label{eq:signatureQubitAttackFirstEquation}\\
 =&U_j^{\dagger}\mathit{CU}_{B(j,0),j} \cdots \mathit{CU}_{B(j,\frac{m}{d}-2),j} A_{B(j,\frac{m}{d}-1)}' A_{j} \mathit{CU}_{B(j,\frac{m}{d}-2),j} \cdots \mathit{CU}_{B(j,0),j}U_j  \label{eq:signatureQubitAttackFirstEvaluation}\\
@@ -1847,9 +1862,19 @@ The same as Definition~\ref{def:QMAgeneralForm}, but without the requirement of 
 \label{def:QMAsecurity2}
 The same as Definition~\ref{def:QMAsecurity}, but only considering $A \in P(n)$. Also, $\epsilon$ will be a function of $w$, $n$ and $d$.
 \end{definition}
-The block Clifford code satisfies Definition~\ref{def:QMAgeneralForm2}. It also satisfies Definition~\ref{def:QMAsecurity2} as an approximation due to Theorem~\ref{theorem:probabilityOfDetectionForBlockCliffordCode}. Showing completeness is trivial: the receiver in block Clifford code is the inverse of the sender. Soundness is shown via:
+\begin{theorem}
+The block Clifford code satisfies Definition~\ref{def:QMAgeneralForm2}.
+\end{theorem}
+\begin{proof}
+This is a direct result of Algorithms~\ref{alg:PerezCodeEncryption} and~\ref{alg:PerezCodeDecryption}. Algorithm~\ref{alg:PerezCodeEncryption} corresponds to $S$ and Algorithm~\ref{alg:PerezCodeDecryption} corresponds to $R$ in  Definition~\ref{def:QMAgeneralForm2}.
+\end{proof}
+The block Clifford code also satisfies Definition~\ref{def:QMAsecurity2} as a conjecture due to the approximation in Theorem~\ref{theorem:probabilityOfDetectionForBlockCliffordCode}. 
+\begin{conjecture}
+The block Clifford code is conjectured to satisfy Definition~\ref{def:QMAsecurity2}. Showing completeness is trivial: the receiver in block Clifford code is the inverse of the sender. Soundness is shown via:
 $$\operatorname{Tr}\left(P_1^{|\psi\rangle} \rho_R\right) \gtrapprox 1-\epsilon$$
-for all possible $\ket{\psi}$ such that $\epsilon$ is the negation of Equation~\eqref{eq:stirlingNumberFunctionCombinedWithOtherTheorems}.
+for all possible $\ket{\psi}$ such that $\epsilon$ is the negation of the probability expressed by Equation~\eqref{eq:stirlingNumberFunctionCombinedWithOtherTheorems}. As in:
+$$\epsilon = 1 - \sum_{x=1} ^{\min(d,w)} \left(1-\left(\frac{1}{2}\right)^{x}\right) {d \choose x}\left(\sum_{i=0} ^{x}(-1)^{i}{x \choose i}\left(\frac{x-i}{d}\right)^w \right)$$
+\end{conjecture}
 
 Next, the approximate probabilities of detection for the block Clifford code (Equation~\eqref{eq:stirlingNumberFunctionCombinedWithOtherTheorems}) and the Clifford code (Equation~\eqref{eq:CliffordCodeProbabilityOfDetection}) will be compared.
 \begin{theorem}
@@ -1880,6 +1905,8 @@ for a fixed $x$ and increasing $w$. Substituting this into Equation~\eqref{eq:st
 \end{align}
 and the term $\left(\frac{x}{d}\right)^w$ approaches $0$, for all $x \neq d$, as $w$ increases. Therefore Equation~\eqref{eq:blockCliffordCodeApproachesCliffordCodeSubstitution} approaches $1 - \left(\frac{1}{2}\right)^d$ as $w$ increases.
 \end{proof}
+
+As a result of the analysis, it seems that the value of $d$ ideal for the block Clifford code is similar to the value of $d$ one would use for the Clifford code. This becomes more apparent in Figure~\ref{fig:multiGraphPaulAttacks}.
 
 \subsection{Key Mapping}
 \label{subsubsection:keyMappings}
@@ -2240,9 +2267,9 @@ For all experiments, the block Clifford code quickly approaches a probability of
 
 The Clifford code's key mapping runs in $O\left(n^3\right)$ time, and the block Clifford code's key mapping runs in $O\left(n^2 \log_2^2 (n)\right)$ time. It is not yet known how large data packets in a quantum internet might be. However, in classical networks data packets can contain thousands of bits~\cite{rfc879}, which may indicate the size of packets in quantum networks of the future. Assuming quantum data packets will have thousands of qubits, one would want to invest in efficient key mappings. For example, if a data packet had $1000$ qubits, an $O\left(n^3\right)$ key mapping would result in a computation on the order of a billion operations. Although modern computers can perform these operations in a fraction of a second, it is still a relatively expensive operation for a computer to be performing frequently, especially in situations with stringent low latency requirements or limited computing power. Figure~\ref{fig:keyMappingRunTimesComparison} shows how much faster $n^3$ grows in comparison to $n^2 \log_2^2 (n)$.
 
-\begin{myLemmarep}
+\begin{theorem}
 $O\left(n^3\right)$ is asymptotically larger than $O\left(n^2 \log_2^2 (n)\right)$.
-\end{myLemmarep}
+\end{theorem}
 \begin{proof}
 First, some simplifications are made:
 \begin{align}
