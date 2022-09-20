@@ -1906,7 +1906,7 @@ for a fixed $x$ and increasing $w$. Substituting this into Equation~\eqref{eq:st
 and the term $\left(\frac{x}{d}\right)^w$ approaches $0$, for all $x \neq d$, as $w$ increases. Therefore Equation~\eqref{eq:blockCliffordCodeApproachesCliffordCodeSubstitution} approaches $1 - \left(\frac{1}{2}\right)^d$ as $w$ increases.
 \end{proof}
 
-As a result of the analysis, it seems that the value of $d$ ideal for the block Clifford code is similar to the value of $d$ one would use for the Clifford code. This becomes more apparent in Figure~\ref{fig:multiGraphPaulAttacks}.
+As a result of the analysis, it seems that the value of $d$ ideal for the block Clifford code is similar to the value of $d$ one would use for the Clifford code. More investigation is needed to precisely understand what parameter settings are ideal when using one of the schemes for a given real-world application. At the time of writing this thesis, the quantum internet does not yet exist. So it is hard to say what parameter settings are ideal for a given application of one of the schemes, and in what circumstances it would be appropriate to use the block Clifford code instead of the Clifford code. Figure~\ref{fig:multiGraphPaulAttacks} further aids in comparing the performance for both of the schemes.
 
 \subsection{Key Mapping}
 \label{subsubsection:keyMappings}
@@ -2236,21 +2236,21 @@ The gates performed due to subkey $k_b'$ did not affect the probability of detec
 Algorithm~\ref{alg:KeyMappingB} can readily be extended to unrank permutations of any given multiset. As far as I am aware, this is the most efficient algorithm of its kind. There is some literature on generating successive permutations of multisets~\cite{takaoka2015multi} as well as unranking permutations of sets~\cite{myrvold2001ranking}. I could not find any published academic literature (papers, textbooks, etc.) on unranking permutations of multisets. I did find an online forum post describing an algorithm for unranking permutations of a multiset~\cite{unrankingMultisetStackOverflow}. The author of the algorithm claims it runs in $O\left(n^2\right)$ time, however, it is $O\left(n^3 \log_2^2 (n)\right)$ when considering the cost of multiplication operations within its main loop. Further work, outside the scope of this thesis, can fully analyze and expand upon this.
 
 \section{Simulation}
-A simulation of the block Clifford code implemented with Qiskit is available to the public\footnote{\url{https://github.com/catproof/block-Clifford-code}}. It has been tested using Python 3.8.8. Unit tests are included in the repository which additionally verify
+A simulation of the block Clifford code implemented with Qiskit is available to the public\footnote{\url{https://github.com/catproof/Quantum-Message-Authentication-Block-Clifford-Code}}. It has been tested using Python 3.8.8. Unit tests are included in the repository which additionally verify
 \begin{enumerate}
     \item the correctness of both subkey mappings,
     \item the constructions from the Clifford generators of the gates used in the block Clifford code and
     \item the tables listed throughout this thesis which describe how a given Clifford operator transforms $2n$ Pauli generators.
 \end{enumerate}
 \section{Results}
+Figure~\ref{fig:multiGraphPaulAttacks} compares the probability of detection for the Clifford code and the block Clifford code. Each subgraph corresponds to an experiment. The title for each subgraph depicts the values of $n$ and $d$ for each experiment. The horizontal sequence of dots (orange) is the probability of detection for the Clifford code given by Equation~\eqref{eq:CliffordCodeProbabilityOfDetection}. The curved sequence of dots (blue) that has error bars on it depicts a confidence interval of $99.9 \%$ based on the Wilson score interval~\cite{wilsonScoreInterval}; it shows the results from a simulation of the block Clifford code with $5000$ trials for each $x$ value on the graph. The Wilson score interval is a confidence interval used for distributions arising from Bernoulli trials (trials with an outcome of $1$ indicating success and $0$ indicating failure). In this case, $1$ denotes the adversary was detected in a trial and $0$ denotes the adversary was not detected in a trial. The curved sequence of dots (green) in Figure~\ref{fig:multiGraphPaulAttacks} without error bars is the approximated probability of detection for the block Clifford code given by Equation~\eqref{eq:stirlingNumberFunctionCombinedWithOtherTheorems}. 
+
 \begin{figure}
     \centering
     \includegraphics[scale=0.6]{Figures/multi_graph_pauli_attacks.png}
     \caption{Figures showing the probability of detection for the Clifford code and the block Clifford code. Each $x$ value on the $x$-axis denotes an adversary attacking only using random Paulis from $P(n)$ containing $x$ number of non-identity single-qubit Paulis.}
     \label{fig:multiGraphPaulAttacks}
 \end{figure}
-
-Figure~\ref{fig:multiGraphPaulAttacks} compares the probability of detection for the Clifford code and the block Clifford code. Each subgraph corresponds to an experiment. The title for each subgraph depicts the values of $n$ and $d$ for each experiment. The horizontal sequence of dots (orange) is the probability of detection for the Clifford code given by Equation~\eqref{eq:CliffordCodeProbabilityOfDetection}. The curved sequence of dots (blue) that has error bars on it depicts a confidence interval of $99.9 \%$ based on the Wilson score interval~\cite{wilsonScoreInterval}; it shows the results from a simulation of the block Clifford code with $5000$ trials for each $x$ value on the graph. The Wilson score interval is a confidence interval used for distributions arising from Bernoulli trials (trials with an outcome of $1$ indicating success and $0$ indicating failure). In this case, $1$ denotes the adversary was detected in a trial and $0$ denotes the adversary was not detected in a trial. The curved sequence of dots (green) in Figure~\ref{fig:multiGraphPaulAttacks} without error bars is the approximated probability of detection for the block Clifford code given by Equation~\eqref{eq:stirlingNumberFunctionCombinedWithOtherTheorems}. 
 
 For all experiments, the block Clifford code quickly approaches a probability of detection comparable to the Clifford code as the number of non-identity single-qubit Paulis, $x$, in the attack increases. The experiment with $n = 32$ and $d = 16$ had the block Clifford code detect all $5000$ attacks for $19$ out of the $32$ values of $x$.
 
